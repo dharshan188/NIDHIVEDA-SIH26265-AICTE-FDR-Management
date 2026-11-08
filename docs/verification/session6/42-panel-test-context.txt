@@ -1,0 +1,53 @@
+$ bash -lc 'rg -n "observ|Edit|dialog|modal|permitted|button|timeline" frontend/src/pages/shared/FdrDetail.tsx | tail -65; rg -n "pol-form|textarea|button|reason|input" frontend/src/pages/shared/RulesPolicy.tsx | tail -35; rg -n -A 65 "PAGES =" tools/ui-checks/lib.mjs'
+6:import { DocumentsPanel, FdrTimeline, FieldEdits, ObservationsPanel } from '../../components/FdrPanels';
+65:  const [modal, setModal] = useState<'verify' | 'flag' | 'release' | null>(null);
+108:                <button className="btn btn-ghost" onClick={bankCheck} disabled={busy}>{busy ? <Loader2 size={17} className="spin" aria-hidden /> : <Landmark size={17} aria-hidden />} {busy ? 'Asking the bank…' : t('Request Bank Confirmation')}</button>
+109:                <button className="btn btn-red" onClick={() => setModal('flag')}><AlertTriangle size={17} aria-hidden /> {t('Flag Discrepancy')}</button>
+110:                <button className="btn btn-green" onClick={() => setModal('verify')} disabled={!cmp.confirmation}
+111:                  title={cmp.confirmation ? undefined : 'Needs a valid bank confirmation first'}><ShieldCheck size={17} aria-hidden /> {t('Mark Verified')}</button>
+116:                {f.days_left <= 120 && !f.renewed_by && <button className="btn btn-ghost" onClick={() => nav(`${base}/upload?renewal=${f.id}`)}><RefreshCw size={17} aria-hidden /> {t('Submit Renewal')}</button>}
+117:                <button className="btn btn-primary" onClick={() => setModal('release')}><Send size={17} aria-hidden /> {t('Request Release')}</button>
+120:            {role === 'institution' && f.status === 'discrepancy' && <button className="btn btn-primary" onClick={() => nav(`${base}/upload?renewal=${f.id}`)}><RefreshCw size={17} aria-hidden /> Upload Corrected FDR</button>}
+192:          <FieldEdits f={f} />
+195:            <ol className="timeline" style={{ listStyle: 'none', margin: 0 }}>
+208:      <Modal open={modal === 'verify'} onClose={() => setModal(null)} title="Mark FDR as verified" sub={`${f.id} · ${inst.name}`}
+209:        footer={<><button className="btn btn-ghost" onClick={() => setModal(null)}>Cancel</button>
+210:          <button className="btn btn-green" onClick={async () => { if (await run(() => post(`/fdrs/${f.id}/verify`, { note: note || null }), `${f.id} verified`) !== undefined) { setModal(null); setNote(''); } }}><ShieldCheck size={17} aria-hidden /> Confirm verification</button></>}>
+216:      <Modal open={modal === 'flag'} onClose={() => setModal(null)} title="Flag discrepancy" sub="The institution will be notified and asked for clarification"
+217:        footer={<><button className="btn btn-ghost" onClick={() => setModal(null)}>Cancel</button>
+218:          <button className="btn btn-red" disabled={note.trim().length < 3} onClick={async () => { if (await run(() => post(`/fdrs/${f.id}/discrepancy`, { reason: note }), 'Discrepancy recorded') !== undefined) { setModal(null); setNote(''); } }}>Flag &amp; notify</button></>}>
+223:      <Modal open={modal === 'release'} onClose={() => setModal(null)} title="Request release / refund" sub={`${f.id} · ${inrP(f.amount_paise)}`}
+224:        footer={<><button className="btn btn-ghost" onClick={() => setModal(null)}>Cancel</button>
+225:          <button className="btn btn-primary" disabled={note.trim().length < 5} onClick={async () => { if (await run(() => post('/release-requests', { fdr_id: f.id, reason: note }), 'Release request submitted') !== undefined) { setModal(null); setNote(''); } }}><Send size={16} aria-hidden /> Submit request</button></>}>
+rg: frontend/src/pages/shared/RulesPolicy.tsx: IO error for operation on frontend/src/pages/shared/RulesPolicy.tsx: No such file or directory (os error 2)
+121:export const PAGES = {
+122-  aicte: ['', 'institutions', 'submissions', 'verification', 'reconciliation', 'renewals', 'releases', 'payments', 'audit-trail', 'reports', 'notifications', 'guidelines', 'rules', 'fdr/:fdr', 'institutions/:inst'],
+123-  institution: ['', 'profile', 'fdrs', 'upload', 'renewals', 'release', 'payments', 'notifications', 'communication', 'guidelines', 'help', 'fdr/:fdr'],
+124-  auditor: ['', 'assignments', 'institutions', 'fdrs', 'compliance', 'discrepancies', 'renewals', 'releases', 'payments', 'audit-trail', 'reports', 'notifications', 'guidelines', 'fdr/:fdr'],
+125-};
+126-
+127-const ROLE_TAB = { AICTE_OFFICIAL: 'AICTE Official', INSTITUTION: 'Institution', AUDITOR: 'Auditor' };
+128-const ROLE_BASE = { AICTE_OFFICIAL: '/aicte', INSTITUTION: '/institution', AUDITOR: '/auditor' };
+129-
+130-/** Signs in through the login page itself: role tab, user ID, password, 2FA method, then the code typed into the six boxes.
+131- * The code is read from the dev-only SIMULATED OTP outbox / authenticator helper, standing in for the user's phone. */
+132-export async function uiLogin(page, who) {
+133-  const u = USERS[who];
+134-  const h = { 'X-TL-Client': 'web' };
+135-  await open(page, `${BASE}/login`);
+136-  await page.getByRole('tab', { name: ROLE_TAB[u.role] }).click();
+137-  await page.locator('#uid').fill(u.username);
+138-  await page.locator('#pw').fill(PW);
+139-  await page.getByRole('radio', { name: u.mfa === 'otp' ? /^OTP/ : /Authenticator App/ }).click();
+140-  await page.locator('button.lbtn[type=submit]').click();
+141-  await page.getByRole('group', { name: 'Verification code' }).waitFor({ timeout: 20000 });
+142-  const helper = u.mfa === 'otp' ? `/api/sim/otp-outbox/${encodeURIComponent(u.username)}` : `/api/sim/totp/${encodeURIComponent(u.username)}`;
+143-  const { code } = await (await page.context().request.get(`${BASE}${helper}`, { headers: h })).json();
+144-  for (let i = 0; i < 6; i++) await page.getByLabel(`Digit ${i + 1} of 6`).fill(code[i]);
+145-  await page.locator('form button.lbtn[type=submit]').click().catch(() => {});
+146-  await page.waitForURL((url) => url.pathname.startsWith(ROLE_BASE[u.role]), { timeout: 20000 });
+147-  const me = await (await page.context().request.get(`${BASE}/api/auth/me`, { headers: h })).json();
+148-  return { csrf: me.user.csrf_token, user: me.user };
+149-}
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

@@ -1,0 +1,77 @@
+$ bash -lc 'git rev-parse --show-toplevel; rg --files -g AGENTS.md -g "!node_modules" -g "!__pycache__"; docker ps -a --format "{{.Names}} {{.Image}} {{.Status}} {{.Ports}}"; .venv/bin/python --version; ls tools/baseline tools/ui-checks; head -n 40 TEST_REPORT.md'
+/home/dharshan
+tl-baseline-s3 chrislusf/seaweedfs:3.97 Up 34 minutes 7333/tcp, 8080/tcp, 8888/tcp, 9333/tcp, 18080/tcp, 18888/tcp, 19333/tcp, 127.0.0.1:8334->8333/tcp
+tl-gap-s3 chrislusf/seaweedfs:3.97 Exited (127) 3 hours ago 
+tl-gap-mailpit axllent/mailpit:latest Up 34 minutes (healthy) 127.0.0.1:1025->1025/tcp, 127.0.0.1:8025->8025/tcp, 1110/tcp
+tl-gap-clamav clamav/clamav:1.4 Up 34 minutes (healthy) 127.0.0.1:3310->3310/tcp, 7357/tcp
+tl-gap-pg postgres:16-alpine Up 34 minutes 127.0.0.1:55433->5432/tcp
+buildhub-pg postgres:16-alpine Up 41 minutes 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+buildhub-postgres postgres:16-alpine Exited (255) 8 weeks ago 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+node-app-container node-app Exited (137) 6 months ago 
+test-app nginx Exited (0) 6 months ago 
+reverent_shaw hello-world Exited (0) 6 months ago 
+Python 3.10.12
+tools/baseline:
+backend_check.py
+check_service_gates.py
+final_inspection.py
+kernel_check.py
+migration_check.py
+__pycache__
+README.md
+start_s3.py
+write_report.py
+
+tools/ui-checks:
+axe.mjs
+lib.mjs
+node_modules
+package.json
+package-lock.json
+pdf_check.mjs
+s01.mjs
+serve.py
+shots.mjs
+stop.sh
+# Session 4 (2026-10-24, afternoon) — fixes and completion work: **STOPPED at a stop condition (critical dependency advisory)**
+
+Decision carried in from the user: the 42-route axe run (5 violations in light mode, 5 in dark) is the accessibility
+baseline; the earlier "0 violations on 17 pages" claim is **withdrawn** (its page list was never recorded, and a 42-route
+re-run of the unchanged code found 5 violations). The withdrawal is also recorded in `CHANGELOG.md` and `frontend/README.md`.
+
+**Why this session stopped.** `pip-audit` of the project venv reports **pillow 12.3.0: 4 critical, 22 high, 11 moderate**
+advisories (OSV severities), and every fix is in pillow 13.0.0, which requires Python ≥ 3.11. The project venv and the
+only interpreter on this machine are Python 3.10.12, so the fix cannot be installed here. The stop condition ("If a
+critical security finding cannot be fixed in this session, stop and list it as a blocker") applies. See "Blocker" below.
+
+No git commit was made. The kernel is unchanged (manifest `58406d49…fd387c0`, 48 files, [13-kernel-hash.txt](docs/verification/session4/13-kernel-hash.txt)).
+`buildhub-pg` was not touched (the machine rebooted mid-session and it restarted on its own restart policy).
+
+## Results so far
+
+| Item | Result | Evidence |
+|---|---|---|
+| A11y fixes, light mode | **42 routes, 0 violations, 0 console errors** | [01-axe-a11y-fix-light.txt](docs/verification/session4/01-axe-a11y-fix-light.txt) |
+| A11y fixes, dark mode | **42 routes, 0 violations**; 15 console errors, all `net::ERR_NETWORK_CHANGED` while Docker containers were being restarted after the reboot (environmental; the scan must be repeated) | [02-axe-a11y-fix-dark.txt](docs/verification/session4/02-axe-a11y-fix-dark.txt) |
+| Migration 0006 (fresh SQLite, copy of the existing dev DB from 0001, fresh PostgreSQL 16.15): upgrade, downgrade to 0005, upgrade | **all PASS**; dev-DB row counts preserved | [03-migration-check.txt](docs/verification/session4/03-migration-check.txt) |
+| `backend/trustledger.db` migrated 0001 → 0006 (head) | **done**; kernel chain 3422 events valid, portal chain 70 valid; 821 FDRs, 1642 documents | [04-devdb-migrate.txt](docs/verification/session4/04-devdb-migrate.txt) |
+| `seed.py --reset` at head | **works**: 482 institutions, 821 FDRs, 3411 kernel events, 9 users; revision 0006 | [05-seed-reset.txt](docs/verification/session4/05-seed-reset.txt) |
+| S01 in the browser, four users signed in through the login page | **12/12 checks, 0 console errors**: "NOT yet complete" after the debit; "AICTE still owes you ₹35.00 lakh" after the return; "Completed" only after the positive credit confirmation; ledger SETTLED with RETURNED + SETTLED attempts; both chains valid | [06-s01-browser.txt](docs/verification/session4/06-s01-browser.txt) |
+| PDF exports carry SIMULATED where bank data appears | **8/8 as expected** (7 bank-data exports labelled, including the evidence packet and the missing-documents report; the audit-events control is not labelled) | [07-pdf-simulated-labels.txt](docs/verification/session4/07-pdf-simulated-labels.txt) |
+| Screenshots 1536×1024 | **18 saved** in `docs/screenshots/final/`, 0 console errors. `08-fdr-detail-timeline.png` must be retaken (it shows a new FDR with no gap, not one with a renewal gap; script fixed, not re-run) | [08-screenshots.txt](docs/verification/session4/08-screenshots.txt) |
+| New backend tests (`tests/test_completion.py`) | **10 passed** (SQLite, all services required). Full suites not re-run yet | [12-test-completion-sqlite.txt](docs/verification/session4/12-test-completion-sqlite.txt) |
+| npm audit | frontend: **2 moderate** (react-router; not reachable, see below); 0 high/critical. tools/ui-checks: 0 | [10-npm-audit.txt](docs/verification/session4/10-npm-audit.txt) |
+| gitleaks v8.18.4 | whole `sih2/`: 288 findings, all in `.venv` / tools-venv third-party test vectors or this machine's gitignored dev secrets; **files a commit would contain (297): no leaks** | [11-gitleaks.txt](docs/verification/session4/11-gitleaks.txt) |
+| pip-audit | project venv: pillow 42 advisories (**blocker**); setuptools 5 → **fixed** (59.6.0 → 84.2.1). The `-r requirements.txt` run failed on a PyPI read timeout and gave no result | [09-pip-audit.txt](docs/verification/session4/09-pip-audit.txt), [09b-pip-audit-severity.txt](docs/verification/session4/09b-pip-audit-severity.txt) |
+
+## Blocker: pillow 12.3.0 on Python 3.10
+
+- Severities (OSV): 4 CRITICAL (TIFF write heap overflow, FlashPix JPEG overflow, multi-frame stale storage, Ghostscript
+  argument injection), 22 HIGH, 11 MODERATE. Fixed in 13.0.0 only; `pip install "pillow>=13.0.0"` → "requires Python >=3.11".
+- Why pillow is present: hard dependency of reportlab 5.1.0 (PDF exports). No application module imports PIL;
+  `app/pdf.py` draws no images; uploads are PDF-only and parsed by pypdf without image extraction. So no request path hands
+  attacker-controlled bytes to Pillow today. That reduces exposure, but it is not a fix, and a future change (e.g. a logo
+  in PDFs or image uploads) would make it reachable.
+- Options for the user: (1) rebuild the project venv on Python 3.11+ (e.g. a standalone interpreter installed under
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

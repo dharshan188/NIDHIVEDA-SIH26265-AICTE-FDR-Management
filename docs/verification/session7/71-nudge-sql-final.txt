@@ -1,0 +1,26 @@
+$ node tools/ui-checks/live_data.mjs
+Created a real test observation 5 on FDR202600372; the outbox generates a fresh user-bound action link.
+PASS notification centre: open overdue notices; UI=0; SQL=0
+  SQL: SELECT count(*) AS n FROM notifications WHERE rung='overdue' AND ack_at IS NULL AND audience IN ('institution:' || (SELECT institution_id FROM users WHERE username=?), 'user:' || (SELECT id FROM users WHERE username=?))
+  params: ["1-12345678","1-12345678"]
+PASS escalation view: steps in root 114; UI=2; SQL=2
+  SQL: WITH RECURSIVE family(id) AS (SELECT id FROM notifications WHERE id=? UNION SELECT n.id FROM notifications n JOIN family f ON n.parent_id=f.id) SELECT count(*) AS n FROM family
+  params: [114]
+PASS health panel: notices in displayed 30-day window; UI=61; SQL=61
+  SQL: SELECT count(*) AS n FROM notifications WHERE at>=? AND template IS NOT NULL AND template<>'digest'
+  params: ["2026-09-24T16:59:09"]
+PASS health panel: email sent counted exactly once per delivery; UI=67; SQL=67
+  SQL: SELECT count(*) AS n FROM notification_deliveries d JOIN notifications n ON n.id=d.notification_id WHERE n.at>=? AND n.template IS NOT NULL AND d.channel='email' AND d.status<>'digested' AND (d.sent_at IS NOT NULL OR d.status IN ('sent','delivered'))
+  params: ["2026-09-24T16:59:09"]
+PASS notification preferences panel (inside centre): notice language; UI="en"; SQL="en"
+  SQL: SELECT lang FROM users WHERE username=?
+  params: ["1-12345678"]
+PASS action-link page: successful destination path; UI="/institution/fdr/FDR202600372"; SQL="/institution/fdr/FDR202600372"
+  SQL: SELECT path,used_at FROM action_tokens WHERE id=?
+  params: ["bd329ebccbfe1b6d409745e6"]
+PASS action-link page: reuse is refused; UI=true; SQL=true
+  SQL: SELECT used_at IS NOT NULL AS used FROM action_tokens WHERE id=?
+  params: ["bd329ebccbfe1b6d409745e6"]
+Live-data checks: 7/7 passed; unexpected console errors: 0; expected action-link reuse HTTP 409: 1
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

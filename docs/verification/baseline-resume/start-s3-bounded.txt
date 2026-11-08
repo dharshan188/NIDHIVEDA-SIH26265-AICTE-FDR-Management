@@ -1,0 +1,2 @@
+docker run -d --name tl-baseline-s3 -p 127.0.0.1:8334:8333 -e S3_ACCESS_KEY -e S3_SECRET_KEY --entrypoint /bin/sh chrislusf/seaweedfs:3.97 -c '<create config from environment; start S3>'
+39257242016ebef0eb9cd17612e6d2ccfe7909ef0a1eb29b71e091f55ca85b10

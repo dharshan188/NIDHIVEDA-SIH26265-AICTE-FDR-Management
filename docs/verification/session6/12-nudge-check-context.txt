@@ -1,0 +1,31 @@
+$ bash -lc 'rg -n "class (Notification|NotificationPref|ActionToken)|lang:|digest:" backend/app/models.py; rg -n "providers|links|action_tokens|def health|def prefs" backend/app/routers/sim.py backend/app/routers/nudge.py; rg --files frontend/src | rg "(Nudge|Notification|Preferences|Action|Health|Escal)"; cat frontend/vite.config.ts'
+60:    lang: Mapped[str] = mapped_column(String(2), default="en")           # en | hi: language of notifications
+341:class Notification(Base):
+368:class NotificationDelivery(Base):
+395:class NotificationPref(Base):
+403:    digest: Mapped[bool] = mapped_column(Boolean, default=True)
+406:class ActionToken(Base):
+430:    lang: Mapped[str] = mapped_column(String(2))
+backend/app/routers/nudge.py:1:"""/nudge: notification centre with the ladder, acknowledgement, action links, preferences, policy, "what changed",
+backend/app/routers/nudge.py:2:escalation view and the health panel. /providers: delivery-receipt webhooks from real providers."""
+backend/app/routers/nudge.py:19:from ..nudge import insights, links
+backend/app/routers/nudge.py:97:@router.post("/nudge/links/resolve")
+backend/app/routers/nudge.py:100:    return links.resolve(db, body.token, p.user)
+backend/app/routers/nudge.py:158:def health(p: Principal = Depends(require("AICTE_OFFICIAL", "AUDITOR")), db: Session = Depends(get_db), days: int = 30):
+backend/app/routers/nudge.py:195:@router.post("/providers/receipts/{channel}")
+backend/app/routers/sim.py:261:# ------------------------------------------------------------------ Nudge Ladder (simulated time and providers)
+backend/app/routers/sim.py:297:@router.get("/providers/messages")
+backend/app/routers/sim.py:312:@router.post("/providers/receipts")
+frontend/src/pages/shared/Nudge.tsx
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+// The API is served from the same origin under /api, so the session cookie is first-party and SameSite=Strict works.
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: { '/api': { target: 'http://127.0.0.1:8000', changeOrigin: false } },
+  },
+})
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

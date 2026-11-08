@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "about": "Nudge Ladder notification policy. Defaults; AICTE officials can publish a new version (PUT /api/nudge/policy). Reasons for each rule: docs/notifications.md.",
+  "timezone": "Asia/Kolkata",
+  "reminders": {
+    "run_at": "08:00",
+    "before_maturity_days": [90, 60, 30, 7],
+    "after_missed_renewal_days": [3]
+  },
+  "ladder": {
+    "action_needed_within_days": 30,
+    "deadline_within_days": 7
+  },
+  "channels": {
+    "info": ["in_app"],
+    "action": ["in_app", "email"],
+    "deadline": ["in_app", "email", "sms"],
+    "overdue": ["in_app", "email", "sms", "whatsapp", "push"]
+  },
+  "acknowledgement": {
+    "next_rung_after_days": {"info": null, "action": 7, "deadline": 2, "overdue": 2}
+  },
+  "escalation": {
+    "chain": ["institution", "aicte", "competent_authority"],
+    "step_after_days": 3,
+    "hold_review_days": 30
+  },
+  "quiet_hours": {
+    "start": "20:00",
+    "end": "08:00",
+    "channels": ["sms", "whatsapp"],
+    "except_rungs": ["overdue"]
+  },
+  "digest": {
+    "rungs": ["info"],
+    "send_at": "08:00"
+  },
+  "action_links": {
+    "ttl_hours": 72
+  },
+  "delivery": {
+    "max_attempts": 5,
+    "retry_after_minutes": [1, 5, 30, 120],
+    "lease_seconds": 120
+  }
+}

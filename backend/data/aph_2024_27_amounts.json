@@ -1,0 +1,17 @@
+{
+  "edition_id": "APH-2024-27",
+  "status": "proposal_only_requires_officer_signoff",
+  "source": "solution_final.md §2 (Table 1.4 ✅ verified by the team) and FDR_Trust_Ledger_R10_Final_Solution.md (Cl. 2.21(h)/(i), reported). Legal cell to confirm addenda and applicability before any figure is used.",
+  "table_1_4_lakh": {
+    "Engineering & Technology": {"Diploma": 15, "UG": 35, "PG": 15},
+    "Planning, Applied Arts, Design and HMCT": {"Diploma": 15, "UG": 15, "PG": 15},
+    "Computer Applications": {"Diploma": null, "UG": 5, "PG": 15},
+    "Management": {"Diploma": null, "UG": 5, "PG": 15}
+  },
+  "doubling_condition": "private leased building or land (Table 1.4 note)",
+  "exemptions_need_review": ["Government", "Government Aided", "Cl. 1.3.3 institutions existing > 5 years with their regulator (Cl. 1.12(i))"],
+  "closure_penalties": {
+    "2.21(h)": {"percent": 10, "condition": "specified institution-closure circumstances", "applies": "before release"},
+    "2.21(i)": {"percent": 50, "condition": "closure where the institution did not apply for EoA in the preceding six years", "applies": "before release"}
+  }
+}

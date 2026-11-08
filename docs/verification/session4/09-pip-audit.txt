@@ -1,0 +1,111 @@
+$ .ui-check/tools-venv/bin/pip-audit -r backend/requirements.txt
+Traceback (most recent call last):
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 929, in _error_catcher
+    yield
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 1046, in _raw_read
+    data = self._fp_read(amt, read1=read1) if not fp_closed else b""
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 1029, in _fp_read
+    return self._fp.read(amt) if amt is not None else self._fp.read()
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/cachecontrol/filewrapper.py", line 100, in read
+    data: bytes = self.__fp.read(amt)
+  File "/usr/lib/python3.10/http/client.py", line 471, in read
+    s = self.fp.read(amt)
+  File "/usr/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.10/ssl.py", line 1303, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.10/ssl.py", line 1159, in read
+    return self._sslobj.read(len, buffer)
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/models.py", line 937, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 1291, in stream
+    data = self.read(amt=amt, decode_content=decode_content)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 1134, in read
+    data = self._raw_read(amt)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 1045, in _raw_read
+    with self._error_catcher():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/urllib3/response.py", line 934, in _error_catcher
+    raise ReadTimeoutError(self._pool, None, "Read timed out.") from e  # type: ignore[arg-type]
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='pypi.org', port=443): Read timed out.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/dharshan/sih2/.ui-check/tools-venv/bin/pip-audit", line 8, in <module>
+    sys.exit(audit())
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/pip_audit/_cli.py", line 509, in audit
+    for spec, vulns in auditor.audit(source):
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/pip_audit/_audit.py", line 68, in audit
+    for dep, vulns in self._service.query_all(specs):
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/pip_audit/_service/interface.py", line 155, in query_all
+    yield self.query(spec)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/pip_audit/_service/pypi.py", line 62, in query
+    response: requests.Response = self.session.get(url=url, timeout=self.timeout)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/sessions.py", line 671, in get
+    return self.request("GET", url, params=params, **kwargs)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/sessions.py", line 827, in send
+    r.content
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/models.py", line 1042, in content
+    self._content = b"".join(self.iter_content(CONTENT_CHUNK_SIZE)) or b""
+  File "/home/dharshan/sih2/.ui-check/tools-venv/lib/python3.10/site-packages/requests/models.py", line 943, in generate
+    raise ConnectionError(e)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='pypi.org', port=443): Read timed out.
+exit 1
+
+$ .ui-check/tools-venv/bin/pip-audit --path .venv/lib/python3.10/site-packages  (everything installed in the project venv)
+WARNING:pip_audit._dependency_source.pip:pip-audit will run pip against /home/dharshan/sih2/.ui-check/tools-venv/bin/python3, but you have a virtual environment loaded at /home/dharshan/sih2/.venv. This may result in unintuitive audits, since your local environment will not be audited. You can forcefully override this behavior by setting PIPAPI_PYTHON_LOCATION to the location of your virtual environment's Python interpreter.
+Found 42 known vulnerabilities in 2 packages
+Name       Version ID                  Fix Versions
+---------- ------- ------------------- ------------
+pillow     12.3.0  GHSA-p4wg-p73j-c528 13.0.0
+pillow     12.3.0  GHSA-65qm-jvmh-6pqg 13.0.0
+pillow     12.3.0  GHSA-58r4-6rv3-gfh8 13.0.0
+pillow     12.3.0  GHSA-pchr-8j38-3x4p 13.0.0
+pillow     12.3.0  GHSA-q45j-58j2-45rg 13.0.0
+pillow     12.3.0  GHSA-462x-pgg6-55fp 13.0.0
+pillow     12.3.0  GHSA-c6hw-5grf-ff96 13.0.0
+pillow     12.3.0  GHSA-vx6w-vv9f-6gvg 13.0.0
+pillow     12.3.0  GHSA-7mwm-ghpf-9vrm 13.0.0
+pillow     12.3.0  GHSA-w889-685w-c8fh 13.0.0
+pillow     12.3.0  GHSA-j4m9-6w36-pw47 13.0.0
+pillow     12.3.0  GHSA-27h8-gf7j-v5hc 13.0.0
+pillow     12.3.0  GHSA-fc9g-5qg7-mf45 13.0.0
+pillow     12.3.0  GHSA-cp9v-662q-vvx9 13.0.0
+pillow     12.3.0  GHSA-22hg-r758-rrw9 13.0.0
+pillow     12.3.0  GHSA-74r2-7ff9-mjj2 13.0.0
+pillow     12.3.0  GHSA-xgh8-jp6q-p5x8 13.0.0
+pillow     12.3.0  GHSA-254f-3936-288h 13.0.0
+pillow     12.3.0  GHSA-jg86-v3jv-hrpm 13.0.0
+pillow     12.3.0  GHSA-f2g6-542v-9j58 13.0.0
+pillow     12.3.0  GHSA-5xm2-6676-qcp9 13.0.0
+pillow     12.3.0  GHSA-gg2r-wvfm-q9rx 13.0.0
+pillow     12.3.0  GHSA-332p-7hrc-92wf 13.0.0
+pillow     12.3.0  GHSA-4rr5-89j8-mwwm 13.0.0
+pillow     12.3.0  GHSA-24rc-8hj2-v98c 13.0.0
+pillow     12.3.0  GHSA-4rm8-3hmm-39fg 13.0.0
+pillow     12.3.0  GHSA-mrfp-p49p-3hf2 13.0.0
+pillow     12.3.0  GHSA-3j72-p6qg-6xp7 13.0.0
+pillow     12.3.0  GHSA-v9pv-5gc8-w2m6 13.0.0
+pillow     12.3.0  GHSA-g4qv-2jxx-769h 13.0.0
+pillow     12.3.0  GHSA-g842-9rc4-69pw 13.0.0
+pillow     12.3.0  GHSA-9v9v-9qvf-h2hj 13.0.0
+pillow     12.3.0  GHSA-g7cr-3p24-7wf7 13.0.0
+pillow     12.3.0  GHSA-p8hx-v2p6-rp84 13.0.0
+pillow     12.3.0  GHSA-78g4-xqwv-q3g8 13.0.0
+pillow     12.3.0  GHSA-654x-cwwv-5j9c 13.0.0
+pillow     12.3.0  GHSA-5x8w-8jj5-q52h 13.0.0
+setuptools 59.6.0  PYSEC-2022-43012    65.5.1
+setuptools 59.6.0  PYSEC-2025-49       78.1.1
+setuptools 59.6.0  PYSEC-2026-1918     70.0.0
+setuptools 59.6.0  PYSEC-2026-3447     83.0.0
+setuptools 59.6.0  GHSA-xmj3-9gf7-h52w 84.1.0
+exit 1

@@ -1,0 +1,6 @@
+$ python3 -c 'import sqlite3; c=sqlite3.connect(".ui-check/session7-final/ui.db"); print("SELECT username, totp_secret_enc IS NOT NULL FROM users WHERE username=1-12345678"); print(c.execute("SELECT username, totp_secret_enc IS NOT NULL FROM users WHERE username=?",("1-12345678",)).fetchone()); print("Repeated browser checks reached the five OTP sends / 15 minutes limit (HTTP 429), correctly enforced. Subsequent checks use the existing institution Authenticator App MFA; no auth limit or database values changed.")'
+SELECT username, totp_secret_enc IS NOT NULL FROM users WHERE username=1-12345678
+('1-12345678', 1)
+Repeated browser checks reached the five OTP sends / 15 minutes limit (HTTP 429), correctly enforced. Subsequent checks use the existing institution Authenticator App MFA; no auth limit or database values changed.
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

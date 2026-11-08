@@ -1,0 +1,10 @@
+.env
+*.db
+*.db-journal
+__pycache__/
+.pytest_cache/
+.hypothesis/
+devcerts/
+.dev-credentials.json
+uploads
+.dev-secrets.json

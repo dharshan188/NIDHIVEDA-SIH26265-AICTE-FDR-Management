@@ -1,0 +1,35 @@
+$ .venv/bin/python -c 'import os,signal,subprocess,time; from pathlib import Path; root=Path.cwd(); pids=[4774,5121,5132,5133,6965,8215,8289,8290,36983,36990,37222,37223]
+for pid in pids:
+ p=Path("/proc")/str(pid)
+ try:
+  cwd=(p/"cwd").resolve(); assert cwd==root or root in cwd.parents,(pid,cwd); os.kill(pid,signal.SIGTERM); print("SIGTERM project process",pid,flush=True)
+ except ProcessLookupError:pass
+ except FileNotFoundError:pass
+time.sleep(2)
+for pid in pids:
+ p=Path("/proc")/str(pid)
+ if p.exists():
+  try:
+   if p.joinpath("stat").read_text().split()[2]!="Z":os.kill(pid,signal.SIGKILL);print("Stopped remaining owned process",pid,flush=True)
+  except (ProcessLookupError,FileNotFoundError):pass
+names=["tl-gap-pg","tl-gap-clamav","tl-gap-mailpit","tl-baseline-s3"]; subprocess.run(["docker","stop",*names],check=True); print("No containers deleted. buildhub-pg untouched.",flush=True); subprocess.run(["docker","ps","--format","{{.Names}} {{.Status}}"],check=True)'
+SIGTERM project process 4774
+SIGTERM project process 5121
+SIGTERM project process 5132
+SIGTERM project process 5133
+SIGTERM project process 6965
+SIGTERM project process 8215
+SIGTERM project process 8289
+SIGTERM project process 8290
+SIGTERM project process 36983
+SIGTERM project process 36990
+SIGTERM project process 37222
+SIGTERM project process 37223
+tl-gap-pg
+tl-gap-clamav
+tl-gap-mailpit
+tl-baseline-s3
+No containers deleted. buildhub-pg untouched.
+buildhub-pg Up 40 minutes
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

@@ -1,0 +1,16 @@
+{
+  "edition_id": "APH-2024-27",
+  "title": "AICTE Approval Process Handbook 2024-27",
+  "effective_from": "2024-01-01",
+  "effective_to": "2027-06-30",
+  "window_note": "Approximate validity window covering academic years 2024-25 to 2026-27. Legal cell to confirm.",
+  "source_status": "verified",
+  "source_note": "Clauses checked by us in the handbook text: Cl. 1.12 (10-year term, interest retained, principal returned) and Cl. 6.46 (NOC for FDR/RPGF, sanction order for RTGS). Renewal after maturity: we found no clause, so it is recorded as not_specified.",
+  "rules": {
+    "release.fdr_instrument": {"value": "noc", "cite": "APH 2024-27 Cl. 6.46"},
+    "release.online_instrument": {"value": "sanction_order", "cite": "APH 2024-27 Cl. 6.46"},
+    "deposit.term_years": {"value": 10, "cite": "APH 2024-27 Cl. 1.12"},
+    "fdr.manual_renewal_after_maturity": {"value": "not_specified", "cite": "No clause found in APH 2024-27"},
+    "fdr.auto_renewal": {"value": "not_specified", "cite": "No clause found in APH 2024-27"}
+  }
+}

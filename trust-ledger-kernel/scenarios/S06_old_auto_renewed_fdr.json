@@ -1,0 +1,32 @@
+{
+  "id": "S06",
+  "title": "FDR matured in 2019, auto-renewed; release prepared in 2026",
+  "reviewer_ref": "Round 4: Issue 5, Issue 7, Question 5 (the old FDR test)",
+  "include": ["fdr_base"],
+  "steps": [
+    {"do": "entitlement", "obligation_id": "OF", "basis": "Programme closure approved 2026", "at": "2026-09-01T10:00", "actor": "section_officer:kiran"},
+    {"do": "affidavit", "obligation_id": "OF", "kind": "AFFIDAVIT-6", "format_ok": true, "at": "2026-09-01T10:05", "actor": "section_officer:kiran"},
+    {"note": "Only evidence on file is from 2014, and the FDR has matured since. The gate refuses to name an instrument it cannot vouch for."},
+    {"expect": "release", "obligation": "OF", "at": "2026-09-02T10:00", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["M_CURRENT_INSTRUMENT"], "instrument_no": "PNB-FD-1001"},
+    {"note": "Just-in-time bank confirmation: PNB reports the FDR was auto-renewed on maturity to a new number, lien continued."},
+    {"do": "evidence", "id": "E-IC-2026", "key": "PNB-K1", "kind": "instrument_confirmation", "at": "2026-09-03T10:00",
+     "payload": {"instrument_no": "PNB-FD-2207", "supersedes": "PNB-FD-1001", "change_kind": "auto_renewal", "changed_on": "2019-02-15",
+                 "amount_lakh": 15, "maturity_date": "2029-02-15", "status": "ACTIVE", "lien_holder": "AICTE", "as_of": "2026-09-03",
+                 "remark": "Auto-renewed on maturity under standing instruction; lien in favour of AICTE continued"}},
+    {"expect": "value", "of": "current_instrument", "obligation": "OF", "path": "number", "equals": "PNB-FD-2207"},
+    {"note": "Which rule governs a renewal on 2019-02-15? The resolver uses the date of the renewal, not today. That pack (APH 2018-19) is reviewer-reported and unverified, so it is not applied silently."},
+    {"expect": "release", "obligation": "OF", "at": "2026-09-04T10:00", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["M_RENEWAL_RULES"], "not_blocked_by": ["M_CURRENT_INSTRUMENT"], "instrument_no": "PNB-FD-2207"},
+    {"expect": "error", "code": "Unauthorised", "step": {"do": "confirm_pack", "edition_id": "APH-2018-19", "at": "2026-09-05T10:00", "actor": "deputy_director:meera", "reference": "x"}},
+    {"do": "confirm_pack", "edition_id": "APH-2018-19", "at": "2026-09-05T10:00", "actor": "legal_cell:asha", "reference": "LC/2026/114: Cl. 5.34.2 checked against the official handbook"},
+    {"expect": "release", "obligation": "OF", "at": "2026-09-06T10:00", "approver": "deputy_director:meera", "allowed": true, "instrument_no": "PNB-FD-2207"},
+    {"do": "authorise", "case_id": "NOC-1", "obligation_id": "OF", "at": "2026-09-06T10:05", "approver": "deputy_director:meera"},
+    {"expect": "value", "of": "nocs", "path": "NOC-1.instrument_no", "equals": "PNB-FD-2207"},
+    {"expect": "value", "of": "nocs", "path": "NOC-1.state", "equals": "NOC_ISSUED"},
+    {"expect": "error", "code": "InvalidEvidence", "step": {"do": "evidence", "id": "E-LD-old", "key": "PNB-K1", "kind": "lien_discharge", "at": "2026-09-08T10:00", "payload": {"instrument_no": "PNB-FD-1001", "discharged_at": "2026-09-08"}}},
+    {"do": "evidence", "id": "E-LD", "key": "PNB-K1", "kind": "lien_discharge", "at": "2026-09-09T10:00", "payload": {"instrument_no": "PNB-FD-2207", "discharged_at": "2026-09-09"}},
+    {"expect": "value", "of": "nocs", "path": "NOC-1.state", "equals": "LIEN_DISCHARGED"},
+    {"expect": "notification", "to": "institution:INST-C", "kind": "lien_discharged", "contains": "PNB-FD-2207"},
+    {"expect": "chain", "valid": true},
+    {"expect": "replay_matches"}
+  ]
+}

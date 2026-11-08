@@ -1,0 +1,5 @@
+clamav: optional missing = explicit ENVIRONMENT skip; required missing = FAIL; configured missing = FAIL; configured available = run
+s3: optional missing = explicit ENVIRONMENT skip; required missing = FAIL; configured missing = FAIL; configured available = run
+mailpit: optional missing = explicit ENVIRONMENT skip; required missing = FAIL; configured missing = FAIL; configured available = run
+postgres: optional missing = explicit ENVIRONMENT skip; required missing = FAIL; configured missing = FAIL; configured available = run
+21 service-gating checks passed; reachable services cannot silently skip.

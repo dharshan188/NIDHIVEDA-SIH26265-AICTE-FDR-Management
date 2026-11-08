@@ -1,0 +1,15 @@
+{
+  "name": "fdr-ui-checks",
+  "private": true,
+  "type": "module",
+  "description": "Browser checks for the frontend: axe-core scan, S01 walk-through, screenshots, recordings, frame timing. Dev tooling only.",
+  "scripts": {
+    "axe": "node axe.mjs",
+    "s01": "node s01.mjs",
+    "shots": "node shots.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.2",
+    "playwright-core": "^1.50.1"
+  }
+}

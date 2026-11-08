@@ -1,0 +1,1 @@
+$ .ui-check/tools-venv/bin/python -m pip_audit --path .venv/lib/python3.11/site-packages --cache-dir .ui-check/pip-audit-cache --progress-spinner off --format json --output docs/verification/session7/pip-audit.json

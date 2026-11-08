@@ -1,0 +1,643 @@
+$ env TL_UI_WORK=/home/dharshan/sih2/.ui-check/session6-ui TL_UI_API_PORT=8001 TL_UI_PORT=5174 .venv/bin/python tools/ui-checks/serve.py --reset
+seed: {'institutions': 482, 'fdrs': 821, 'kernel_events': 3411, 'users': ['meera@aicte-india.org', 'kiran@aicte-india.org', 'ravi@aicte-india.org', 'anil@aicte-india.org', 'legal@aicte-india.org', 'sharma@aicte-india.org', 'auditor@aicte-india.org', '1-12345678', '1-xyz-demo']} in 2.5s
+3:54:42 PM [vite] (client) Re-optimizing dependencies because lockfile has changed
+
+  VITE v8.3.5  ready in 221 ms
+
+  ➜  Local:   http://127.0.0.1:5174/
+INFO:     Started server process [55382]
+INFO:     Waiting for application startup.
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO apscheduler.scheduler: Added job "job_daily_digest" to job store "default"
+INFO apscheduler.scheduler: Added job "job_worker" to job store "default"
+INFO apscheduler.scheduler: Added job "job_escalation" to job store "default"
+INFO apscheduler.scheduler: Added job "job_kernel_tick" to job store "default"
+INFO apscheduler.scheduler: Scheduler started
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO trustledger.scheduler: scheduler started: ['catch_up_reminders', 'nudge_worker', 'kernel_tick', 'escalation', 'daily_reminders', 'daily_digest']
+INFO:     Application startup complete.
+INFO apscheduler.executors.default: Running job "job_daily_reminders (trigger: date[2026-10-24 15:54:44 IST], next run at: 2026-10-24 15:54:44 IST)" (scheduled at 2026-10-24 15:54:44.157938+05:30)
+INFO apscheduler.scheduler: Removed job catch_up_reminders
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO apscheduler.executors.default: Job "job_daily_reminders (trigger: date[2026-10-24 15:54:44 IST], next run at: 2026-10-24 15:54:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:55:44 IST)" (scheduled at 2026-10-24 15:55:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:55:44 IST)" executed successfully
+3:55:33 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:55:33 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:46622 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9493 for 1-xyz-demo: OTP 334702 (valid 5 min)
+INFO:     127.0.0.1:46632 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46636 - "GET /api/sim/otp-outbox/1-xyz-demo HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46646 - "GET /api/sim/otp-outbox/1-xyz-demo HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46648 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46692 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46662 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46674 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46714 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46702 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46684 - "GET /api/dashboard/institution/INST0002 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46728 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46716 - "GET /api/dashboard/institution/INST0002 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46736 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46740 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:56:14 IST)" (scheduled at 2026-10-24 15:55:44.140086+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:55:44 IST)" (scheduled at 2026-10-24 15:55:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:56:14 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:56:44 IST)" executed successfully
+INFO:     127.0.0.1:59590 - "GET /api/auth/me HTTP/1.1" 200 OK
+3:56:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:56:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:59604 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59616 - "GET /api/sim/totp/kiran%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59632 - "GET /api/sim/totp/kiran%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59646 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59660 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59666 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59718 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59730 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59738 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59672 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59744 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59768 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59702 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59688 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59758 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59762 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59778 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59784 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:56:44 IST)" (scheduled at 2026-10-24 15:56:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:56:44 IST)" executed successfully
+INFO:     127.0.0.1:47500 - "GET /api/auth/me HTTP/1.1" 200 OK
+3:56:38 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:56:38 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:47506 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47522 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47536 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47544 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47566 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47586 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47578 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47562 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47556 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47588 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47568 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47590 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47604 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47636 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47620 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47624 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47640 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47644 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:57:14 IST)" (scheduled at 2026-10-24 15:56:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:57:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:57:44 IST)" (scheduled at 2026-10-24 15:56:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:57:44 IST)" executed successfully
+INFO:     127.0.0.1:50184 - "GET /api/auth/me HTTP/1.1" 200 OK
+3:57:10 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:10 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:40278 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40292 - "GET /api/sim/totp/ravi%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40294 - "GET /api/sim/totp/ravi%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40298 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40304 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40340 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40356 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40318 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40300 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40372 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40326 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40386 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40338 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40432 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40400 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40416 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40458 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40448 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:57:44 IST)" (scheduled at 2026-10-24 15:57:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:57:44 IST)" executed successfully
+INFO:     127.0.0.1:34980 - "GET /api/auth/me HTTP/1.1" 200 OK
+3:57:41 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:41 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:34990 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34986 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34992 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35006 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35022 - "GET /api/fdrs?size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35008 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35024 - "GET /api/obligations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35050 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35034 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35082 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35066 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35104 - "GET /api/obligations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35116 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35098 - "GET /api/fdrs?size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35130 - "POST /api/release-requests HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35178 - "GET /api/obligations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35134 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35168 - "GET /api/fdrs?size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35192 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35206 - "GET /api/release-requests?size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35152 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35136 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+3:57:43 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:43 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:35226 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35218 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35250 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35240 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35258 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35228 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35274 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35288 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35254 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35316 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35306 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35290 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:58:14 IST)" (scheduled at 2026-10-24 15:57:44.140086+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:58:44 IST)" (scheduled at 2026-10-24 15:57:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:58:44 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:58:14 IST)" executed successfully
+INFO:     127.0.0.1:35332 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35338 - "POST /api/release-requests/REL202600121/scrutiny HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35346 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35368 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35412 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35384 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35426 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35398 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35360 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+3:57:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:35456 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35440 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35480 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35506 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35518 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35478 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35528 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35472 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35544 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35554 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35546 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35490 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35562 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35564 - "POST /api/sim/dsc/sign HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35570 - "POST /api/release-requests/REL202600121/approve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35582 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35610 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35594 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35630 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35620 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35614 - "GET /api/release-requests/REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35616 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+3:57:48 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:48 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:35644 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35652 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35676 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35704 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35714 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35692 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35718 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35732 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35746 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35760 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35744 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35664 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35766 - "POST /api/payments/RF-REL202600121/initiate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35770 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35792 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35798 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35800 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35780 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35812 - "POST /api/sim/payments/RF-REL202600121/debit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35834 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35858 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35820 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35854 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35850 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+3:57:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:35874 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35880 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35890 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35916 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35940 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35924 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35918 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35900 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35960 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35944 - "GET /api/payments HTTP/1.1" 200 OK
+3:57:52 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:52 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:57496 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57486 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57510 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57524 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57548 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57540 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57586 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57570 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57592 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57598 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57604 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57562 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57606 - "POST /api/sim/payments/RF-REL202600121/return HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57620 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57642 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57634 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57658 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57668 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+3:57:54 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:54 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:57670 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57676 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57718 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57702 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57716 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57738 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57746 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57722 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57694 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+3:57:56 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:56 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:57754 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57762 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57794 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57804 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57780 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57774 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57820 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57824 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57840 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57850 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57864 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57870 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57878 - "POST /api/payments/RF-REL202600121/reissue HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57914 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57910 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57902 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57886 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57904 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57928 - "POST /api/sim/payments/RF-REL202600121/debit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57932 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57984 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57970 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57944 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57954 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+3:57:58 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:57:58 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:57992 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58002 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58044 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58018 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58008 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58020 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58028 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58046 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58050 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58056 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+3:58:00 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:58:00 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:58084 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58070 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58116 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58100 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58130 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58110 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58096 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58120 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58144 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58150 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58166 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58174 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52172 - "POST /api/sim/payments/RF-REL202600121/confirm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52190 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52232 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52182 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52200 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52216 - "GET /api/payments HTTP/1.1" 200 OK
+3:58:02 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:58:02 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:52248 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52260 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52278 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52308 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52300 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52274 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52284 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52288 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52312 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52322 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52326 - "GET /api/payments/RF-REL202600121 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52328 - "POST /api/audit-trail/verify HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:58:44 IST)" (scheduled at 2026-10-24 15:58:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:58:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:59:14 IST)" (scheduled at 2026-10-24 15:58:44.140086+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:59:44 IST)" (scheduled at 2026-10-24 15:58:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 15:59:44 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:59:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:59:44 IST)" (scheduled at 2026-10-24 15:59:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 15:59:44 IST)" executed successfully
+INFO:     127.0.0.1:34522 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34536 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34546 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34562 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 265995 (valid 5 min)
+INFO:     127.0.0.1:34572 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34588 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34598 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34604 - "POST /api/sim/nudge/run HTTP/1.1" 200 OK
+3:59:41 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:59:41 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:43928 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43922 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43994 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43932 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43952 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43980 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43940 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44010 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43966 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44024 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44036 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44030 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44044 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:00:14 IST)" (scheduled at 2026-10-24 15:59:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:00:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:00:44 IST)" (scheduled at 2026-10-24 15:59:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:00:44 IST)" executed successfully
+3:59:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:59:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:44046 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44056 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44068 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44144 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44100 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44084 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44154 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44092 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44170 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44160 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44114 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44130 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+3:59:47 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:59:47 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:44184 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44194 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44220 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44204 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44284 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44288 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44256 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44250 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44304 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44236 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44302 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44270 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+3:59:49 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:59:49 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:44336 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44320 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44338 - "POST /api/nudge/links/resolve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44340 - "POST /api/nudge/links/resolve HTTP/1.1" 409 Conflict
+3:59:52 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+3:59:52 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:46446 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46430 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46458 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46514 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46526 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46524 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46490 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46498 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46494 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46474 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46550 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46540 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:00:44 IST)" (scheduled at 2026-10-24 16:00:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:00:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:01:14 IST)" (scheduled at 2026-10-24 16:00:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:01:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:01:44 IST)" (scheduled at 2026-10-24 16:00:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:01:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:01:44 IST)" (scheduled at 2026-10-24 16:01:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:01:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:02:14 IST)" (scheduled at 2026-10-24 16:01:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:02:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:02:44 IST)" (scheduled at 2026-10-24 16:01:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:02:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:02:44 IST)" (scheduled at 2026-10-24 16:02:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:02:44 IST)" executed successfully
+4:02:43 PM [vite] (client) hmr update /src/pages/shared/Nudge.tsx
+INFO:     127.0.0.1:39232 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39240 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39244 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39250 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 511729 (valid 5 min)
+INFO:     127.0.0.1:39264 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39276 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39288 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39292 - "POST /api/sim/nudge/run HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:03:14 IST)" (scheduled at 2026-10-24 16:02:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:03:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:03:44 IST)" (scheduled at 2026-10-24 16:02:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:03:44 IST)" executed successfully
+4:02:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:02:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:39308 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39314 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39322 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39350 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39386 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39364 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39380 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39402 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39418 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39436 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39422 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39336 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39450 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+4:02:47 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:02:47 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:39458 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39454 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39476 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39498 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39462 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39472 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39486 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39508 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39526 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39482 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39510 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39518 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+4:02:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:02:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:39530 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39546 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39564 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39578 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39562 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39574 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39590 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39548 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39618 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39600 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39602 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39554 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:03:44 IST)" (scheduled at 2026-10-24 16:03:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:03:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:04:14 IST)" (scheduled at 2026-10-24 16:03:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:04:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:04:44 IST)" (scheduled at 2026-10-24 16:03:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:04:44 IST)" executed successfully
+INFO:     127.0.0.1:34390 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34400 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34404 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34416 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 845790 (valid 5 min)
+INFO:     127.0.0.1:34432 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34444 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34456 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34462 - "GET /api/fdrs?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34466 - "POST /api/fdrs/FDR202600126/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34472 - "POST /api/sim/nudge/run HTTP/1.1" 200 OK
+4:04:09 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:04:09 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:34486 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34498 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34518 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34558 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34526 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34506 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34504 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34562 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34586 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34574 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34542 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34594 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41520 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+4:04:12 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:04:12 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:41526 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41524 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41534 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41530 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41556 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41562 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41554 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41542 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41586 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41570 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41598 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41594 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:04:44 IST)" (scheduled at 2026-10-24 16:04:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:04:44 IST)" executed successfully
+4:04:15 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:04:15 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+INFO:     127.0.0.1:41602 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41614 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41682 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41654 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41626 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41674 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41640 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41660 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41684 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41716 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41708 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41700 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:05:14 IST)" (scheduled at 2026-10-24 16:04:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:05:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:05:44 IST)" (scheduled at 2026-10-24 16:04:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:05:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:05:44 IST)" (scheduled at 2026-10-24 16:05:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:05:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:06:14 IST)" (scheduled at 2026-10-24 16:05:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:06:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:06:44 IST)" (scheduled at 2026-10-24 16:05:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:06:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:06:44 IST)" (scheduled at 2026-10-24 16:06:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:06:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:07:14 IST)" (scheduled at 2026-10-24 16:06:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:07:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:07:44 IST)" (scheduled at 2026-10-24 16:06:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:07:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:07:44 IST)" (scheduled at 2026-10-24 16:07:14.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:07:44 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:08:14 IST)" (scheduled at 2026-10-24 16:07:44.140086+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:08:14 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:08:44 IST)" (scheduled at 2026-10-24 16:07:44.140260+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:08:44 IST)" executed successfully
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO apscheduler.scheduler: Scheduler has been shut down
+INFO:     Application shutdown complete.
+INFO:     Finished server process [55382]
+4:08:32 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:08:32 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:08:34 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:08:34 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:08:37 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:08:37 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:08:39 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:08:39 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:08:40 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:08:40 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:10:20 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:10:20 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:10:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:10:50 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:10:53 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:10:53 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:10:55 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:10:55 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:10:57 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:10:57 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:01 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:01 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:06 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:11 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:11 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:12 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:12 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:17 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:17 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:22 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:22 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:27 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:27 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:31 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:31 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:36 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:36 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:40 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:40 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:46 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:51 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:51 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:51 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:51 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:54 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:54 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:11:59 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:11:59 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:12:03 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:12:03 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:28:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+4:28:44 PM [vite] (client) [console.warn] ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+4:30:26 PM [vite] (client) hmr update /src/styles.css

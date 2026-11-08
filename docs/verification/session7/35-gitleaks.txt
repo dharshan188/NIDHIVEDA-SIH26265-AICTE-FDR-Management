@@ -1,0 +1,5 @@
+$ docker run --rm -v /home/dharshan/sih2:/repo:ro zricethezav/gitleaks:v8.18.4 detect --no-git --source /repo --redact --no-banner
+[90m11:13AM[0m [32mINF[0m scan completed in 1m2.6s
+[90m11:13AM[0m [31mWRN[0m leaks found: 430
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

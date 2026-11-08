@@ -1,0 +1,20 @@
+...................................................................      [100%]
+=============================== warnings summary ===============================
+trustledger/crypto.py:26
+  /home/dharshan/sih2/trust-ledger-kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_controls_extra.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /home/dharshan/sih2/trust-ledger-kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_round8_security.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /home/dharshan/sih2/trust-ledger-kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_v6_findings.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /home/dharshan/sih2/trust-ledger-kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_v7_findings.py)
+    class TestBankSigner:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+67 passed, 4 warnings in 6.83s

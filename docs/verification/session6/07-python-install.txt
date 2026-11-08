@@ -1,0 +1,8 @@
+$ env UV_PYTHON_INSTALL_DIR=/home/dharshan/sih2/.python UV_CACHE_DIR=/home/dharshan/sih2/.ui-check/uv-cache UV_NATIVE_TLS=true .ui-check/tools-venv/bin/uv python install 3.11
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+Downloading cpython-3.11.17-linux-x86_64-gnu (download) (29.1MiB)
+ Downloaded cpython-3.11.17-linux-x86_64-gnu (download)
+Installed Python 3.11.17 in 17.28s
+ + cpython-3.11.17-linux-x86_64-gnu (python3.11)
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

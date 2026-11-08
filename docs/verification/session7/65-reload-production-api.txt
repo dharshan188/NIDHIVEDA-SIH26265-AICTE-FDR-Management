@@ -1,0 +1,177 @@
+$ .venv/bin/python tools/ui-checks/reload_owned_api.py 8000 session7-production
+Reloading owned API PID 8214, port 8000, database session7-production; keys preserved in child environment only.
+INFO:     Started server process [37223]
+INFO:     Waiting for application startup.
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO apscheduler.scheduler: Added job "job_daily_digest" to job store "default"
+INFO apscheduler.scheduler: Added job "job_worker" to job store "default"
+INFO apscheduler.scheduler: Added job "job_escalation" to job store "default"
+INFO apscheduler.scheduler: Added job "job_kernel_tick" to job store "default"
+INFO apscheduler.scheduler: Scheduler started
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO trustledger.scheduler: scheduler started: ['catch_up_reminders', 'nudge_worker', 'kernel_tick', 'escalation', 'daily_reminders', 'daily_digest']
+INFO:     Application startup complete.
+INFO apscheduler.executors.default: Running job "job_daily_reminders (trigger: date[2026-10-24 16:51:33 IST], next run at: 2026-10-24 16:51:33 IST)" (scheduled at 2026-10-24 16:51:33.727037+05:30)
+INFO apscheduler.scheduler: Removed job catch_up_reminders
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO apscheduler.executors.default: Job "job_daily_reminders (trigger: date[2026-10-24 16:51:33 IST], next run at: 2026-10-24 16:51:33 IST)" executed successfully
+INFO:     127.0.0.1:49504 - "GET /api/health HTTP/1.1" 200 OK
+API ready with current metrics code; no containers restarted.
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:52:33 IST)" (scheduled at 2026-10-24 16:52:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:52:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:53:03 IST)" (scheduled at 2026-10-24 16:52:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:53:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:53:33 IST)" (scheduled at 2026-10-24 16:52:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:53:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:53:33 IST)" (scheduled at 2026-10-24 16:53:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:53:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:54:03 IST)" (scheduled at 2026-10-24 16:53:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:54:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:54:33 IST)" (scheduled at 2026-10-24 16:53:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:54:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:54:33 IST)" (scheduled at 2026-10-24 16:54:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:54:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:55:03 IST)" (scheduled at 2026-10-24 16:54:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:55:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:55:33 IST)" (scheduled at 2026-10-24 16:54:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:55:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:55:33 IST)" (scheduled at 2026-10-24 16:55:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:55:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:56:03 IST)" (scheduled at 2026-10-24 16:55:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:56:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:56:33 IST)" (scheduled at 2026-10-24 16:55:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:56:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:56:33 IST)" (scheduled at 2026-10-24 16:56:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:56:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:57:03 IST)" (scheduled at 2026-10-24 16:56:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:57:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:57:33 IST)" (scheduled at 2026-10-24 16:56:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:57:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:57:33 IST)" (scheduled at 2026-10-24 16:57:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:57:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:58:03 IST)" (scheduled at 2026-10-24 16:57:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:58:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:58:33 IST)" (scheduled at 2026-10-24 16:57:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:58:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:58:33 IST)" (scheduled at 2026-10-24 16:58:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:58:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:59:03 IST)" (scheduled at 2026-10-24 16:58:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:59:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:59:33 IST)" (scheduled at 2026-10-24 16:58:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:59:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:59:33 IST)" (scheduled at 2026-10-24 16:59:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:59:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:00:03 IST)" (scheduled at 2026-10-24 16:59:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:00:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:00:33 IST)" (scheduled at 2026-10-24 16:59:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:00:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:00:33 IST)" (scheduled at 2026-10-24 17:00:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:00:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:01:03 IST)" (scheduled at 2026-10-24 17:00:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:01:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:01:33 IST)" (scheduled at 2026-10-24 17:00:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:01:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:01:33 IST)" (scheduled at 2026-10-24 17:01:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:01:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:02:03 IST)" (scheduled at 2026-10-24 17:01:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:02:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:02:33 IST)" (scheduled at 2026-10-24 17:01:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:02:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:02:33 IST)" (scheduled at 2026-10-24 17:02:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:02:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:03:03 IST)" (scheduled at 2026-10-24 17:02:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:03:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:03:33 IST)" (scheduled at 2026-10-24 17:02:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:03:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:03:33 IST)" (scheduled at 2026-10-24 17:03:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:03:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:04:03 IST)" (scheduled at 2026-10-24 17:03:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:04:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:04:33 IST)" (scheduled at 2026-10-24 17:03:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:04:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:04:33 IST)" (scheduled at 2026-10-24 17:04:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:04:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:05:03 IST)" (scheduled at 2026-10-24 17:04:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:05:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:05:33 IST)" (scheduled at 2026-10-24 17:04:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:05:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:05:33 IST)" (scheduled at 2026-10-24 17:05:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:05:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:06:03 IST)" (scheduled at 2026-10-24 17:05:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:06:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:06:33 IST)" (scheduled at 2026-10-24 17:05:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:06:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:06:33 IST)" (scheduled at 2026-10-24 17:06:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:06:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:07:03 IST)" (scheduled at 2026-10-24 17:06:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:07:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_escalation (trigger: interval[0:15:00], next run at: 2026-10-24 17:21:33 IST)" (scheduled at 2026-10-24 17:06:33.710074+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:06:33 IST)" (scheduled at 2026-10-24 17:06:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:07:33 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_escalation (trigger: interval[0:15:00], next run at: 2026-10-24 17:21:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:07:33 IST)" (scheduled at 2026-10-24 17:07:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:07:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:08:03 IST)" (scheduled at 2026-10-24 17:07:33.709895+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:08:33 IST)" (scheduled at 2026-10-24 17:07:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:08:33 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:08:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:08:33 IST)" (scheduled at 2026-10-24 17:08:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:08:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:09:03 IST)" (scheduled at 2026-10-24 17:08:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:09:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:09:33 IST)" (scheduled at 2026-10-24 17:08:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:09:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:09:33 IST)" (scheduled at 2026-10-24 17:09:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:09:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:10:03 IST)" (scheduled at 2026-10-24 17:09:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:10:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:10:33 IST)" (scheduled at 2026-10-24 17:09:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:10:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:10:33 IST)" (scheduled at 2026-10-24 17:10:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:10:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:11:03 IST)" (scheduled at 2026-10-24 17:10:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:11:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:11:33 IST)" (scheduled at 2026-10-24 17:10:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:11:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:11:33 IST)" (scheduled at 2026-10-24 17:11:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:11:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:12:03 IST)" (scheduled at 2026-10-24 17:11:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:12:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:12:33 IST)" (scheduled at 2026-10-24 17:11:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:12:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:12:33 IST)" (scheduled at 2026-10-24 17:12:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:12:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:13:03 IST)" (scheduled at 2026-10-24 17:12:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:13:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:13:33 IST)" (scheduled at 2026-10-24 17:12:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:13:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:13:33 IST)" (scheduled at 2026-10-24 17:13:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:13:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:14:03 IST)" (scheduled at 2026-10-24 17:13:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:14:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:14:33 IST)" (scheduled at 2026-10-24 17:13:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:14:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:14:33 IST)" (scheduled at 2026-10-24 17:14:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:14:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:15:03 IST)" (scheduled at 2026-10-24 17:14:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:15:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:15:33 IST)" (scheduled at 2026-10-24 17:14:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:15:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:15:33 IST)" (scheduled at 2026-10-24 17:15:03.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:15:33 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:16:03 IST)" (scheduled at 2026-10-24 17:15:33.709895+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 17:16:03 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:16:33 IST)" (scheduled at 2026-10-24 17:15:33.710156+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 17:16:33 IST)" executed successfully
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO apscheduler.scheduler: Scheduler has been shut down
+INFO:     Application shutdown complete.
+INFO:     Finished server process [37223]
+Command exit code: -15
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

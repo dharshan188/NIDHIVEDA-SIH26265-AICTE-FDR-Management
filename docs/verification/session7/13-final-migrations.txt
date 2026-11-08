@@ -1,0 +1,1 @@
+$ .venv/bin/python tools/baseline/migration_check.py backend/trustledger.db

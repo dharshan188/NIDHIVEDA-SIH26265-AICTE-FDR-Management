@@ -1,0 +1,28 @@
+
+== fresh SQLite
+(alembic upgrade head: no output)
+after upgrade head: {"revision": "0006", "new_columns": ["content_checks", "integrity_checked_at", "integrity_status"], "counts": {"institutions": 0, "users": 0, "fdrs": 0, "fdr_documents": 0, "kernel_events": 0, "portal_events": 0, "notifications": 0, "observations": 0, "field_changes": 0}}
+after downgrade 0005: 0005 new columns: []
+after upgrade head again: 0006 new columns: ['content_checks', 'integrity_checked_at', 'integrity_status']
+RESULT fresh SQLite PASS
+
+(existing database trustledger.pre-session4.db: revision before = 0001; counts = {"institutions": 482, "users": 9, "fdrs": 821, "fdr_documents": 1642, "kernel_events": 3422, "portal_events": 70, "notifications": 123})
+
+== existing database copy (trustledger.pre-session4.db, from 0001)
+(alembic upgrade head: no output)
+after upgrade head: {"revision": "0006", "new_columns": ["content_checks", "integrity_checked_at", "integrity_status"], "counts": {"institutions": 482, "users": 9, "fdrs": 821, "fdr_documents": 1642, "kernel_events": 3422, "portal_events": 70, "notifications": 123, "observations": 0, "field_changes": 0}}
+row counts preserved: True
+after downgrade 0005: 0005 new columns: []
+after upgrade head again: 0006 new columns: ['content_checks', 'integrity_checked_at', 'integrity_status']
+RESULT existing database copy (trustledger.pre-session4.db, from 0001) PASS
+
+PostgreSQL 16.15 disposable database tl_migcheck_e1fbd6dc285c42048fc9ff71ee0fccbd
+
+== fresh PostgreSQL 16
+(alembic upgrade head: no output)
+after upgrade head: {"revision": "0006", "new_columns": ["content_checks", "integrity_checked_at", "integrity_status"], "counts": {"institutions": 0, "users": 0, "fdrs": 0, "fdr_documents": 0, "kernel_events": 0, "portal_events": 0, "notifications": 0, "observations": 0, "field_changes": 0}}
+after downgrade 0005: 0005 new columns: []
+after upgrade head again: 0006 new columns: ['content_checks', 'integrity_checked_at', 'integrity_status']
+RESULT fresh PostgreSQL 16 PASS
+
+SUMMARY: all PASS [True, True, True]

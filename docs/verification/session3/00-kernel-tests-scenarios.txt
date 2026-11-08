@@ -1,0 +1,20 @@
+$ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -p hypothesis.extra.pytestplugin tests  (scratch copy of trust-ledger-kernel)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+67 passed, 4 warnings in 6.24s
+$ python -m trustledger.scenario
+SUMMARY
+  S01   OK    20 checks  Rs 35 lakh RTGS refund debited with UTR, then returned by beneficiary bank
+  S02   OK    13 checks  Confirmation overdue, then settled, then a late return reverses the settlement
+  S03   OK    13 checks  One Rs 50 lakh UTR covers Rs 35 + 15 lakh obligations; one obligation paid in two parts
+  S04   OK    18 checks  Rs 20 lakh legacy credit mis-attributed; both institutions silent; pool still matches
+  S05   OK    12 checks  A discrepancy at B, or a contested credit, does not freeze A's independently proven money
+  S06   OK    12 checks  FDR matured in 2019, auto-renewed; release prepared in 2026
+  S07   OK     9 checks  Manual renewal after maturity: prohibited in one edition, unspecified in another
+  S08   OK     6 checks  Ten-year-old FDR evidence at release; bank renumbered one FDR and discharged another without an NOC
+  S09   OK    12 checks  Bank signer's authority ends vs. bank signer's key is compromised (with back-dating attempt)
+  S10   OK    13 checks  Mandatory clearances cannot be overridden; administrative ones can, with a reason; conflict of interest
+  S11   OK     2 checks  Someone edits the stored Rs 35 lakh credit to Rs 0.01 lakh directly in the database
+  S12   OK    18 checks  Migrating legacy records without marking them verified, blocking refunds, or forcing resubmission
+  S13   OK    13 checks  Judge's 13th: NEFT refund returned 'account closed'; new account via Affidavit-9; name look-up fails once; then settles
+  scenarios=13 checks_passed=161 checks_failed=0

@@ -1,0 +1,2 @@
+$ env UI_BASE=http://localhost:5175 node tools/ui-checks/s01.mjs
+signed in through the login page: 1-xyz-demo (INSTITUTION / institution)

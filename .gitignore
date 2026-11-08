@@ -1,0 +1,42 @@
+# Python
+.venv/
+.venv-*/
+.python/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+.ruff_cache/
+
+# Local / generated
+.ui-check/
+voices/
+NIDHIVEDA_Demo_Full.mp4
+solution.pre_ppt_backup.md
+
+# Secrets & local data (never commit)
+.env
+.env.*
+!.env.example
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backend/devcerts/
+backend/.dev-credentials.json
+backend/.dev-secrets.json
+uploads/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.log
+.DS_Store
+
+# Local scan outputs / oversized logs
+docs/verification/session7/39-source-secret-scan.txt
+docs/verification/session7/40-whole-secret-report.txt
+docs/verification/session7/50-secret-summary.txt
+docs/verification/session7/80-source-secret-final.txt
+docs/verification/session6/02-collection-difference.txt

@@ -1,0 +1,6 @@
+$ python3 -c 'import json; p=json.load(open("docs/verification/session7/pip-audit.json")); ds=p["dependencies"]; print("Distributions audited:",len(ds)); print("Advisories:",sum(len(d.get("vulns",[])) for d in ds)); print("Pillow:",[(d["name"],d["version"],d.get("vulns",[])) for d in ds if d["name"].lower()=="pillow"]); assert not any(d.get("vulns") for d in ds)'
+Distributions audited: 56
+Advisories: 0
+Pillow: [('pillow', '13.0.0', [])]
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

@@ -1,0 +1,110 @@
+[
+  {
+    "file": "01-login.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "906f236bc14516c2425decfd32b2da9fc16708dfbec947ce1370d6b9d87942f5"
+  },
+  {
+    "file": "02-dashboard-aicte.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "3c1033d77fefae5e1a34c34796ffad65fd078339f0dedfc48c7bfa7c4428f538"
+  },
+  {
+    "file": "03-dashboard-institution.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "0573dd58a8bfd36ce9289ca8ed0309d290b80219d18e0a6b9ef42fc8dfaaa662"
+  },
+  {
+    "file": "04-dashboard-auditor.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "1d8e08804fd856a2c6e82235977260fb1e42e268adebecb06564eec108ded802"
+  },
+  {
+    "file": "05-upload-checks-and-scan.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "c95921d67a0b951c3683a665639a669c6fa563dbdb24f235441367133da6a4c3"
+  },
+  {
+    "file": "06-upload-encryption-status.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "ce80981d3756650bf608eca2b641984bd6dcb14defdee57cfd5a2374f5ee8a92"
+  },
+  {
+    "file": "07-fdr-detail-documents.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "29b0ef571d8653b7266eaa1dc094267e1fb4c65813fd89abe366bd589b6cf467"
+  },
+  {
+    "file": "08-fdr-detail-timeline-no-gap.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "8aa1639f609b6ac57efc65ab9337fcaa6c140dda2be579624faf3ecd5b6f197a"
+  },
+  {
+    "file": "09-notification-centre.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "b3e5295088c521c70ca0f77663d5b76735aafde4bb9d82adfe7bc04a3d9cdf06"
+  },
+  {
+    "file": "10-escalations.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "78ded0accb2a09e275e6932141b5539539efc92ba8df2c545de320081a8bcd61"
+  },
+  {
+    "file": "11-notification-health.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "70175bdb0c5f4d1e54cf00192603d46ef1f4bb85c477e8ae4e50abc74a6a8b40"
+  },
+  {
+    "file": "12-missing-documents.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "fdddc43946158d765e3d96d200197c662a15f08aeab762151ed7aad8337a48c3"
+  },
+  {
+    "file": "13-rules-policy-editor.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "c43f72a38454a2d6575564ce73e6ddd6b84044ea649c99acc981b172f3f1c728"
+  },
+  {
+    "file": "14-pdf-export-missing-documents.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "a0392b1e067fa0d2668c26b5c334d8fc5889e82d1590fc9d048c6a96eb60db46"
+  },
+  {
+    "file": "s01-1-release-gate.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "e15eaec86b7ef4b5f18be16d693a2c04e66ce277ac49bd396a53029e6f03457a"
+  },
+  {
+    "file": "s01-2-sent-not-complete.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "19d3e5303c303b7db3e93be1add2c8814dcaa29aa7f32cf953a84ff7596c730a"
+  },
+  {
+    "file": "s01-3-returned-still-owed.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "cd7c8b8051dbe07d62f02fc6d4f686ec91c0da47df193fc68c764fe4cd58e568"
+  },
+  {
+    "file": "s01-4-completed.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "18f82ae7a03fbd147b88b481602c7bf8b138a5035613ae42e15b149747c09472"
+  }
+]

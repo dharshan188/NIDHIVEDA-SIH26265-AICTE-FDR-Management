@@ -1,0 +1,190 @@
+$ bash -lc 'sed -n "245,340p" frontend/src/pages/shared/Nudge.tsx; sed -n "1,40p" backend/app/routers/nudge.py; sed -n "110,160p" backend/app/routers/nudge.py; rg -n -A 18 "def audiences" backend/app/*.py; sed -n "210,280p" tools/ui-checks/lib.mjs'
+                  </tbody>
+                </table>
+              </TableWrap>
+            </Panel>
+            <Panel title="Time to action by stage" sub="Median hours from notice to acknowledgement, per rung">
+              <TableWrap label="Time to action by rung">
+                <table className="tbl">
+                  <thead><tr><th>Rung</th><th className="r">Notices</th><th className="r">Acknowledged</th><th className="r">Median hours</th></tr></thead>
+                  <tbody>
+                    {RUNGS.map((r) => (
+                      <tr key={r.key}><td><RungPill rung={r.key} /></td><td className="r num">{h.by_rung[r.key].notices}</td><td className="r num">{h.by_rung[r.key].acknowledged}</td>
+                        <td className="r num">{h.by_rung[r.key].median_hours_to_action ?? '—'}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </TableWrap>
+            </Panel>
+          </div>
+          <Panel title="Acknowledgement and time-to-action per institution" sub="Lowest acknowledgement rate first">
+            {h.per_institution.length === 0 ? <Empty text="No institution notices in this window" /> : (
+              <TableWrap label="Acknowledgement per institution" tall>
+                <table className="tbl">
+                  <thead><tr><th>Institution</th><th className="r">Notices</th><th className="r">Acknowledged</th><th className="r">Ack rate</th><th className="r">Median hours to action</th><th className="r">Escalated</th></tr></thead>
+                  <tbody>
+                    {h.per_institution.map((r) => (
+                      <tr key={r.institution_id}><td><Link to={`${base}/institutions/${r.institution_id}`}>{r.institution}</Link></td><td className="r num">{r.notices}</td>
+                        <td className="r num">{r.acknowledged}</td><td className="r num">{pct(r.ack_rate)}</td><td className="r num">{r.median_hours_to_action ?? '—'}</td><td className="r num">{r.escalated}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </TableWrap>
+            )}
+          </Panel>
+        </>
+      )}
+    </Stagger>
+  );
+}
+
+export function Escalations() {
+  const { base } = useRole();
+  const t = useT();
+  const d = useApi<{ items: { root_id: number; ref: string | null; institution_id: string | null; title: string; acknowledged: boolean;
+    steps: { id: number; at: string; rung: Rung; audience: string; template: string; step: number; ack_at: string | null; ack_by: string | null }[] }[] }>('/nudge/escalations');
+  const who = (a: string) => (a.startsWith('institution:') ? t('Institution') : a === 'aicte' ? t('AICTE scrutiny officer') : a === 'competent_authority' ? t('Competent authority') : a);
+  return (
+    <Stagger>
+      <PageHead title="Escalations" sub="Unacknowledged notices climb the ladder and move along institution → AICTE officer → competent authority. Each step is in the audit trail."
+        crumbs={[{ label: 'Dashboard', to: base }, { label: 'Escalations' }]} />
+      <Panel>
+        {d.error ? <ErrorBox text={d.error} /> : !d.data ? <Loading layout="list" rows={5} /> : d.data.items.length === 0 ? <Empty text="No escalations" hint="Notices escalate only when they are not acknowledged in time." /> : (
+          <ul className="esc-list">
+            {d.data.items.map((f) => (
+              <li key={f.root_id} className="card esc-card">
+                <div className="esc-head">
+                  <b>{f.title}</b>
+                  {f.ref?.startsWith('FDR') && <Link to={`${base}/fdr/${f.ref}`}>{f.ref}</Link>}
+                  <span className={`pill ${f.acknowledged ? 'p-active' : 'p-discrepancy'}`}>{f.acknowledged ? t('Acknowledged: stopped') : t('Not acknowledged')}</span>
+                </div>
+                <ol className="esc-steps">
+                  {f.steps.map((s) => (
+                    <li key={s.id} className={`esc-step rung-edge-${s.rung}`}>
+                      <RungPill rung={s.rung} />
+                      <span><b>{who(s.audience)}</b> · {fmtDateTime(s.at)} · {s.template === 'escalation_copy' ? t('copied up the chain') : s.template === 'rung_up' ? t('moved up a rung') : t('first notice')}</span>
+                      {s.ack_at && <span className="ack-ok"><CheckCircle2 size={14} aria-hidden /> {fmtDateTime(s.ack_at)}</span>}
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+    </Stagger>
+  );
+}
+
+interface MissingRow { institution_id: string; institution: string; instrument: string; class: string; bank: string; amount: string; maturity_date: string; required_label: string; state: string; detail: string }
+
+export function MissingDocuments() {
+  const { base, role } = useRole();
+  const t = useT();
+  const { toast } = useStore();
+  const [state, setState] = useState<'' | 'absent' | 'expired' | 'unverified'>('');
+  const q = `/reports/missing-documents?size=300${state ? `&state=${state}` : ''}`;
+  const d = useApi<{ as_of: string; summary: Record<string, number>; institutions: number; total: number; items: MissingRow[]; required: Record<string, { type: string; label: string }[]>; planned: string }>(q, [q]);
+  const exp = (fmt: 'csv' | 'pdf') => downloadFile(`/reports/missing-documents.${fmt}${state ? `?state=${state}` : ''}`, `missing-documents.${fmt}`).catch((e) => toast(errorText(e), 'error'));
+  return (
+    <Stagger>
+      <PageHead title="Missing documents and exceptions" sub="Required documents per instrument class that are absent, expired or unverified"
+        crumbs={[{ label: 'Dashboard', to: base }, { label: 'Missing documents' }]}
+        actions={<><button className="btn btn-ghost" onClick={() => exp('csv')}><FileSpreadsheet size={16} aria-hidden /> CSV</button><button className="btn btn-ghost" onClick={() => exp('pdf')}><FileDown size={16} aria-hidden /> PDF</button></>} />
+      {d.error ? <ErrorBox text={d.error} /> : !d.data ? <Loading rows={6} /> : (
+        <>
+          <div className="kpis k3">
+            <Kpi compact tone="red" icon={<AlertOctagon size={30} />} label="Absent" value={d.data.summary.absent} sub="no document of the required type" onClick={() => setState('absent')} />
+"""/nudge: notification centre with the ladder, acknowledgement, action links, preferences, policy, "what changed",
+escalation view and the health panel. /providers: delivery-receipt webhooks from real providers."""
+from __future__ import annotations
+
+import hashlib
+import hmac
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel, Field
+from sqlalchemy import func, select
+from sqlalchemy.orm import Session
+
+from ..ratelimit import auth_limit
+from .. import models as m
+from .. import portal_audit
+from ..config import get_settings
+from ..db import get_db
+from ..deps import Principal, current, require
+from ..nudge import insights, links
+from ..nudge import policy as pol
+from ..nudge.clock import iso, now_ist
+from ..nudge.escalation import root_of
+from ..nudge.outbox import title
+from ..nudge.recipients import audiences
+from ..nudge.templates import RUNG_LABEL
+from ..nudge.worker import acknowledge
+
+router = APIRouter(tags=["nudge ladder"])
+
+
+def _mine(db: Session, p: Principal, nid: int) -> m.Notification:
+    n = db.get(m.Notification, nid)
+    if not n or n.audience not in audiences(p.user):
+        raise HTTPException(404, "not found")
+    return n
+
+
+def _row(db: Session, n: m.Notification, user: m.User) -> dict:
+    lang = user.lang or "en"
+    mine = db.scalars(select(m.NotificationDelivery).where(m.NotificationDelivery.notification_id == n.id,
+
+
+@router.get("/nudge/prefs")
+def get_prefs(p: Principal = Depends(current), db: Session = Depends(get_db)):
+    pr = db.get(m.NotificationPref, p.user.id)
+    base = {"email": True, "sms": True, "whatsapp": True, "push": True, "digest": True}
+    if pr:
+        base = {k: getattr(pr, k) for k in base}
+    return {"lang": p.user.lang, **base, "in_app": True,
+            "note": "In-app notices cannot be switched off. Overdue items are always e-mailed."}
+
+
+@router.put("/nudge/prefs")
+def put_prefs(body: PrefsIn, p: Principal = Depends(current), db: Session = Depends(get_db)):
+    pr = db.get(m.NotificationPref, p.user.id) or m.NotificationPref(user_id=p.user.id)
+    for k in ("email", "sms", "whatsapp", "push", "digest"):
+        setattr(pr, k, getattr(body, k))
+    db.merge(pr)
+    p.user.lang = body.lang
+    portal_audit.record(db, "notification_prefs_changed", p.actor, body.model_dump())
+    db.commit()
+    return get_prefs(p, db)
+
+
+@router.get("/nudge/policy")
+def get_policy(p: Principal = Depends(current), db: Session = Depends(get_db)):
+    row = db.scalars(select(m.NotifyPolicyVersion).order_by(m.NotifyPolicyVersion.id.desc()).limit(1)).first()
+    return {"policy": pol.active(db), "version": row.id if row else 0, "updated_by": row.created_by if row else "backend/policy.json defaults",
+            "updated_at": row.created_at.isoformat(timespec="seconds") if row else None, "editable": p.user.role == "AICTE_OFFICIAL"}
+
+
+class PolicyIn(BaseModel):
+    policy: dict
+    reason: str = Field(min_length=5, max_length=500)
+
+
+@router.put("/nudge/policy")
+def put_policy(body: PolicyIn, p: Principal = Depends(require("AICTE_OFFICIAL")), db: Session = Depends(get_db)):
+    row = pol.publish(db, body.policy, p.actor, body.reason)
+    return {"version": row.id, "policy": row.policy}
+
+
+@router.get("/nudge/what-changed")
+def what_changed(p: Principal = Depends(current), db: Session = Depends(get_db), since: str | None = None):
+    return insights.what_changed(db, p.user, since)
+
+
+@router.get("/nudge/health")
+def health(p: Principal = Depends(require("AICTE_OFFICIAL", "AUDITOR")), db: Session = Depends(get_db), days: int = 30):
+    return insights.health(db, days)
+
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

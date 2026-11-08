@@ -1,0 +1,16 @@
+$ python3 -c 'from pathlib import Path; import struct; names=["01-login","02-dashboard-aicte","03-dashboard-institution","05-upload-checks-and-scan","06-upload-encryption-status","07-fdr-detail-documents","09-notification-centre","s01-1-release-gate","s01-2-sent-not-complete","s01-3-returned-still-owed","s01-4-completed"]; base=Path("docs/screenshots/final");
+for n in names:
+ p=base/(n+".png"); b=p.read_bytes(); size=struct.unpack(">II",b[16:24]); print(str(p),str(size[0])+"x"+str(size[1])); assert size==(1536,1024)'
+docs/screenshots/final/01-login.png 1536x1024
+docs/screenshots/final/02-dashboard-aicte.png 1536x1024
+docs/screenshots/final/03-dashboard-institution.png 1536x1024
+docs/screenshots/final/05-upload-checks-and-scan.png 1536x1024
+docs/screenshots/final/06-upload-encryption-status.png 1536x1024
+docs/screenshots/final/07-fdr-detail-documents.png 1536x1024
+docs/screenshots/final/09-notification-centre.png 1536x1024
+docs/screenshots/final/s01-1-release-gate.png 1536x1024
+docs/screenshots/final/s01-2-sent-not-complete.png 1536x1024
+docs/screenshots/final/s01-3-returned-still-owed.png 1536x1024
+docs/screenshots/final/s01-4-completed.png 1536x1024
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

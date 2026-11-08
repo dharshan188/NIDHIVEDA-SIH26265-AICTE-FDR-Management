@@ -1,0 +1,315 @@
+{
+ "generated_at": "2026-10-24T16:58:06",
+ "passed": 52,
+ "failed": 0,
+ "scenarios": [
+  {
+   "id": "R1",
+   "title": "New submission: upload, encrypt, scan, bank confirmation, verification, notices both ways",
+   "passed": 10,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "institution uploads the FDR with two PDFs",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "both documents encrypted at rest (AES-256-GCM envelope)",
+     "ok": true,
+     "detail": "[{'id': 1616, 'name': 'fdr.pdf', 'size_bytes': 1356, 'sha256': '89ddd8228d8e41d91851f9f7d263ea6ad2a273ce0d5bb09e271b36c09f38cf91', 'uploaded_on': '2026-10-24T16:57:59', 'stored': True, 'doc_type': 'fdr_scan', 'doc_type_label': 'Scanned FDR (both sides)', 'encryption': {'alg': 'AES-256-GCM/envelope-v"
+    },
+    {
+     "name": "both documents malware-scanned clean",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "status pending until the bank confirms",
+     "ok": true,
+     "detail": "pending"
+    },
+    {
+     "name": "AICTE notified through the outbox (fdr_submitted)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "download decrypts and the SHA-256 matches",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "verification refused before any bank confirmation",
+     "ok": true,
+     "detail": "409"
+    },
+    {
+     "name": "issuing bank (SIMULATED) confirms every field",
+     "ok": true,
+     "detail": "['BANK_CONFIRMED', 'BANK_CONFIRMED', 'BANK_CONFIRMED', 'BANK_CONFIRMED', 'BANK_CONFIRMED', 'BANK_CONFIRMED']"
+    },
+    {
+     "name": "officer verifies",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "institution notified in English and Hindi",
+     "ok": true,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "id": "R2",
+   "title": "Validity tracking: daily sweep, ladder rungs, buckets from queries, rules in force per date",
+   "passed": 7,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "08:00 IST sweep runs",
+     "ok": true,
+     "detail": "{'ran': True, 'run_date': '2026-10-24', 'reminders': 22, 'overdue': 0, 'gaps': 0, 'escalation_copies': 0}"
+    },
+    {
+     "name": "a second run the same IST day sends nothing new",
+     "ok": true,
+     "detail": "{'ran': False, 'reason': 'already ran for 2026-10-24 (IST)'}"
+    },
+    {
+     "name": "dashboard 'maturing' count equals the list query",
+     "ok": true,
+     "detail": "(56, 56)"
+    },
+    {
+     "name": "a maturing FDR has a scheduled reminder",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "reminder window is the tightest one reached",
+     "ok": true,
+     "detail": "(2, 'T-7')"
+    },
+    {
+     "name": "ladder rung follows days to maturity",
+     "ok": true,
+     "detail": "(2, 'deadline')"
+    },
+    {
+     "name": "timeline shows the rule editions in force on the issue date",
+     "ok": true,
+     "detail": "['APH-2024-27']"
+    }
+   ]
+  },
+  {
+   "id": "R3",
+   "title": "Approaching maturity: T-7 deadline rung, quiet hours, acknowledgement stops the ladder",
+   "passed": 8,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "T-7 reminder created on the deadline rung",
+     "ok": true,
+     "detail": "[{'id': 157, 'at': '2029-10-13T21:00:00', 'kind': 'maturity_reminder', 'template': 'reminder_before', 'rung': 'deadline', 'rung_label': 'Deadline within 7 days', 'title': 'FDR FDR202600372 matures in 7 days', 'text': 'FDR FDR202600372 (State Bank of India, Rs 25,00,000) matures on 20 Oct 2029. Renew"
+    },
+    {
+     "name": "channels: in-app, e-mail and SMS",
+     "ok": true,
+     "detail": "['email', 'in_app', 'sms']"
+    },
+    {
+     "name": "in-app and e-mail go out at 21:00",
+     "ok": true,
+     "detail": "{'in_app': {'channel': 'in_app', 'status': 'delivered', 'simulated': False, 'provider': 'portal-in-app', 'reason': \"shown in the user's notification centre\", 'sent_at': '2029-10-13T21:00:00', 'delivered_at': '2029-10-13T21:00:00', 'receipt_simulated': False}, 'email': {'channel': 'email', 'status': "
+    },
+    {
+     "name": "SMS held for quiet hours (20:00–08:00 IST)",
+     "ok": true,
+     "detail": "{'channel': 'sms', 'status': 'deferred', 'simulated': True, 'provider': None, 'reason': 'quiet hours 20:00–08:00 IST', 'sent_at': None, 'delivered_at': None, 'receipt_simulated': None}"
+    },
+    {
+     "name": "e-mail marked SIMULATED (provider simulator)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "SMS sent at 08:00 next morning",
+     "ok": true,
+     "detail": "{'channel': 'sms', 'status': 'sent', 'simulated': True, 'provider': 'simulator-sms', 'reason': 'SIMULATED: stored by the provider simulator, nothing left this machine', 'sent_at': '2029-10-14T08:00:00', 'delivered_at': None, 'receipt_simulated': None}"
+    },
+    {
+     "name": "institution opens it: acknowledged",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "no rung-up after acknowledgement",
+     "ok": true,
+     "detail": "['reminder_before']"
+    }
+   ]
+  },
+  {
+   "id": "R4",
+   "title": "Renewal: missed renewal goes overdue and escalates; a renewal FDR closes the gap and stops reminders",
+   "passed": 8,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "3 days after maturity: overdue notice",
+     "ok": true,
+     "detail": "[{'id': 201, 'at': '2029-10-24T08:00:00', 'kind': 'maturity_reminder', 'template': 'reminder_missed_renewal', 'rung': 'overdue', 'rung_label': 'Overdue', 'title': 'Overdue: FDR FDR202600372 matured 4 days ago without renewal', 'text': 'FDR FDR202600372 (State Bank of India, Rs 25,00,000) matured on "
+    },
+    {
+     "name": "overdue uses every channel",
+     "ok": true,
+     "detail": "['in_app', 'email', 'sms', 'whatsapp', 'push']"
+    },
+    {
+     "name": "copied to the AICTE officer (escalation role)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "renewal gap check runs (maturity is in the future on the real clock)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "institution submits the renewal FDR",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "old FDR's timeline shows the renewal",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "old FDR has no renewal gap any more",
+     "ok": true,
+     "detail": "[]"
+    },
+    {
+     "name": "no further reminders for the renewed FDR",
+     "ok": true,
+     "detail": "(1, 1)"
+    }
+   ]
+  },
+  {
+   "id": "R5",
+   "title": "Discrepancy: bank says a different amount; verification blocked; flagged; observation answered and closed",
+   "passed": 9,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "institution declares Rs 25 lakh (bank book says Rs 20 lakh)",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "comparison shows the amount MISMATCH",
+     "ok": true,
+     "detail": "{'field': 'amount', 'label': 'Principal', 'declared': 250000000, 'bank_confirmed': 200000000, 'confidence': 'MISMATCH'}"
+    },
+    {
+     "name": "verification refused on mismatch",
+     "ok": true,
+     "detail": "409"
+    },
+    {
+     "name": "officer flags the discrepancy",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "institution receives 'clarification needed' (action rung)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "scrutiny observation recorded (mismatch)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "institution replies: observation answered",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "officer closes the observation",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "missing-documents report lists it as unverified",
+     "ok": true,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "id": "R6",
+   "title": "Authorised release: scrutiny, DSC approval, NOC, completion only on bank lien discharge",
+   "passed": 10,
+   "failed": 0,
+   "checks": [
+    {
+     "name": "institution raises the release request",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "AICTE notified (release_requested)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "section officer completes scrutiny",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "approval without a valid DSC signature is refused",
+     "ok": true,
+     "detail": "401"
+    },
+    {
+     "name": "release gate allows (all mandatory checks pass)",
+     "ok": true,
+     "detail": "[]"
+    },
+    {
+     "name": "deputy director approves with DSC: NOC issued",
+     "ok": true,
+     "detail": "200"
+    },
+    {
+     "name": "NOC alone is not completion (FDR still verified)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "institution told: not complete until lien discharge",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "name": "bank (SIMULATED) confirms lien discharge",
+     "ok": true,
+     "detail": "ACCEPTED"
+    },
+    {
+     "name": "only now: released",
+     "ok": true,
+     "detail": ""
+    }
+   ]
+  }
+ ]
+}

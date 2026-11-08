@@ -1,0 +1,124 @@
+$ docker pull ghcr.io/zaproxy/zaproxy:stable
+stable: Pulling from zaproxy/zaproxy
+7fd1ebe418b5: Pulling fs layer
+5c272ebfde7a: Pulling fs layer
+2b2a520c8110: Pulling fs layer
+0c17ff7adc71: Pulling fs layer
+0ef1ca173a7b: Pulling fs layer
+f1ac78ddb45c: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+06e32d6b0abf: Pulling fs layer
+676dca3b2823: Pulling fs layer
+fc80a6f93cf7: Pulling fs layer
+d3038001055e: Pulling fs layer
+2e6105c01fc9: Pulling fs layer
+89f012bd645e: Pulling fs layer
+7adab2a5dcfc: Pulling fs layer
+39705de290eb: Pulling fs layer
+09b0a5cdac1e: Pulling fs layer
+2fb23d76aead: Pulling fs layer
+4ed9378c10f4: Pulling fs layer
+9d01fe60c226: Pulling fs layer
+0fa604202654: Pulling fs layer
+0c17ff7adc71: Waiting
+0ef1ca173a7b: Waiting
+4f4fb700ef54: Waiting
+7adab2a5dcfc: Waiting
+39705de290eb: Waiting
+09b0a5cdac1e: Waiting
+2fb23d76aead: Waiting
+4ed9378c10f4: Waiting
+9d01fe60c226: Waiting
+0fa604202654: Waiting
+06e32d6b0abf: Waiting
+d3038001055e: Waiting
+2e6105c01fc9: Waiting
+89f012bd645e: Waiting
+676dca3b2823: Waiting
+fc80a6f93cf7: Waiting
+2b2a520c8110: Download complete
+0c17ff7adc71: Download complete
+0ef1ca173a7b: Verifying Checksum
+0ef1ca173a7b: Download complete
+f1ac78ddb45c: Verifying Checksum
+f1ac78ddb45c: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+06e32d6b0abf: Verifying Checksum
+06e32d6b0abf: Download complete
+5c272ebfde7a: Retrying in 5 seconds
+5c272ebfde7a: Retrying in 4 seconds
+5c272ebfde7a: Retrying in 3 seconds
+5c272ebfde7a: Retrying in 2 seconds
+5c272ebfde7a: Retrying in 1 second
+7fd1ebe418b5: Retrying in 5 seconds
+7fd1ebe418b5: Retrying in 4 seconds
+7fd1ebe418b5: Retrying in 3 seconds
+7fd1ebe418b5: Retrying in 2 seconds
+7fd1ebe418b5: Retrying in 1 second
+7fd1ebe418b5: Verifying Checksum
+7fd1ebe418b5: Download complete
+7fd1ebe418b5: Pull complete
+676dca3b2823: Retrying in 5 seconds
+676dca3b2823: Retrying in 4 seconds
+676dca3b2823: Retrying in 3 seconds
+676dca3b2823: Retrying in 2 seconds
+676dca3b2823: Retrying in 1 second
+fc80a6f93cf7: Verifying Checksum
+fc80a6f93cf7: Download complete
+d3038001055e: Download complete
+2e6105c01fc9: Verifying Checksum
+2e6105c01fc9: Download complete
+89f012bd645e: Verifying Checksum
+89f012bd645e: Download complete
+7adab2a5dcfc: Verifying Checksum
+7adab2a5dcfc: Download complete
+39705de290eb: Verifying Checksum
+39705de290eb: Download complete
+09b0a5cdac1e: Verifying Checksum
+09b0a5cdac1e: Download complete
+2fb23d76aead: Verifying Checksum
+2fb23d76aead: Download complete
+4ed9378c10f4: Verifying Checksum
+4ed9378c10f4: Download complete
+9d01fe60c226: Verifying Checksum
+9d01fe60c226: Download complete
+0fa604202654: Verifying Checksum
+0fa604202654: Download complete
+5c272ebfde7a: Retrying in 10 seconds
+5c272ebfde7a: Retrying in 9 seconds
+5c272ebfde7a: Retrying in 8 seconds
+5c272ebfde7a: Retrying in 7 seconds
+5c272ebfde7a: Retrying in 6 seconds
+5c272ebfde7a: Retrying in 5 seconds
+5c272ebfde7a: Retrying in 4 seconds
+5c272ebfde7a: Retrying in 3 seconds
+5c272ebfde7a: Retrying in 2 seconds
+5c272ebfde7a: Retrying in 1 second
+676dca3b2823: Retrying in 10 seconds
+676dca3b2823: Retrying in 9 seconds
+676dca3b2823: Retrying in 8 seconds
+676dca3b2823: Retrying in 7 seconds
+676dca3b2823: Retrying in 6 seconds
+676dca3b2823: Retrying in 5 seconds
+676dca3b2823: Retrying in 4 seconds
+676dca3b2823: Retrying in 3 seconds
+676dca3b2823: Retrying in 2 seconds
+676dca3b2823: Retrying in 1 second
+5c272ebfde7a: Retrying in 15 seconds
+5c272ebfde7a: Retrying in 14 seconds
+5c272ebfde7a: Retrying in 13 seconds
+5c272ebfde7a: Retrying in 12 seconds
+5c272ebfde7a: Retrying in 11 seconds
+5c272ebfde7a: Retrying in 10 seconds
+5c272ebfde7a: Retrying in 9 seconds
+5c272ebfde7a: Retrying in 8 seconds
+5c272ebfde7a: Retrying in 7 seconds
+5c272ebfde7a: Retrying in 6 seconds
+5c272ebfde7a: Retrying in 5 seconds
+5c272ebfde7a: Retrying in 4 seconds
+5c272ebfde7a: Retrying in 3 seconds
+5c272ebfde7a: Retrying in 2 seconds
+5c272ebfde7a: Retrying in 1 second
+Command exit code: 143
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

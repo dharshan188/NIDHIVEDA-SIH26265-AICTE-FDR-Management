@@ -1,0 +1,315 @@
+$ bash -lc 'cat /home/dharshan/.codex/plugins/cache/openai-primary-runtime/pdf/26.1007.11041/skills/pdf/SKILL.md; sed -n "1,48p" frontend/src/components/FdrPanels.tsx; sed -n "190,280p" frontend/src/components/FdrPanels.tsx; rg -n "function RulesPolicy|pol-form" frontend/src/pages -g "*.tsx"'
+---
+name: "pdf"
+description: "Read, create, inspect, render, and verify PDF files where visual layout matters, including fillable AcroForms. Use Poppler rendering plus Python tools such as reportlab, pdfplumber, and pypdf for generation and extraction."
+---
+
+# PDF Skill
+
+## When To Use
+
+- Read or review PDF content where layout and visuals matter.
+- Create PDFs programmatically with reliable formatting.
+- Fill and validate interactive PDF forms.
+- Validate final rendering before delivery.
+
+## Tools + Contract Requirements
+
+Immediately before the first create/edit authoring command, run `mark_artifact_operation_started.mjs` successfully exactly once using the command below. Do not run it for read-only work. For edits, replace `create` with `edit`; adjust the expected count and output format to match the requested outputs.
+
+
+
+```bash
+node container_tools/mark_artifact_operation_started.mjs --operation-kind create --expected-output-count 1 --output-format pdf
+```
+
+## Workflow
+
+1. Prefer visual review: render PDF pages to PNGs and inspect them.
+   - Use `pdftoppm` from the bundled runtime or system Poppler when available.
+   - If unavailable, install Poppler or ask the user to review the output locally.
+2. Use `reportlab` to generate PDFs when creating new documents.
+3. Use `pdfplumber` or `pypdf` for text extraction and quick checks; do not rely on text extraction for layout fidelity.
+4. After each meaningful update, re-render pages and verify alignment, spacing, and legibility.
+
+## Fill And Validate AcroForms
+
+Visual review alone is not a correctness check for a fillable PDF. A page `/Widget` annotation can render a value from its appearance stream while the canonical `/AcroForm/Fields` tree is missing or contains a stale value.
+
+1. Keep the result interactive by default; set `flatten=True` only when the user explicitly requests a completed, static form. Preserve the source PDF, and do not flatten a signed PDF without an explicit workflow decision.
+2. Inspect both representations before filling: enumerate fields from `reader.get_fields()` and `/Widget` annotations from every page's `/Annots`, following `/Parent` and `/Kids`. If a widget and a canonical field have the same name but are distinct objects with no `/Parent` relationship, do not call `reattach_fields()` blindly: it can create a second top-level field with the same name. Report the ambiguity or produce a static result.
+3. Recover genuinely orphaned widgets, fill all pages, and write the result with `pypdf`:
+
+```python
+from pypdf import PdfReader, PdfWriter
+from pypdf.generic import NameObject
+
+reader = PdfReader(input_pdf)
+writer = PdfWriter()
+writer.clone_document_from_reader(reader)
+
+# Restores widgets that are missing from /AcroForm/Fields.
+writer.reattach_fields()
+fields = writer.get_fields() or {}
+missing = set(expected_values) - set(fields)
+if missing:
+    raise ValueError(f"Form fields not found after repair: {sorted(missing)}")
+
+values_to_write = dict(expected_values)
+if flatten:
+    # Paint every existing value before removing every widget.
+    values_to_write = {
+        name: field.get("/V", "/Off" if field.get("/FT") == "/Btn" else "")
+        for name, field in fields.items()
+    }
+    values_to_write.update(expected_values)
+
+writer.update_page_form_field_values(
+    None, values_to_write, auto_regenerate=False, flatten=flatten
+)
+
+if flatten:
+    # pypdf's flatten=True paints appearances but does not remove widgets.
+    writer.remove_annotations(subtypes="/Widget")
+    writer.root_object.pop(NameObject("/AcroForm"), None)
+
+with open(output_pdf, "wb") as stream:
+    writer.write(stream)
+```
+
+4. Reopen the written PDF before delivery. For an interactive result, require every expected field to be present in `get_fields()` with the expected `/V`, enumerate page widgets again, and confirm their effective `/V` (the widget value or inherited `/Parent` value) agrees. Confirm each updated widget has a non-empty `/AP` `/N` appearance and render the final pages to catch stale or clipped appearances. Do not rely on `/NeedAppearances` or a successful PNG render as proof that logical field data was updated.
+5. For a flattened result, require zero `/Widget` annotations and no remaining `/AcroForm` field tree after reopening, then render the final pages. Keep an editable copy when the user may need to revise the form.
+
+## Temp And Output Conventions
+
+- Use `tmp/pdfs/` for intermediate files; delete them when done.
+- Write final artifacts under `output/pdf/` when working in this repo.
+- Keep filenames stable and descriptive.
+
+## Dependencies
+
+Prefer the Codex bundled workspace/runtime dependencies when available. The primary runtime is expected to include:
+
+- Python packages: `reportlab`, `pdfplumber`, `pypdf`
+- Rendering tools: `pdftoppm` and `pdfinfo` from Poppler
+
+If a dependency is missing, install only what is needed.
+
+Python packages:
+
+```bash
+uv pip install reportlab pdfplumber pypdf
+```
+
+If `uv` is unavailable:
+
+```bash
+python3 -m pip install reportlab pdfplumber pypdf
+```
+
+System tools for rendering:
+
+```bash
+# macOS (Homebrew)
+brew install poppler
+
+# Ubuntu/Debian
+sudo apt-get install -y poppler-utils
+```
+
+If installation is not possible in this environment, tell the user which dependency is missing and how to install it locally.
+
+## Environment
+
+No required environment variables.
+
+## Rendering Command
+
+```bash
+pdftoppm -png "$INPUT_PDF" "$OUTPUT_PREFIX"
+```
+
+## Quality Expectations
+
+- Maintain polished visual design: consistent typography, spacing, margins, and section hierarchy.
+- Avoid rendering issues: clipped text, overlapping elements, broken tables, black squares, or unreadable glyphs.
+- Charts, tables, and images must be sharp, aligned, and clearly labeled.
+- Use ASCII hyphens only. Avoid U+2011 and other Unicode dashes.
+- Citations and references must be human-readable; never leave tool tokens or placeholder strings.
+
+## Final Checks
+
+- Do not deliver until the latest PNG inspection shows zero visual or formatting defects.
+- Confirm headers, footers, page numbering, and section transitions look polished.
+- Keep intermediate files organized or remove them after final approval.
+
+## Final response
+
+### Final Response Citations
+
+- **Create/edit:** for created or edited PDFs, cite each final deliverable exactly once with `purpose="output"`, in its own paragraph. Briefly describe the result without repeating its filename, path, or link. Never put output directives inside prose or list items.
+- **Q&A and summaries:** Every file whose contents you summarize or use to support an answer MUST receive a `:codex-file-citation{...}` with `purpose="source"` in the final response. Use the source citation in place of the filename, wherever the filename would appear. Do not write the filename separately and append its citation at the end. Files merely inspected but not used in the answer need no citation. Do not emit output citations for unchanged files or read-only answers.
+
+- Emit `:codex-file-citation{...}` directly, without backticks, code fences, or a Markdown-link wrapper. Use verified targets only. No need to cite or reference intermediate work.
+
+For file citations, set `path` to the verified absolute file path on the task host. Omit `mode`.
+
+Some illustrative examples, real responses use verified targets outside code fences.
+
+```text
+:codex-file-citation{path="/absolute/path/review.pdf" purpose="output"}
+```
+
+```text
+The review of :codex-file-citation{path="/absolute/path/review.pdf" purpose="source"} is due Friday.
+```
+
+
+### Additional Citation Guidance
+
+For PDF Q&A, inspect complete relevant pages and preserve material headings, table/figure labels, footnotes, sources, and sample sizes. PDF citations support only plain file citations; do not add `artifact_kind`, `page_number`, or other locators.
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, FileText, Loader2, Lock, MessageSquarePlus, Pencil, ShieldAlert, ShieldCheck, XCircle } from 'lucide-react';
+import { useState } from 'react';
+import { api, errorText, post } from '../api/client';
+import type { ContentCheck, DocInfo, Fdr, Timeline } from '../api/types';
+import { fmtDate, fmtDateTime, inrP } from '../lib/format';
+import { useApi, useStore } from '../store/Store';
+import { Empty, ErrorBox, Loading, Modal, Panel, SimBadge } from './ui';
+
+// ---------------------------------------------------------------- history timeline
+const TONE: Record<string, string> = { issued: 'b', submitted: 'b', bank_confirmation: 'g', verified: 'g', renewed: 'g', renumbered: 'o', matured: 'o',
+  matures: 'b', released: 'g', closed: 'b', discrepancy: 'r' };
+
+/** Issued → submitted → confirmed → verified → renewed / renumbered → matured → released, each with the rule editions in
+ * force on that date and how the relevant rule resolves then; any renewal gap is flagged above the list. */
+export function FdrTimeline({ fid }: { fid: string }) {
+  const d = useApi<Timeline>(`/fdrs/${fid}/timeline`, [fid]);
+  return (
+    <Panel title="History timeline" sub="Each date shows the APH editions in force then and how the rule for that step resolves">
+      {d.error ? <ErrorBox text={d.error} /> : !d.data ? <Loading rows={5} /> : (
+        <>
+          {d.data.gaps.map((g) => (
+            <div key={g.kind} className="alert a-red" role="status" style={{ marginBottom: 10 }}>
+              <span className="ai" aria-hidden><AlertTriangle size={18} /></span>
+              <span><b>Renewal gap</b><span>{g.label} (since {fmtDate(g.since)})</span></span>
+            </div>
+          ))}
+          {d.data.gaps.length === 0 && <p className="ack-ok" style={{ marginBottom: 10 }}><CheckCircle2 size={15} aria-hidden /> No renewal gap</p>}
+          <ol className="timeline" style={{ listStyle: 'none', margin: 0 }}>
+            {d.data.events.map((e, i) => (
+              <li key={`${e.kind}-${e.at}-${i}`} className={`tl-item ${TONE[e.kind] ?? 'b'}${e.future ? ' future' : ''}`}>
+                <b>{e.label}</b>
+                <time dateTime={e.at} style={{ display: 'block' }}>{fmtDate(e.date)} · {e.source.includes('SIMULATED') ? <>{e.source.replace(' (SIMULATED)', '')} <SimBadge /></> : e.source}</time>
+                <p>
+                  In force: {e.editions_in_force.length ? e.editions_in_force.join(', ') : e.future ? 'no APH edition published for this date yet' : <b className="bad-ink">no edition covers this date (escalated, never guessed)</b>}
+                  {e.rule && <> · <code>{e.rule.key}</code> = <b>{JSON.stringify(e.rule.value)}</b> ({e.rule.status.toLowerCase()}){e.rule.cites.length > 0 && <>, {e.rule.cites.join('; ')}</>}</>}
+                </p>
+              </li>
+            ))}
+          </ol>
+          {d.data.reminders.length > 0 && (
+            <p className="muted small">Maturity reminders sent: {d.data.reminders.map((r) => `${r.window} (${fmtDate(r.at)}${r.ack_at ? ', acknowledged' : ''})`).join(' · ')}</p>
+          )}
+        </>
+      )}
+    </Panel>
+  );
+}
+
+}
+
+// ---------------------------------------------------------------- permitted field edits
+interface FieldRule { entity: string; field: string; label: string; roles: string[]; pii: boolean; fdr_states: string[] | null; you_can_edit: boolean }
+interface FieldChange { id: number; field: string; before: string | null; after: string | null; actor: string; at: string; reason: string; audit_seq: number }
+
+const fmtField = (field: string, v: string | number | null) => (v === null || v === '' ? '—' : field === 'rate_bp' ? `${(Number(v) / 100).toFixed(2)}% (${v} bp)` : String(v));
+
+/** Only the fields the server permits, for the roles and FDR states it permits. Before / after and a reason are required;
+ * the server writes the change to the hash-chained portal audit and returns its sequence number. */
+export function FieldEdits({ f }: { f: Fdr }) {
+  const { run } = useStore();
+  const rules = useApi<{ fields: FieldRule[]; never_editable: string[] }>('/records/fields');
+  const hist = useApi<{ items: FieldChange[] }>(`/records/fdr/${f.id}/changes`, [f.id]);
+  const [edit, setEdit] = useState<FieldRule | null>(null);
+  const [value, setValue] = useState('');
+  const [reason, setReason] = useState('');
+  const [err, setErr] = useState('');
+  const mine = (rules.data?.fields ?? []).filter((r) => r.entity === 'fdr');
+  const current = (r: FieldRule) => (r.field === 'rate_bp' ? f.rate_bp : (f as unknown as Record<string, string>)[r.field]) ?? null;
+  const open = (r: FieldRule) => {
+    setEdit(r);
+    setValue(String(current(r) ?? ''));
+    setReason('');
+    setErr('');
+  };
+  const save = async () => {
+    setErr('');
+    try {
+      await api(`/records/fdr/${f.id}`, { method: 'PATCH', json: { field: edit!.field, value, reason } });
+      await run(async () => undefined, `${edit!.label} updated`);
+      setEdit(null);
+    } catch (e) {
+      setErr(errorText(e));
+    }
+  };
+  return (
+    <Panel title="Record fields" sub="Bank, number, amount and dates are held by the ledger and never edited here; a correction is a new submission">
+      {rules.error ? <ErrorBox text={rules.error} /> : !rules.data ? <Loading rows={2} /> : (
+        <dl className="kv">
+          {mine.map((r) => {
+            const allowedNow = r.you_can_edit && (!r.fdr_states || r.fdr_states.includes(f.status));
+            return (
+              <div key={r.field} style={{ display: 'contents' }}>
+                <dt>{r.label}</dt>
+                <dd style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span>{fmtField(r.field, current(r))}</span>
+                  {allowedNow ? <button className="btn btn-ghost btn-xs" onClick={() => open(r)} aria-label={`Edit ${r.label}`}><Pencil size={13} aria-hidden /> Edit</button>
+                    : <span className="muted small">{!r.you_can_edit ? 'not editable by your role' : `editable only while ${r.fdr_states?.join(' or ')}`}</span>}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      )}
+      <h3 className="small" style={{ marginTop: 14, color: 'var(--navy)' }}>Change history</h3>
+      {!hist.data ? <Loading rows={1} /> : hist.data.items.length === 0 ? <p className="muted small">No field has been changed.</p> : (
+        <table className="diff">
+          <caption className="sr-only">Field changes for {f.id}</caption>
+          <thead><tr><th scope="col">Field</th><th scope="col">Before</th><th scope="col">After</th><th scope="col">Who, when, why</th></tr></thead>
+          <tbody>
+            {hist.data.items.map((c) => (
+              <tr key={c.id}><td>{c.field}</td><td className="before">{fmtField(c.field, c.before)}</td><td className="after">{fmtField(c.field, c.after)}</td>
+                <td className="small">{c.actor} · {fmtDateTime(c.at)} · audit #{c.audit_seq}<br />{c.reason}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <Modal open={!!edit} onClose={() => setEdit(null)} title={`Change ${edit?.label.toLowerCase() ?? ''}`} sub={`${f.id} · ${inrP(f.amount_paise)}`}
+        footer={<><button className="btn btn-ghost" onClick={() => setEdit(null)}>Cancel</button>
+          <button className="btn btn-primary" disabled={!edit || value.trim() === String(current(edit) ?? '') || reason.trim().length < 5} onClick={save}>Save change</button></>}>
+        {edit && (
+          <>
+            <label className="lb" htmlFor="fe-val">New value {edit.field === 'rate_bp' && '(basis points, e.g. 710 = 7.10%)'}</label>
+            <input id="fe-val" className="inp" value={value} onChange={(e) => setValue(e.target.value)} />
+            <table className="diff">
+              <caption className="sr-only">Before and after</caption>
+              <thead><tr><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+              <tbody><tr><td className="before">{fmtField(edit.field, current(edit))}</td><td className="after">{fmtField(edit.field, value)}</td></tr></tbody>
+            </table>
+            <label className="lb" htmlFor="fe-reason" style={{ marginTop: 12 }}>Reason <em>*</em></label>
+            <textarea id="fe-reason" className="inp" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Branch name as printed on the bank's covering letter" />
+            <p className="hint">Recorded with your name and the time in the hash-chained audit trail.</p>
+            {err && <div className="error-box" role="alert"><span>{err}</span></div>}
+          </>
+        )}
+      </Modal>
+    </Panel>
+  );
+}
+frontend/src/pages/shared/Nudge.tsx:405:          <div className="pol-form">
+frontend/src/pages/shared/Nudge.tsx:412:          <div className="pol-form">
+frontend/src/pages/shared/Misc.tsx:115:export function RulesPolicy() {
+frontend/src/pages/shared/Misc.tsx:243:      <div className="pol-form">
+frontend/src/pages/shared/Misc.tsx:262:        <div className="pol-form">
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

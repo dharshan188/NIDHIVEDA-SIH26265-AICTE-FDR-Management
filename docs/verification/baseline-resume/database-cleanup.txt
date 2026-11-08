@@ -1,0 +1,9 @@
+Removed only these current-session disposable databases left by failed/ENOSPC runs:
+tl_baseline_6aef40da8f0d44b182778e66b9cc5df4
+tl_baseline_8b97473735de438084b989c051aece15
+tl_case_0a4e30d0da3b4bfca54f46e73b4b1911
+tl_template_d5b458f004cd43e782b2b9f9dd8246ee
+DROP DATABASE
+DROP DATABASE
+DROP DATABASE
+DROP DATABASE

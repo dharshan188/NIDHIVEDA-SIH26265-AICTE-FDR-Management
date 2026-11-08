@@ -1,0 +1,116 @@
+{
+  "assumptions_synthetic": {
+    "legacy_records": 10000,
+    "institutions": 2000,
+    "p_statement_line_with_utr": 0.7,
+    "p_remitter_on_statement_line": 0.5,
+    "p_no_reference": 0.25,
+    "p_reference_not_in_statement": 0.05,
+    "p_recorded_against_wrong_institution": 0.02,
+    "p_duplicate_record": 0.01,
+    "p_two_institutions_claim_one_utr": 0.01,
+    "refunds": 2000,
+    "p_return_before_confirmation": 0.03,
+    "p_return_after_confirmation": 0.002
+  },
+  "decisive_cases": [
+    {
+      "case": "Rs 35 lakh RTGS refund returned after debit + UTR",
+      "correct": "liability reopened, not Completed",
+      "baseline": "shows 'Completed' (false completion)",
+      "trust_ledger": "S01: 20 checks passed, 0 failed"
+    },
+    {
+      "case": "One Rs 50 lakh UTR for Rs 35 + 15 lakh obligations",
+      "correct": "both funded, nothing duplicated",
+      "baseline": "second obligation rejected as duplicate UTR",
+      "trust_ledger": "S03: 13 checks passed, 0 failed"
+    },
+    {
+      "case": "Legacy Rs 20 lakh credit, owner not provable",
+      "correct": "shown as declared / uncertain, not certified",
+      "baseline": "migrated record shows Verified",
+      "trust_ledger": "S04: 18 checks passed, 0 failed"
+    },
+    {
+      "case": "Contested item touches A; A's other Rs 35 lakh is proven",
+      "correct": "A's proven Rs 35 lakh releasable",
+      "baseline": "all of A blocked",
+      "trust_ledger": "S05: 12 checks passed, 0 failed"
+    },
+    {
+      "case": "FDR auto-renewed in 2019 to a new number; NOC in 2026",
+      "correct": "NOC names PNB-FD-2207 after fresh bank check",
+      "baseline": "NOC names PNB-FD-1001 (superseded number)",
+      "trust_ledger": "S06: 12 checks passed, 0 failed"
+    },
+    {
+      "case": "Manual renewal after maturity under a prohibiting edition",
+      "correct": "rejected with clause cited",
+      "baseline": "accepted",
+      "trust_ledger": "S07: 9 checks passed, 0 failed"
+    },
+    {
+      "case": "Bank key compromised from a past date",
+      "correct": "dependent evidence untrusted, payment stopped",
+      "baseline": "evidence still trusted",
+      "trust_ledger": "S09: 12 checks passed, 0 failed"
+    },
+    {
+      "case": "Approver tried to bypass a mandatory check on this case",
+      "correct": "approver blocked (conflict of interest)",
+      "baseline": "no notion of case handlers",
+      "trust_ledger": "S10: 13 checks passed, 0 failed"
+    }
+  ],
+  "migration": {
+    "records_imported": 10200,
+    "import_report": {
+      "records": 10200,
+      "linked_to_bank_credit": 6976,
+      "declared_only": 3024,
+      "disputed": 100,
+      "flagged_duplicate": 100,
+      "fdr_registered": 0
+    },
+    "events": 29377,
+    "import_seconds": 2.71,
+    "chain_verify_seconds": 0.26,
+    "replay_seconds": 0.34,
+    "chain_valid": true,
+    "replay_identical": true,
+    "records_against_wrong_institution_in_input": 190,
+    "baseline_marked_verified": 10200,
+    "baseline_verified_but_wrong_owner": 190,
+    "baseline_verified_without_bank_evidence": 3024,
+    "baseline_liability_overstated_by_duplicates_lakh": 1800.0,
+    "tl_certified_by_bank_evidence": 3419,
+    "tl_certified_but_wrong_owner": 0,
+    "tl_duplicates_flagged_not_added": 100,
+    "tl_disputes_opened": 100,
+    "tl_blocked_at_import": 0,
+    "tl_resubmission_requests_at_import": 0,
+    "tl_allocations_by_confidence": {
+      "CORROBORATED": 3419,
+      "LEGACY_DECLARED": 3385,
+      "UNCERTAIN": 172
+    },
+    "tl_items_declared_without_bank_trace": 3024,
+    "tl_wrong_owner_auto_flagged_uncertain": 74,
+    "tl_wrong_owner_not_detected_but_not_certified": 116,
+    "v4_annual_confirmation_institutions": 1988,
+    "v4_annual_confirmation_items": 10200,
+    "v5_institutions_contacted": 163,
+    "v5_items_contacted": 172
+  },
+  "payments": {
+    "refunds": 2000,
+    "returned_in_input": 67,
+    "baseline_false_completed": 67,
+    "tl_false_completed": 0,
+    "tl_reopened_liabilities": 67,
+    "events": 24004,
+    "seconds": 3.13,
+    "chain_valid": true
+  }
+}

@@ -1,0 +1,6 @@
+$ python3 -c 'import json; from pathlib import Path; p=json.loads(Path("docs/scenario-report.json").read_text()); s=Path("docs/scenario-report.md").read_text(); print("Generated:",p["generated_at"]); print("Required API scenarios:",len(p["scenarios"]),"passed:",p["passed"],"failed:",p["failed"]); assert len(p["scenarios"])==6 and p["passed"]==52 and p["failed"]==0; assert "6 scenarios, 52 checks passed, 0 failed" in s and "malware-scanner stub" in s; print("Markdown matches current generated JSON. R1–R6 are distinct from kernel-wrapper S01–S09 (9 / 115 in 34-scenario-output.txt).")'
+Generated: 2026-10-24T16:43:14
+Required API scenarios: 6 passed: 52 failed: 0
+Markdown matches current generated JSON. R1–R6 are distinct from kernel-wrapper S01–S09 (9 / 115 in 34-scenario-output.txt).
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

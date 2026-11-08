@@ -1,0 +1,14 @@
+{"steps": [
+  {"note": "Setup: AICTE's banker (SBI) signing key, Institution A, one Rs 35 lakh online security deposit received in 2016 with the application reference in the remittance."},
+  {"do": "bank", "bank": "SBI", "key": "SBI-K1", "valid_from": "2015-01-01", "at": "2015-01-01T09:00"},
+  {"do": "institution", "inst_id": "INST-A", "name": "Alpha Institute of Technology", "known_accounts": ["A-CUR-5010"], "at": "2016-05-01T09:00"},
+  {"do": "obligation", "obligation_id": "O1", "inst_id": "INST-A", "programme": "UG Engineering", "amount_lakh": 35, "instrument_class": "ONLINE", "reference": "AICTE-APP-0042", "at": "2016-05-02T09:00"},
+  {"do": "evidence", "id": "E-CR-1", "key": "SBI-K1", "kind": "credit_advice", "at": "2016-06-01T10:00",
+   "payload": {"utr": "UTR-DEP-1", "amount_lakh": 35, "value_date": "2016-06-01", "remitter_name": "Alpha Institute of Technology", "remitter_account": "A-CUR-5010", "narrative": "AICTE-APP-0042 security deposit"}},
+  {"do": "allocate", "alloc_id": "A1", "credit_id": "CR-UTR-DEP-1", "obligation_id": "O1", "amount_lakh": 35, "basis": "machine_reference", "at": "2016-06-01T12:00", "actor": "system:auto_match"},
+  {"do": "entitlement", "obligation_id": "O1", "basis": "Programme closure approved (EoA 2026-27); deposit refundable", "at": "2026-09-01T10:00", "actor": "section_officer:kiran"},
+  {"do": "affidavit", "obligation_id": "O1", "kind": "AFFIDAVIT-6", "format_ok": true, "at": "2026-09-01T10:05", "actor": "section_officer:kiran"},
+  {"do": "payee", "inst_id": "INST-A", "account": "A-CUR-5010", "ifsc": "SBIN0001234", "name": "Alpha Institute of Technology", "at": "2026-09-01T10:10", "actor": "institution:INST-A"},
+  {"do": "evidence", "id": "E-NL-1", "key": "SBI-K1", "kind": "name_lookup", "at": "2026-09-02T10:00",
+   "payload": {"account": "A-CUR-5010", "ifsc": "SBIN0001234", "name_at_bank": "Alpha Institute of Technology"}}
+]}

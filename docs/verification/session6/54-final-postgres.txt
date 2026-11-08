@@ -1,0 +1,92 @@
+$ .venv/bin/python tools/baseline/backend_check.py postgres
+Application fixture backend: postgres; PostgreSQL 16.15; disposable database: tl_baseline_4eaf97f449e143eeb35bd2ed054e5a98
+Required services: real ClamAV :3310, SeaweedFS :8334, Mailpit SMTP :1025 / HTTP :8025, PostgreSQL :55433
+Credentials loaded into child environment only (redacted). Command: python -m pytest -q -rs --tb=short -p hypothesis.extra.pytestplugin --require-services tests
+........................................................................ [ 48%]
+..F..................................................................... [ 97%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+_________ test_hypothesis_allocation_invariants_hold_in_kernel_and_db __________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 80, in test_hypothesis_allocation_invariants_hold_in_kernel_and_db
+  |     @given(st.lists(st.tuples(st.integers(0, 1), st.integers(1, 60)), min_size=1, max_size=8))
+  |                    ^^^^^^^^^^
+  |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 2299, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | hypothesis.errors.FlakyFailure: Hypothesis test_hypothesis_allocation_invariants_hold_in_kernel_and_db(db_path=PosixPath('/tmp/pytest-of-dharshan/pytest-8/test_hypothesis_allocation_inv0/t.db'), steps=[(0, 25)]) produces unreliable results: Failed on the first call but did not on a subsequent one (1 sub-exception)
+  | Failing test case: test_hypothesis_allocation_invariants_hold_in_kernel_and_db(
+  |     db_path=PosixPath('/tmp/pytest-of-dharshan/pytest-8/test_hypothesis_allocation_inv0/t.db'),
+  |     steps=[(0, 25)],
+  | )
+  | Failed to reproduce exception. Expected: 
+  | tests/test_ledger_db.py:85: in test_hypothesis_allocation_invariants_hold_in_kernel_and_db
+  |     _fresh_online(db, n)
+  | tests/test_ledger_db.py:76: in _fresh_online
+  |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+  | app/ledger.py:118: in run
+  |     raise error
+  | app/ledger.py:97: in run
+  |     result = fn(k)
+  |              ^^^^^
+  | tests/test_ledger_db.py:76: in <lambda>
+  |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+  |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | tests/test_ledger_db.py:76: in <listcomp>
+  |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+  |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  | ../trust-ledger-kernel/trustledger/kernel.py:442: in create_obligation
+  |     self._emit("obligation_created", actor, at, {"obligation_id": obligation_id, "inst_id": inst_id, "programme": programme,
+  | ../trust-ledger-kernel/trustledger/kernel.py:179: in _emit
+  |     raise StateError(f"time went backwards: {at} < {self.clock}")
+  | E   trustledger.kernel.StateError: time went backwards: 2026-10-24T16:12:39 < 2026-10-24T16:12:40
+  | 
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 1227, in _execute_once_for_engine
+    |     result = self.execute_once(data)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 1165, in execute_once
+    |     result = self.test_runner(data, run)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 827, in default_executor
+    |     return function(data)
+    |            ^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 1122, in run
+    |     return test(*args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 80, in test_hypothesis_allocation_invariants_hold_in_kernel_and_db
+    |     @given(st.lists(st.tuples(st.integers(0, 1), st.integers(1, 60)), min_size=1, max_size=8))
+    |                    ^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/.venv/lib/python3.11/site-packages/hypothesis/core.py", line 1012, in test
+    |     return self.test(*args, **kwargs)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 85, in test_hypothesis_allocation_invariants_hold_in_kernel_and_db
+    |     _fresh_online(db, n)
+    |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 76, in _fresh_online
+    |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+    |   File "/home/dharshan/sih2/backend/app/ledger.py", line 118, in run
+    |     raise error
+    |   File "/home/dharshan/sih2/backend/app/ledger.py", line 97, in run
+    |     result = fn(k)
+    |              ^^^^^
+    |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 76, in <lambda>
+    |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/backend/tests/test_ledger_db.py", line 76, in <listcomp>
+    |     LEDGER.run(db, lambda k: [k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at) for j in range(2)])
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/dharshan/sih2/trust-ledger-kernel/trustledger/kernel.py", line 442, in create_obligation
+    |     self._emit("obligation_created", actor, at, {"obligation_id": obligation_id, "inst_id": inst_id, "programme": programme,
+    |   File "/home/dharshan/sih2/trust-ledger-kernel/trustledger/kernel.py", line 179, in _emit
+    |     raise StateError(f"time went backwards: {at} < {self.clock}")
+    | trustledger.kernel.StateError: time went backwards: 2026-10-24T16:12:39 < 2026-10-24T16:12:40
+    +------------------------------------
+=============================== warnings summary ===============================
+../.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /home/dharshan/sih2/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 failed, 146 passed, 1 warning in 174.21s (0:02:54)
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

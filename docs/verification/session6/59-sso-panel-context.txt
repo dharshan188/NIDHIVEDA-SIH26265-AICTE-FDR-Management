@@ -1,0 +1,44 @@
+$ bash -lc 'rg -n -A 40 "export function SsoComplete" frontend/src/pages/Login.tsx; sed -n "1,18p" frontend/src/components/FdrPanels.tsx; sed -n "405,427p" frontend/src/pages/shared/Nudge.tsx'
+import { AlertTriangle, CheckCircle2, Download, FileCheck2, FileText, Loader2, Lock, MessageSquarePlus, Pencil, ShieldAlert, ShieldCheck, XCircle } from 'lucide-react';
+import { useState } from 'react';
+import { api, errorText, post } from '../api/client';
+import type { ContentCheck, DocInfo, Fdr, Timeline } from '../api/types';
+import { fmtDate, fmtDateTime, inrP } from '../lib/format';
+import { useApi, useStore } from '../store/Store';
+import { Empty, ErrorBox, Loading, Modal, Panel, SimBadge } from './ui';
+
+// ---------------------------------------------------------------- history timeline
+const TONE: Record<string, string> = { issued: 'b', submitted: 'b', bank_confirmation: 'g', verified: 'g', renewed: 'g', renumbered: 'o', matured: 'o',
+  matures: 'b', released: 'g', closed: 'b', discrepancy: 'r' };
+
+/** Issued → submitted → confirmed → verified → renewed / renumbered → matured → released, each with the rule editions in
+ * force on that date and how the relevant rule resolves then; any renewal gap is flagged above the list. */
+export function FdrTimeline({ fid }: { fid: string }) {
+  const d = useApi<Timeline>(`/fdrs/${fid}/timeline`, [fid]);
+  return (
+    <Panel title="History timeline" sub="Each date shows the APH editions in force then and how the rule for that step resolves">
+          <div className="pol-form">
+            <label>{t('Reminder windows (days before maturity)')}<input className="inp" value={before} onChange={(e) => setBefore(e.target.value)} /></label>
+            <label>{t('Deadline rung within (days)')}<input className="inp num" type="number" min={1} value={deadline} onChange={(e) => setDeadline(Number(e.target.value))} /></label>
+            <label>{t('Action-needed rung within (days)')}<input className="inp num" type="number" min={2} value={action} onChange={(e) => setAction(Number(e.target.value))} /></label>
+          </div>
+          <h3 className="small" style={{ marginTop: 14, color: 'var(--navy)' }}>{t('Before and after')}</h3>
+          <DiffTable changes={changes} caption="Notification policy: values before and after this change" />
+          <div className="pol-form">
+            <label>{t('Reason for the change (required, recorded in the audit trail)')}<input className="inp" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. circular AICTE/2026/14" /></label>
+            <div><button className="btn btn-primary" disabled={!changes.length || reason.trim().length < 5} onClick={save}>{t('Publish new version')}</button></div>
+          </div>
+        </>
+      ) : <p className="muted small">{t('Only AICTE officials can change the notification policy.')}</p>}
+    </Panel>
+  );
+}
+
+/** /l/:token — an action link from an e-mail, SMS or WhatsApp. It opens the record; it never acts on its own. */
+export function LinkLanding() {
+  const { token } = useParams();
+  const { user, checking } = useStore();
+  const resolving = useRef<string | null>(null);
+  const nav = useNavigate();
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

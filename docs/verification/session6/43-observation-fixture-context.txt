@@ -1,0 +1,133 @@
+$ bash -lc 'rg -n -A 42 "class Observation|def raise_|observations\"" backend/app/routers/records.py; rg -n "button|Modal|Text|Reason|label" frontend/src/components/FdrPanels.tsx | tail -60; rg --files frontend/src | rg "Rules"'
+130:class ObservationIn(BaseModel):
+131-    category: str = Field(pattern="^(missing_document|mismatch|query)$")
+132-    text: str = Field(min_length=5, max_length=2000)
+133-
+134-
+135-class ReplyIn(BaseModel):
+136-    text: str = Field(min_length=2, max_length=2000)
+137-
+138-
+139-def _obs(o: m.Observation, replies: list[m.ObservationReply]) -> dict:
+140-    return {"id": o.id, "fdr_id": o.fdr_id, "institution_id": o.institution_id, "category": o.category,
+141-            "category_label": CATEGORY_LABEL["en"][o.category], "text": o.text, "status": o.status, "raised_by": o.raised_by, "raised_at": o.raised_at,
+142-            "closed_by": o.closed_by, "closed_at": o.closed_at,
+143-            "replies": [{"id": r.id, "author": r.author, "side": r.side, "at": r.at, "text": r.text} for r in replies]}
+144-
+145-
+146-def _load(db: Session, p: Principal, oid: int) -> m.Observation:
+147-    o = db.get(m.Observation, oid)
+148-    if not o:
+149-        raise HTTPException(404, "not found")
+150-    institution_scope(p, o.institution_id)
+151-    return o
+152-
+153-
+154:@router.get("/fdrs/{fid}/observations")
+155-def list_for_fdr(fid: str, p: Principal = Depends(current), db: Session = Depends(get_db)):
+156-    f = db.get(m.Fdr, fid)
+157-    if not f:
+158-        raise HTTPException(404, "not found")
+159-    institution_scope(p, f.institution_id)
+160-    rows = db.scalars(select(m.Observation).where(m.Observation.fdr_id == fid).order_by(m.Observation.id)).all()
+161-    return {"items": [_obs(o, db.scalars(select(m.ObservationReply).where(m.ObservationReply.observation_id == o.id).order_by(m.ObservationReply.id)).all())
+162-                      for o in rows]}
+163-
+164-
+165:@router.get("/observations")
+166-def list_all(p: Principal = Depends(current), db: Session = Depends(get_db), status: str = ""):
+167-    q = select(m.Observation).order_by(m.Observation.id.desc())
+168-    if p.user.role == "INSTITUTION":
+169-        q = q.where(m.Observation.institution_id == p.user.institution_id)
+170-    if status:
+171-        q = q.where(m.Observation.status == status)
+172-    return {"items": [_obs(o, []) for o in db.scalars(q.limit(200))]}
+173-
+174-
+175:@router.post("/fdrs/{fid}/observations")
+176:def raise_observation(fid: str, body: ObservationIn, p: Principal = Depends(require("AICTE_OFFICIAL")), db: Session = Depends(get_db)):
+177-    f = db.get(m.Fdr, fid)
+178-    if not f:
+179-        raise HTTPException(404, "not found")
+180-    at = iso(now_ist())
+181-    o = m.Observation(fdr_id=fid, institution_id=f.institution_id, category=body.category, text=body.text, status="open", raised_by=p.actor, raised_at=at)
+182-    db.add(o)
+183-    db.flush()
+184-    portal_audit.record(db, "observation_raised", p.actor, {"observation_id": o.id, "fdr_id": fid, "institution_id": f.institution_id,
+185-                                                            "category": body.category}, at=at)
+186-    notify(db, f"institution:{f.institution_id}", "observation_raised",
+187-           {"fdr_id": fid, "category": {"en": CATEGORY_LABEL["en"][body.category], "hi": CATEGORY_LABEL["hi"][body.category]}, "text": body.text[:300]},
+188-           ref=fid, at=at)
+189-    db.commit()
+190-    return {"observation": _obs(o, [])}
+191-
+192-
+193-@router.post("/observations/{oid}/replies")
+194-def reply(oid: int, body: ReplyIn, p: Principal = Depends(require("INSTITUTION", "AICTE_OFFICIAL")), db: Session = Depends(get_db)):
+195-    o = _load(db, p, oid)
+196-    if o.status == "closed":
+197-        raise HTTPException(409, "this observation is closed")
+198-    at = iso(now_ist())
+199-    side = "institution" if p.user.role == "INSTITUTION" else "aicte"
+200-    db.add(m.ObservationReply(observation_id=o.id, author=p.actor, side=side, at=at, text=body.text))
+201-    if side == "institution":
+202-        o.status = "answered"
+203-        inst = db.get(m.Institution, o.institution_id)
+204-        notify(db, "aicte", "observation_answered", {"fdr_id": o.fdr_id, "institution": inst.name if inst else o.institution_id, "text": body.text[:300]},
+205-               ref=o.fdr_id, at=at, institution_id=o.institution_id)
+206-    portal_audit.record(db, "observation_replied", p.actor, {"observation_id": o.id, "fdr_id": o.fdr_id, "institution_id": o.institution_id,
+207-                                                             "side": side, "status": o.status}, at=at)
+208-    db.commit()
+209-    return list_for_fdr(o.fdr_id, p, db)
+210-
+211-
+212-@router.post("/observations/{oid}/close")
+213-def close(oid: int, p: Principal = Depends(require("AICTE_OFFICIAL")), db: Session = Depends(get_db)):
+214-    o = _load(db, p, oid)
+215-    if o.status == "closed":
+216-        raise HTTPException(409, "already closed")
+217-    o.status, o.closed_by, o.closed_at = "closed", p.actor, iso(now_ist())
+218-    portal_audit.record(db, "observation_closed", p.actor, {"observation_id": o.id, "fdr_id": o.fdr_id, "institution_id": o.institution_id})
+1:import { AlertTriangle, CheckCircle2, Download, FileCheck2, FileText, Loader2, Lock, MessageSquarePlus, Pencil, ShieldAlert, ShieldCheck, XCircle } from 'lucide-react';
+3:import { api, errorText, post } from '../api/client';
+7:import { Empty, ErrorBox, Loading, Modal, Panel, SimBadge } from './ui';
+24:              <span><b>Renewal gap</b><span>{g.label} (since {fmtDate(g.since)})</span></span>
+31:                <b>{e.label}</b>
+52:    <ul className="checks" aria-label="Content checks">
+56:          <span>{c.label}{c.ok === false && c.detail ? `: ${c.detail}` : c.ok === null ? ' (not run)' : ''}</span>
+100:                <FileText size={20} color="var(--red)" aria-hidden />
+102:                  <div style={{ fontWeight: 600, color: 'var(--ink)' }}>{x.name} <span className="muted small">· {x.doc_type_label}</span></div>
+115:                <button className="btn btn-ghost btn-sm" onClick={() => verify(x.id)} disabled={busy === x.id} aria-describedby={`sha-${x.id}`}>
+117:                </button>
+129:interface Obs { id: number; category: string; category_label: string; text: string; status: 'open' | 'answered' | 'closed'; raised_by: string; raised_at: string;
+140:  const [text, setText] = useState('');
+145:      action={role === 'aicte' ? <button className="btn btn-ghost btn-sm" onClick={() => setRaise(true)}><MessageSquarePlus size={15} aria-hidden /> Raise observation</button> : undefined}>
+151:                <b>#{o.id} · {o.category_label}</b>
+163:                  <label className="sr-only" htmlFor={`rep-${o.id}`}>Reply to observation {o.id}</label>
+167:                    <button className="btn btn-primary btn-sm" disabled={(reply[o.id] ?? '').trim().length < 2}
+168:                      onClick={async () => { if (await run(() => post(`/observations/${o.id}/replies`, { text: reply[o.id] }), 'Reply recorded') !== undefined) setReply({ ...reply, [o.id]: '' }); }}>Send reply</button>
+169:                    {role === 'aicte' && <button className="btn btn-green btn-sm" onClick={() => run(() => post(`/observations/${o.id}/close`), `Observation ${o.id} closed`)}>Close observation</button>}
+177:      <Modal open={raise} onClose={() => setRaise(false)} title="Raise a scrutiny observation" sub={`${fid} · the institution is notified through the Nudge Ladder`}
+178:        footer={<><button className="btn btn-ghost" onClick={() => setRaise(false)}>Cancel</button>
+179:          <button className="btn btn-primary" disabled={text.trim().length < 5}
+180:            onClick={async () => { if (await run(() => post(`/fdrs/${fid}/observations`, { category: cat, text }), 'Observation raised') !== undefined) { setRaise(false); setText(''); } }}>Raise</button></>}>
+181:        <label className="lb" htmlFor="obs-cat">Category</label>
+185:        <label className="lb" htmlFor="obs-text" style={{ marginTop: 12 }}>Observation <em>*</em></label>
+186:        <textarea id="obs-text" className="inp" value={text} onChange={(e) => setText(e.target.value)} placeholder="e.g. Bank lien letter is not on record" />
+187:      </Modal>
+193:interface FieldRule { entity: string; field: string; label: string; roles: string[]; pii: boolean; fdr_states: string[] | null; you_can_edit: boolean }
+206:  const [reason, setReason] = useState('');
+213:    setReason('');
+220:      await run(async () => undefined, `${edit!.label} updated`);
+223:      setErr(errorText(e));
+234:                <dt>{r.label}</dt>
+237:                  {allowedNow ? <button className="btn btn-ghost btn-xs" onClick={() => open(r)} aria-label={`Edit ${r.label}`}><Pencil size={13} aria-hidden /> Edit</button>
+258:      <Modal open={!!edit} onClose={() => setEdit(null)} title={`Change ${edit?.label.toLowerCase() ?? ''}`} sub={`${f.id} · ${inrP(f.amount_paise)}`}
+259:        footer={<><button className="btn btn-ghost" onClick={() => setEdit(null)}>Cancel</button>
+260:          <button className="btn btn-primary" disabled={!edit || value.trim() === String(current(edit) ?? '') || reason.trim().length < 5} onClick={save}>Save change</button></>}>
+263:            <label className="lb" htmlFor="fe-val">New value {edit.field === 'rate_bp' && '(basis points, e.g. 710 = 7.10%)'}</label>
+270:            <label className="lb" htmlFor="fe-reason" style={{ marginTop: 12 }}>Reason <em>*</em></label>
+271:            <textarea id="fe-reason" className="inp" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Branch name as printed on the bank's covering letter" />
+276:      </Modal>
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

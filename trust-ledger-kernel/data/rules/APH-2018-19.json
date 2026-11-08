@@ -1,0 +1,14 @@
+{
+  "edition_id": "APH-2018-19",
+  "title": "AICTE Approval Process Handbook 2018-19 (test pack)",
+  "effective_from": "2018-01-01",
+  "effective_to": "2019-03-31",
+  "window_note": "Approximate validity window. Legal cell to confirm the exact dates.",
+  "source_status": "reviewer_reported_unverified",
+  "source_note": "Cl. 5.34.2 as quoted by the round-4 reviewer. The handbook PDF could not be opened from our environment (download blocked), so this pack must be confirmed by the legal cell before it is applied.",
+  "rules": {
+    "fdr.manual_renewal_after_maturity": {"value": "prohibited", "cite": "Cl. 5.34.2 (reviewer-reported)"},
+    "fdr.auto_renewal": {"value": "accepted_with_bank_remark", "cite": "Cl. 5.34.2 (reviewer-reported)"},
+    "fdr.release_requires_bank_remark_if_auto_renewed": {"value": true, "cite": "Cl. 5.34.2 (reviewer-reported)"}
+  }
+}

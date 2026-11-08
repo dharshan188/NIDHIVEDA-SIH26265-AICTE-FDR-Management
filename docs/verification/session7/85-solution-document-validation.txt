@@ -1,0 +1,20 @@
+$ .venv/bin/python -c 'from pathlib import Path; import re,hashlib; p=Path("solution.md"); s=p.read_text(); missing=[]; checked=0
+for raw in re.findall(r"\]\(([^)]+)\)",s):
+ target=raw.split("#")[0]
+ if not target or "://" in target:continue
+ checked+=1
+ if not (p.parent/target).exists():missing.append(target)
+assert not missing,missing
+for i in range(1,11):assert len(re.findall(r"^\| R%02d \|"%i,s,re.M))==1,i
+assert len(re.findall(r"^## [0-9]+\.",s,re.M))==14
+for phrase in ["SIMULATED","147 passed","ZAP is unverified","No live renewal-gap screenshot","Two moderate npm","Whole-directory gitleaks"]:assert phrase in s,phrase
+print("Created:",p.resolve());print("Requirement mapping: R01–R10, all ten present exactly once");print("Sections: 14 numbered sections plus problem metadata and source provenance");print("Local links checked:",checked,"; missing:",len(missing));print("Words:",len(s.split()));print("Document SHA-256:",hashlib.sha256(p.read_bytes()).hexdigest());print("Documentation-only addition; existing Session 7 test evidence referenced, no new runtime test run claimed. No commits or container operations.")'
+Created: /home/dharshan/sih2/solution.md
+Requirement mapping: R01–R10, all ten present exactly once
+Sections: 14 numbered sections plus problem metadata and source provenance
+Local links checked: 63 ; missing: 0
+Words: 3622
+Document SHA-256: d01e511b2f9dc3709f464a7454219115b5763bf157332dce96a7fed6eca1f965
+Documentation-only addition; existing Session 7 test evidence referenced, no new runtime test run claimed. No commits or container operations.
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

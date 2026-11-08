@@ -1,0 +1,14 @@
+$ python3 -c 'import ast; from pathlib import Path; p=Path("backend/tests/test_completion.py"); names=[n.name for n in ast.parse(p.read_text()).body if isinstance(n,ast.FunctionDef) and n.name.startswith("test_")]; print(str(p)+": "+str(len(names))+" test functions"); print("\n".join(names))'
+backend/tests/test_completion.py: 10 test functions
+test_precheck_reports_every_check_and_the_scan_without_storing
+test_precheck_flags_malware_and_audits_it
+test_precheck_is_for_institutions_only
+test_upload_keeps_content_checks_and_sha256_recheck_detects_tampering
+test_sha256_recheck_is_scoped_to_the_institution
+test_changes_diff_is_leaf_level
+test_policy_editor_records_before_after_in_the_chain_and_only_approvers_edit
+test_notification_policy_change_carries_before_after
+test_what_changed_links_point_at_pages_each_role_has
+test_object_store_failure_is_a_clear_503_and_stores_nothing
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

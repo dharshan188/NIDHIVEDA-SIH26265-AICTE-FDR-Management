@@ -1,0 +1,5 @@
+$ bash -lc 'curl --fail -s http://localhost:5174/api/health; ss -ltnpH "( sport = :8001 or sport = :5174 )"'
+{"ok":true,"env":"dev","kernel_events":3422,"bank_layer":"SIMULATED"}LISTEN 0      2048   127.0.0.1:8001 0.0.0.0:* users:(("python",pid=59269,fd=3),("python",pid=59256,fd=3))
+LISTEN 0      511    127.0.0.1:5174 0.0.0.0:* users:(("MainThread",pid=55395,fd=21))                     
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

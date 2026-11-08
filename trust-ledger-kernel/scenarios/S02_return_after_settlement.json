@@ -1,0 +1,150 @@
+{
+ "id": "S02",
+ "title": "Confirmation overdue, then settled, then a late return reverses the settlement",
+ "reviewer_ref": "Round 4: Section 9 follow-up 'reverse the apparent settlement without deleting the original transaction'",
+ "include": [
+  "online_base"
+ ],
+ "steps": [
+  {
+   "do": "authorise",
+   "case_id": "R2",
+   "obligation_id": "O1",
+   "at": "2026-09-10T10:00",
+   "approver": "deputy_director:meera",
+   "rail": "RTGS"
+  },
+  {
+   "do": "initiate",
+   "refund_id": "R2",
+   "at": "2026-09-10T11:00",
+   "actor": "finance_officer:ravi"
+  },
+  {
+   "do": "evidence",
+   "id": "E-DR-1",
+   "key": "SBI-K1",
+   "kind": "debit_advice",
+   "at": "2026-09-10T11:05",
+   "payload": {
+    "refund_id": "R2",
+    "utr": "SBINR520260910000A1",
+    "amount_lakh": 35
+   }
+  },
+  {
+   "do": "tick",
+   "at": "2026-09-10T12:30"
+  },
+  {
+   "expect": "notification",
+   "to": "finance",
+   "kind": "confirmation_overdue",
+   "contains": "SBINR520260910000A1"
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R2",
+   "equals": "DEBITED"
+  },
+  {
+   "do": "tick",
+   "at": "2026-09-10T12:35"
+  },
+  {
+   "note": "Second tick: the overdue alert is not duplicated."
+  },
+  {
+   "expect": "value",
+   "of": "outbox",
+   "len": 1
+  },
+  {
+   "do": "evidence",
+   "id": "E-CC-1",
+   "key": "SBI-K1",
+   "kind": "credit_confirmation",
+   "at": "2026-09-10T12:40",
+   "payload": {
+    "utr": "SBINR520260910000A1",
+    "credited_at": "2026-09-10T12:38",
+    "amount_lakh": 35,
+    "beneficiary_account": "A-CUR-5010"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R2",
+   "equals": "SETTLED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 0,
+   "settled_refunds_lakh": 35
+  },
+  {
+   "note": "Two days later the beneficiary bank reverses its own credit and returns the money (anomalous but possible)."
+  },
+  {
+   "do": "evidence",
+   "id": "E-RET-1",
+   "key": "SBI-K1",
+   "kind": "return_advice",
+   "at": "2026-09-12T15:00",
+   "payload": {
+    "original_utr": "SBINR520260910000A1",
+    "return_utr": "SBINR520260912000B7",
+    "amount_lakh": 35,
+    "reason_code": "CREDIT_REVERSED_BY_BENEFICIARY_BANK",
+    "returned_at": "2026-09-12T15:00"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R2",
+   "equals": "REISSUE_REQUIRED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 35,
+   "settled_refunds_lakh": 0,
+   "in_transit_lakh": 0
+  },
+  {
+   "expect": "notification",
+   "to": "finance",
+   "kind": "payment_returned",
+   "contains": "AFTER it was marked settled"
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R2",
+   "path": "attempts.0.confirm_evidence",
+   "equals": "E-CC-1"
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R2",
+   "path": "attempts.0.returned_after_settlement",
+   "equals": true
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R2",
+   "path": "history.4.1",
+   "equals": "RETURNED_AFTER_SETTLEMENT"
+  },
+  {
+   "expect": "chain",
+   "valid": true
+  },
+  {
+   "expect": "replay_matches"
+  }
+ ]
+}

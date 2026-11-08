@@ -1,0 +1,67 @@
+$ bash -lc 'rg -n -A 50 "renewals/gaps" backend/app/routers/records.py backend/app/routers/*.py; rg -n -A 30 "function SsoComplete" frontend/src -g "*.tsx"'
+backend/app/routers/data.py:320:@router.get("/renewals/gaps")
+backend/app/routers/data.py-321-def renewal_gaps(p: Principal = Depends(current), db: Session = Depends(get_db)):
+backend/app/routers/data.py-322-    """Every live FDR where a renewal is expected but neither a renewal FDR nor a bank notice has arrived."""
+backend/app/routers/data.py-323-    k, today = LEDGER.kernel(), date.today()
+backend/app/routers/data.py-324-    q = select(m.Fdr, m.Institution).join(m.Institution).where(m.Fdr.status.in_(("verified", "pending", "discrepancy")))
+backend/app/routers/data.py-325-    if p.user.role == "INSTITUTION":
+backend/app/routers/data.py-326-        q = q.where(m.Fdr.institution_id == p.user.institution_id)
+backend/app/routers/data.py-327-    rows = []
+backend/app/routers/data.py-328-    for f, i in db.execute(q.order_by(m.Fdr.maturity_date)):
+backend/app/routers/data.py-329-        for g in timeline.gaps(db, k, f, today):
+backend/app/routers/data.py-330-            rows.append({**g, "fdr_id": f.id, "institution_id": i.id, "institution": i.name, "bank": f.bank, "maturity_date": f.maturity_date.isoformat(),
+backend/app/routers/data.py-331-                         "amount_paise": f.amount_paise})
+backend/app/routers/data.py-332-    return {"as_of": today.isoformat(), "total": len(rows), "items": rows}
+backend/app/routers/data.py-333-
+backend/app/routers/data.py-334-
+backend/app/routers/data.py-335-# ------------------------------------------------------------------ institutions
+backend/app/routers/data.py-336-@router.get("/institutions")
+backend/app/routers/data.py-337-def list_institutions(p: Principal = Depends(require("AICTE_OFFICIAL", "AUDITOR")), db: Session = Depends(get_db), q: str = "", state: str = "",
+backend/app/routers/data.py-338-                      compliance: str = "", page: int = 1, size: int = 14):
+backend/app/routers/data.py-339-    rank = case((m.Fdr.status == "discrepancy", 3), (m.Fdr.status == "pending", 2), (m.Fdr.status == "verified", 1), else_=0)
+backend/app/routers/data.py-340-    live = case((m.Fdr.status.in_(("verified", "pending", "discrepancy")), 1), else_=0)
+backend/app/routers/data.py-341-    amt = case((m.Fdr.status.in_(("verified", "pending", "discrepancy")), m.Fdr.amount_paise), else_=0)
+backend/app/routers/data.py-342-    stmt = select(m.Institution, func.coalesce(func.max(rank), 0), func.coalesce(func.sum(live), 0), func.coalesce(func.sum(amt), 0)) \
+backend/app/routers/data.py-343-        .join(m.Fdr, m.Fdr.institution_id == m.Institution.id, isouter=True).group_by(m.Institution.id)
+backend/app/routers/data.py-344-    if q:
+backend/app/routers/data.py-345-        like = f"%{q.lower()}%"
+backend/app/routers/data.py-346-        stmt = stmt.where(or_(func.lower(m.Institution.name).like(like), m.Institution.aicte_id.like(like), func.lower(m.Institution.city).like(like)))
+backend/app/routers/data.py-347-    if state:
+backend/app/routers/data.py-348-        stmt = stmt.where(m.Institution.state == state)
+backend/app/routers/data.py-349-    names = {3: "Discrepancy", 2: "Pending Verification", 1: "Compliant", 0: "No Valid FDR"}
+backend/app/routers/data.py-350-    rows = [{**S.institution(i), "compliance": names[r], "live_fdrs": int(n), "amount_paise": int(a)} for i, r, n, a in db.execute(stmt.order_by(m.Institution.id))]
+backend/app/routers/data.py-351-    counts: dict[str, int] = {}
+backend/app/routers/data.py-352-    for r in rows:
+backend/app/routers/data.py-353-        counts[r["compliance"]] = counts.get(r["compliance"], 0) + 1
+backend/app/routers/data.py-354-    if compliance:
+backend/app/routers/data.py-355-        rows = [r for r in rows if r["compliance"] == compliance]
+backend/app/routers/data.py-356-    return {"total": len(rows), "counts": counts, "states": sorted({s for (s,) in db.execute(select(m.Institution.state).distinct())}),
+backend/app/routers/data.py-357-            "items": rows[(page - 1) * size: page * size]}
+backend/app/routers/data.py-358-
+backend/app/routers/data.py-359-
+backend/app/routers/data.py-360-@router.get("/institutions/{inst_id}")
+backend/app/routers/data.py-361-def get_institution(inst_id: str, p: Principal = Depends(current), db: Session = Depends(get_db)):
+backend/app/routers/data.py-362-    institution_scope(p, inst_id)
+backend/app/routers/data.py-363-    i = db.get(m.Institution, inst_id)
+backend/app/routers/data.py-364-    if not i:
+backend/app/routers/data.py-365-        raise HTTPException(404, "not found")
+backend/app/routers/data.py-366-    fdrs = [S.fdr(f, i) for f in db.scalars(select(m.Fdr).where(m.Fdr.institution_id == inst_id).order_by(m.Fdr.submitted_on.desc()))]
+backend/app/routers/data.py-367-    return {"institution": S.institution(i), "fdrs": fdrs, "stats": _stats(db, inst_id)}
+backend/app/routers/data.py-368-
+backend/app/routers/data.py-369-
+backend/app/routers/data.py-370-# ------------------------------------------------------------------ notifications and messages
+frontend/src/App.tsx:102:function SsoComplete() {
+frontend/src/App.tsx-103-  const { setUser } = useStore();
+frontend/src/App.tsx-104-  const nav = useNavigate();
+frontend/src/App.tsx-105-  useEffect(() => {
+frontend/src/App.tsx-106-    api<{ user: User }>('/auth/me')
+frontend/src/App.tsx-107-      .then((r) => {
+frontend/src/App.tsx-108-        setUser(r.user);
+frontend/src/App.tsx-109-        nav(ROLE_BASE[r.user.role], { replace: true });
+frontend/src/App.tsx-110-      })
+frontend/src/App.tsx-111-      .catch(() => nav('/login', { replace: true }));
+frontend/src/App.tsx-112-  }, [setUser, nav]);
+frontend/src/App.tsx-113-  return <div className="empty" role="status" style={{ paddingTop: 160 }}>Completing Government SSO sign-in…</div>;
+frontend/src/App.tsx-114-}
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

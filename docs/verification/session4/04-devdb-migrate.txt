@@ -1,0 +1,8 @@
+$ cd backend && ../.venv/bin/python -m alembic -c alembic.ini current; upgrade head; current
+0001
+0006 (head)
+$ verify both hash chains of backend/trustledger.db
+kernel events 3422 valid True
+portal events 70 valid True
+fdrs 821 documents 1642
+4142db84fe9ea7bad404ed8d4bca4c63ed27d780e7ce5980f1d0e173c95e9c14  trustledger.db

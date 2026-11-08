@@ -1,0 +1,18 @@
+signed in through the login page: 1-xyz-demo (INSTITUTION / institution)
+signed in through the login page: kiran@aicte-india.org (AICTE_OFFICIAL / section_officer)
+signed in through the login page: meera@aicte-india.org (AICTE_OFFICIAL / deputy_director)
+signed in through the login page: ravi@aicte-india.org (AICTE_OFFICIAL / finance_officer)
+PASS institution submitted the release request :: REL202600121
+PASS section officer recorded scrutiny
+PASS deputy director approved with DSC :: 4eb4ac8a6b3b
+PASS refund authorised for the approved request :: RF-REL202600121
+PASS after the bank debit the institution sees "NOT yet complete" :: Sent from AICTE's bank on 2026-10-24T19:52:32 via RTGS, UTR SBINR520261024000004. Waiting for your bank's credit confirmation. NOT yet complete.
+PASS ...and not "Completed"
+PASS after the return the institution sees "AICTE still owes you ₹35.00 lakh" :: Payment UTR SBINR520261024000004 was returned by your bank on 2026-10-24 (BENEFICIARY_BANK_REJECT). NOT complete: AICTE still owes you ₹35.00 lakh. Owner: AICTE Finance. Target re-issue: 2026-10-30.
+PASS ...and not "Completed"
+PASS after the second debit the institution still sees "NOT yet complete" :: Sent from AICTE's bank on 2026-10-24T19:52:41 via RTGS, UTR SBINR520261024000005. Waiting for your bank's credit confirmation. NOT yet complete.
+PASS only after the positive credit confirmation the institution sees "Completed" :: Completed: your bank confirmed credit on 2026-10-24T19:52:44 (UTR SBINR520261024000005).
+PASS ledger state SETTLED with two attempts (one returned, one settled) :: SETTLED, attempts RETURNED / SETTLED
+PASS both hash chains verify after the run
+
+S01 browser run: 12/12 checks passed; console errors: 0

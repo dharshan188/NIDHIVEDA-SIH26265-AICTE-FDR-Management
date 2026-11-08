@@ -1,0 +1,11 @@
+{
+  "id": "S11",
+  "title": "Someone edits the stored Rs 35 lakh credit to Rs 0.01 lakh directly in the database",
+  "reviewer_ref": "Rounds 2-4: hash-chained audit trail (external RFC 3161 anchoring not built in this kernel)",
+  "include": ["online_base"],
+  "steps": [
+    {"expect": "chain", "valid": true},
+    {"do": "tamper", "seq": 4, "path": ["envelope", "payload", "amount"], "value": 1000000},
+    {"expect": "chain", "valid": false, "first_bad_seq": 4}
+  ]
+}

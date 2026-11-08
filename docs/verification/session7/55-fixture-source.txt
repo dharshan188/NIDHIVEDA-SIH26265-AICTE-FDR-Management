@@ -1,0 +1,217 @@
+$ bash -lc 'cat backend/tests/sequence_clock.py backend/tests/test_zz_probe.py; sed -n "1,165p" backend/tests/test_ledger_db.py'
+"""Strictly increasing test-event times, independent of slow database operations."""
+from datetime import datetime, timedelta
+from app.ledger import LEDGER
+
+
+class SequenceClock:
+    def __init__(self):
+        self.last = max(datetime.now().replace(microsecond=0), datetime.fromisoformat(LEDGER.kernel().clock))
+
+    def next(self, delta=0):
+        if delta < 0:
+            raise ValueError("sequence deltas must be non-negative")
+        self.last = max(self.last, datetime.fromisoformat(LEDGER.kernel().clock)) + timedelta(seconds=delta + 1)
+        return self.last.isoformat(timespec="seconds")
+
+
+def guarded_run(db, at, command):
+    # Equal timestamps are legal in the kernel, but not in this strict test sequence.
+    if LEDGER.kernel().clock and at <= LEDGER.kernel().clock:
+        raise ValueError("test sequence timestamps must be strictly increasing")
+    return LEDGER.run(db, command)
+from app import timeline
+from app.db import SessionLocal
+from app.ledger import LEDGER
+from app import models as m
+import pytest
+from datetime import datetime, timedelta
+from sequence_clock import SequenceClock, guarded_run
+from trustledger.kernel import StateError
+
+
+def test_non_increasing_fixture_times_are_rejected(db_path):
+    with SessionLocal() as db:
+        clock = SequenceClock()
+        at = clock.next(0)
+        guarded_run(db, at, lambda k: k.create_obligation("CLOCK-GUARD", "INST0003", "test", 1, "ONLINE", at))
+        count = len(LEDGER.kernel().store)
+        earlier = (datetime.fromisoformat(at) - timedelta(seconds=1)).isoformat(timespec="seconds")
+        for bad in (at, earlier):
+            with pytest.raises(ValueError, match="strictly increasing"):
+                guarded_run(db, bad, lambda k: k.create_obligation("CLOCK-BAD", "INST0003", "test", 1, "ONLINE", bad))
+        with pytest.raises(StateError, match="time went backwards"):
+            LEDGER.run(db, lambda k: k.create_obligation("CLOCK-BACKWARDS", "INST0003", "test", 1, "ONLINE", earlier))
+        assert len(LEDGER.kernel().store) == count
+        assert clock.next(0) > at
+        f = db.get(m.Fdr, "FDR202600126")
+        tl = timeline.fdr_timeline(db, LEDGER.kernel(), f)
+        for e in tl["events"]:
+            print(repr([e["date"], e["label"], e["source"], ", ".join(e["editions_in_force"]), f"{e['rule']['key']}: {e['rule']['status']}" if e.get("rule") else ""]))
+"""Database invariants, rules escalation, legacy import, audit chain, scenarios, dashboard figures."""
+from __future__ import annotations
+
+from datetime import date, datetime, timedelta
+
+import pytest
+from hypothesis import HealthCheck, given, settings
+from hypothesis import strategies as st
+from sqlalchemy import func, select, text
+from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
+
+from app import models as m
+from app.db import SessionLocal
+from app.ledger import LEDGER, LedgerError
+from conftest import ANIL, AUD, AUDITOR, LEGAL, MEERA, OFF
+from sequence_clock import SequenceClock, guarded_run
+
+LAKH = 100_000 * 100
+_COUNTER = __import__("itertools").count(1)
+
+
+# ------------------------------------------------------------------ DB-enforced invariants (bypassing the kernel)
+def test_db_refuses_over_allocation_of_a_credit(db_path):
+    with SessionLocal() as db:
+        db.add(m.Obligation(obligation_id="X-O", institution_id="INST0003", programme="t", instrument_class="ONLINE", amount_paise=100 * LAKH))
+        db.flush()
+        # CR-UTR-LMN-2017-0507 (50 L) is fully allocated 35 + 15 in the seed
+        db.add(m.Allocation(alloc_id="X-A", credit_id="CR-UTR-LMN-2017-0507", obligation_id="X-O", amount_paise=1, basis="institution_declaration"))
+        with pytest.raises((IntegrityError, OperationalError, ProgrammingError), match="exceed credit"):
+            db.flush()
+
+
+def test_db_refuses_allocation_beyond_required(db_path):
+    with SessionLocal() as db:
+        db.add(m.BankCredit(credit_id="X-C", utr="X-UTR", amount_paise=100 * LAKH, kind="deposit", bank="SBI", evidence_id="x", value_date="2026-01-01"))
+        db.flush()
+        db.add(m.Allocation(alloc_id="X-A", credit_id="X-C", obligation_id="ONL-XYZ-UG", amount_paise=1, basis="institution_declaration"))
+        with pytest.raises((IntegrityError, OperationalError, ProgrammingError), match="exceed required"):
+            db.flush()
+
+
+def test_db_refuses_allocating_a_returned_payment(db_path):
+    with SessionLocal() as db:
+        ret = db.scalars(select(m.BankCredit).where(m.BankCredit.kind == "return")).first()
+        db.add(m.Allocation(alloc_id="X-A", credit_id=ret.credit_id, obligation_id="ONL-PQR-UG", amount_paise=1, basis="institution_declaration"))
+        with pytest.raises((IntegrityError, OperationalError, ProgrammingError), match="returned-payment"):
+            db.flush()
+
+
+def test_db_unique_utr_per_debit_and_fdr_per_bank(db_path):
+    with SessionLocal() as db:
+        a = db.scalars(select(m.PaymentAttempt)).first()
+        db.add(m.PaymentAttempt(refund_id=a.refund_id, attempt_no=99, utr=a.utr, amount_paise=1, status="DEBITED", debited_at="x"))
+        with pytest.raises(IntegrityError):
+            db.flush()
+        db.rollback()
+        f = db.get(m.Fdr, "FDR202600125")
+        db.add(m.Instrument(instrument_id="X-I", obligation_id=f.obligation_id, number=f.instrument_no, bank=f.bank, amount_paise=1,
+                            maturity_date="2030-01-01", status="ACTIVE", source="x"))
+        with pytest.raises(IntegrityError):
+            db.flush()
+
+
+def test_event_store_is_insert_only(db_path):
+    with SessionLocal() as db:
+        with pytest.raises((IntegrityError, OperationalError, ProgrammingError), match="insert-only"):
+            db.execute(text("DELETE FROM kernel_events WHERE seq = 1"))
+
+
+def _fresh_online(db, n: int, clock):
+    """A credit and two obligations owned by a seeded online institution, created through the kernel."""
+    at = clock.next()
+    from app.bank.deliver import deliver
+    from app.bank.simulator import gateway
+    env = gateway(db).advice.credit_advice("SBI", f"HYP-{n}", 50 * LAKH, at[:10], "Hyp", "HYP-ACCT", "deposit")
+    assert deliver(db, env, evidence_id=f"E-HYP-{n}", at=at)["status"] == "ACCEPTED"
+    for j in range(2):
+        at = clock.next()
+        guarded_run(db, at, lambda k, j=j, at=at: k.create_obligation(f"HYP-{n}-{j}", "INST0003", "t", (20 + 10 * j) * LAKH, "ONLINE", at))
+
+
+@settings(max_examples=40, deadline=None, suppress_health_check=[HealthCheck.function_scoped_fixture])
+@given(st.lists(st.tuples(st.integers(0, 1), st.integers(1, 60), st.integers(0, 5)), min_size=1, max_size=8))
+def test_hypothesis_allocation_invariants_hold_in_kernel_and_db(db_path, steps):
+    """Random allocation attempts: the kernel refuses violations, and the DB sums never exceed credit or requirement."""
+    n = next(_COUNTER)
+    clock = SequenceClock()
+    with SessionLocal() as db:
+        _fresh_online(db, n, clock)
+        for i, (j, lakh, delta) in enumerate(steps):
+            at = clock.next(delta)
+            try:
+                guarded_run(db, at, lambda k, i=i, j=j, lakh=lakh, at=at: k.allocate(f"HYP-{n}-A{i}", f"CR-HYP-{n}", f"HYP-{n}-{j}", lakh * LAKH,
+                                                                              "institution_declaration", at, "finance_reconciliation_officer:anil"))
+            except Exception as e:  # noqa: BLE001
+                assert type(e).__name__ in ("OverAllocation", "StateError"), e
+        used_c = db.scalar(select(func.coalesce(func.sum(m.Allocation.amount_paise), 0)).where(m.Allocation.credit_id == f"CR-HYP-{n}", m.Allocation.active))
+        assert used_c <= 50 * LAKH
+        for j in range(2):
+            used_o = db.scalar(select(func.coalesce(func.sum(m.Allocation.amount_paise), 0)).where(m.Allocation.obligation_id == f"HYP-{n}-{j}", m.Allocation.active))
+            assert used_o <= (20 + 10 * j) * LAKH
+        # kernel and database agree
+        k = LEDGER.kernel()
+        assert used_c == 50 * LAKH - k.remaining_on_credit(f"CR-HYP-{n}")
+
+
+@settings(max_examples=25, deadline=None, suppress_health_check=[HealthCheck.function_scoped_fixture])
+@given(st.integers(1, 10**6))
+def test_hypothesis_db_trigger_blocks_any_overallocation_bypassing_kernel(db_path, extra):
+    with SessionLocal() as db:
+        cap = db.scalar(select(m.BankCredit.amount_paise).where(m.BankCredit.credit_id == "CR-UTR-XYZ-2016-0042"))
+        db.add(m.Obligation(obligation_id=f"BY-{extra}", institution_id="INST0003", programme="t", instrument_class="ONLINE", amount_paise=10**12))
+        db.flush()
+        db.add(m.Allocation(alloc_id=f"BY-{extra}", credit_id="CR-UTR-XYZ-2016-0042", obligation_id=f"BY-{extra}", amount_paise=extra, basis="x"))
+        with pytest.raises((IntegrityError, OperationalError, ProgrammingError), match="exceed credit"):
+            db.flush()
+        db.rollback()
+        assert cap == 35 * LAKH
+
+
+def test_ledger_rolls_back_memory_when_db_refuses(db_path):
+    """If storage refuses a write, the in-memory kernel is rebuilt from storage (no divergence)."""
+    before = len(LEDGER.kernel().store)
+    with SessionLocal() as db:
+        pg = db.bind.dialect.name == "postgresql"
+        if pg:
+            db.execute(text("CREATE FUNCTION tl_test_block() RETURNS trigger AS $$ BEGIN RAISE EXCEPTION 'blocked for test'; END $$ LANGUAGE plpgsql"))
+            db.execute(text("CREATE TRIGGER t_block BEFORE INSERT ON kernel_events FOR EACH ROW EXECUTE FUNCTION tl_test_block()"))
+        else:
+            db.execute(text("""CREATE TRIGGER t_block BEFORE INSERT ON kernel_events BEGIN SELECT RAISE(ABORT, 'blocked for test'); END"""))
+        db.commit()
+        with pytest.raises(LedgerError):
+            LEDGER.run(db, lambda k: k.record_entitlement("ONL-PQR-UG", "x", datetime.now().isoformat(timespec="seconds"), "section_officer:kiran"))
+        db.execute(text("DROP TRIGGER t_block ON kernel_events" if pg else "DROP TRIGGER t_block"))
+        db.commit()
+    assert len(LEDGER.kernel().store) == before
+
+
+# ------------------------------------------------------------------ rules
+def test_rules_escalate_never_guess(api):
+    a = api().login(MEERA, OFF)
+    r = a.get("/api/rules/resolve?key=release.fdr_instrument&on_date=2021-06-01").json()
+    assert r["status"] == "NOT_SPECIFIED" and not r["usable"] and r["action"].startswith("blocked")
+    r = a.get("/api/rules/resolve?key=fdr.manual_renewal_after_maturity&on_date=2018-12-01").json()
+    assert r["status"] == "UNVERIFIED" and r["action"] == "escalate to legal cell"
+    r = a.get("/api/rules/resolve?key=release.fdr_instrument&on_date=2026-10-01").json()
+    assert r["status"] == "RESOLVED" and r["value"] == "noc"
+    legal = api().login(LEGAL, OFF)
+    assert legal.post("/api/rules/APH-2018-19/confirm", json={"reference": "LC/2026/01"}).status_code == 200
+    r = a.get("/api/rules/resolve?key=fdr.manual_renewal_after_maturity&on_date=2018-12-01").json()
+    assert r["status"] == "RESOLVED" and r["value"] == "prohibited"
+    assert a.post("/api/rules/APH-2018-19/confirm", json={"reference": "x"}).status_code == 403   # only the legal cell
+
+
+def test_manual_renewal_after_maturity_escalates(api):
+    """APH 2024-27 says nothing about renewal after maturity: escalated, not guessed."""
+    from app.domain.fdr import submit
+    with SessionLocal() as db:
+        f = submit(db, inst_id="INST0003", actor="institution:INST0003", bank="PNB", branch="x", instrument_no="MATURED-1", amount_paise=20 * LAKH,
+                   rate_bp=700, issue=date(2021, 3, 1), maturity=date(2024, 3, 1), docs=[])
+    a = api().login(MEERA, OFF)
+    r = a.post(f"/api/fdrs/{f.id}/renewal-check", json={"new_number": "NEW-1", "new_maturity": "2030-01-01"}).json()
+    assert r["outcome"] == "ESCALATED_TO_LEGAL_CELL"
+
+
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

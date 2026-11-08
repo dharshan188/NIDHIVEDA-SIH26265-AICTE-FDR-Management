@@ -1,0 +1,10 @@
+$ env UI_BASE=http://localhost:5174 AXE_RESULT=/home/dharshan/sih2/docs/verification/session7/axe-diagnostic.json node tools/ui-checks/axe.mjs --only /aicte/notifications --theme light
+FAIL /aicte/notifications  color-contrast(1)
+{"id":"color-contrast","impact":"serious","help":"Elements must meet minimum color contrast ratio thresholds","nodes":[".badge-dot ::   Element has insufficient color contrast of 4.23 (foreground color: #ffffff, background color: #e5383b, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"]}
+
+axe: theme=light lang=en reduced=false width=1536: 1 pages, 1 with violations, 1 violations
+  /aicte/notifications color-contrast [serious] Elements must meet minimum color contrast ratio thresholds
+    .badge-dot ::   Element has insufficient color contrast of 4.23 (foreground color: #ffffff, background color: #e5383b, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1
+console errors: 0
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

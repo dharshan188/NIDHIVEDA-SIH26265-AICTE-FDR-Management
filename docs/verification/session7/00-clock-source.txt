@@ -1,0 +1,168 @@
+$ bash -lc 'head -n 90 backend/app/bank/deliver.py; cat backend/tests/test_zz_probe.py; sed -n "150,188p" trust-ledger-kernel/trustledger/kernel.py; sed -n "45,80p" backend/app/bank/simulator.py; git rev-parse --show-toplevel'
+"""Delivering bank messages into the ledger, and the Bank Authority Registry.
+
+Validity is judged by the kernel at RECEIPT time (our clock), against the registry and AICTE's
+own records. Every message, accepted or not, is logged in bank_messages with its outcome.
+"""
+from __future__ import annotations
+
+import uuid
+
+from sqlalchemy.orm import Session
+
+from ..crypto import seal_pii
+from .. import models as m
+from ..db import SessionLocal
+from ..ledger import LEDGER
+from .simulator import now_iso, public_key_b64
+
+from trustledger.kernel import InvalidEvidence  # noqa: E402
+
+CHANNEL_OF = {
+    "credit_advice": "advice", "debit_advice": "advice", "credit_confirmation": "credit_confirmation",
+    "return_advice": "return_advice", "instrument_confirmation": "fdr_confirmation", "lien_discharge": "lien_discharge",
+    "name_lookup": "name_lookup", "remitter_details": "remitter_details", "pooled_balance": "pooled_balance",
+}
+
+
+def _log(env: dict, eid: str, at: str, status: str, reason: str | None, ref: str | None, scenario_id: str | None) -> m.BankMessage:
+    with SessionLocal() as s:
+        row = m.BankMessage(received_at=at, channel=CHANNEL_OF.get(env.get("kind"), "other"), kind=env.get("kind", "?"), bank=env.get("bank", "?"),
+                            key_id=env.get("key_id", "?"), signed_at=env.get("signed_at", "?"), payload=seal_pii(env.get("payload", {})),
+                            signature=env.get("signature", ""), evidence_id=eid, status=status, reason=reason,
+                            simulated=bool(env.get("simulated", env.get("payload", {}).get("simulated"))), scenario_id=scenario_id, ref=ref)
+        s.add(row)
+        s.commit()
+        return row
+
+
+def deliver(db: Session, env: dict, *, evidence_id: str | None = None, ref: str | None = None, scenario_id: str | None = None,
+            at: str | None = None) -> dict:
+    """Hand a signed envelope to the kernel. Returns the logged outcome; never raises for a rejected message."""
+    eid = evidence_id or f"E-{env.get('kind', 'msg')}-{uuid.uuid4().hex[:12]}"
+    at = at or now_iso()
+    already = eid in LEDGER.kernel().evidence
+    try:
+        LEDGER.run(db, lambda k: k.record_bank_evidence(eid, env, at))
+        status, reason = ("DUPLICATE", "identical re-delivery; no change") if already else ("ACCEPTED", None)
+    except InvalidEvidence as e:
+        status, reason = "REJECTED", str(e)
+    row = _log(env, eid, at, status, reason, ref, scenario_id)
+    return {"id": row.id, "evidence_id": eid, "status": status, "reason": reason, "kind": env.get("kind"), "bank": env.get("bank"),
+            "key_id": env.get("key_id"), "received_at": at, "simulated": row.simulated}
+
+
+# ------------------------------------------------------------------ Bank Authority Registry
+def register_signer(db: Session, bank: str, key_id: str, valid_from: str, at: str | None = None, note: str | None = None) -> None:
+    pub = public_key_b64(key_id)
+    at = at or now_iso()
+
+    def after(s: Session, k, new) -> None:
+        s.add(m.BankSigner(key_id=key_id, bank=bank, public_key=pub, valid_from=valid_from, note=note))
+
+    LEDGER.run(db, lambda k: k.register_signer(key_id, bank, pub, valid_from, at), after)
+
+
+def end_signer(db: Session, key_id: str, ended_at: str, actor: str, at: str | None = None) -> None:
+    def after(s: Session, k, new) -> None:
+        s.get(m.BankSigner, key_id).ended_at = ended_at
+
+    LEDGER.run(db, lambda k: k.end_signer(key_id, ended_at, at or now_iso(), actor=actor), after)
+
+
+def compromise_signer(db: Session, key_id: str, compromised_from: str, reason: str, actor: str, at: str | None = None) -> None:
+    def after(s: Session, k, new) -> None:
+        row = s.get(m.BankSigner, key_id)
+        row.compromised_from, row.note = compromised_from, reason
+
+    LEDGER.run(db, lambda k: k.compromise_signer(key_id, compromised_from, at or now_iso(), reason, actor=actor), after)
+from app import timeline
+from app.db import SessionLocal
+from app.ledger import LEDGER
+from app import models as m
+
+
+def test_probe(db_path):
+    with SessionLocal() as db:
+        f = db.get(m.Fdr, "FDR202600126")
+        tl = timeline.fdr_timeline(db, LEDGER.kernel(), f)
+        for e in tl["events"]:
+            print(repr([e["date"], e["label"], e["source"], ", ".join(e["editions_in_force"]), f"{e['rule']['key']}: {e['rule']['status']}" if e.get("rule") else ""]))
+        self.credits: dict = {}
+        self.utr_index: dict = {}          # deposit UTR -> credit_id
+        self.allocations: dict = {}
+        self._by_credit: dict = {}         # derived indexes (rebuilt on replay, not part of snapshot)
+        self._by_obl: dict = {}
+        self._refunds_by_obl: dict = {}
+        self._acct_owner: dict = {}
+        self.claims: dict = {}             # competing claims that were NOT allocated
+        self.disputes: dict = {}
+        self.holds: dict = {}
+        self.refunds: dict = {}
+        self.attempt_by_utr: dict = {}     # payment UTR -> (refund_id, attempt index)
+        self.instruments: dict = {}
+        self.instr_by_no: dict = {}
+        self.entitlements: dict = {}
+        self.affidavits: dict = {}
+        self.payees: dict = {}
+        self.overrides: dict = {}
+        self.handlers: dict = {}
+        self.renewal_requests: dict = {}
+        self.nocs: dict = {}
+        self.pooled_balance: dict | None = None
+        self.outbox: list = []
+        self.clock = ""
+        self._notified: set = set()
+
+    # ---------------------------------------------------------------- plumbing
+    def _emit(self, etype: str, actor: str, at: str, data: dict):
+        if self.clock and at < self.clock:
+            raise StateError(f"time went backwards: {at} < {self.clock}")
+        ev = self.store.append(etype, actor, at, data)
+        self._apply(ev)
+        return ev
+
+    def _apply(self, ev) -> None:
+        self.clock = max(self.clock, ev.at)
+        getattr(self, "_on_" + ev.type)(ev)
+        obl = ev.data.get("obligation_id")
+        if obl and role_of(ev.actor) not in ("institution", "system", "bank", "registry_admin", "migration"):
+        raise RuntimeError("TL_SIM_BANK_SEED is not set; the bank simulator cannot sign")
+    return Ed25519PrivateKey.from_private_bytes(hashlib.sha256(f"{seed}|{key_id}".encode()).digest())
+
+
+def public_key_b64(key_id: str) -> str:
+    raw = private_key(key_id).public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)
+    return b64(raw)
+
+
+def sign(bank: str, key_id: str, kind: str, payload: dict, signed_at: str | None = None) -> dict:
+    payload = {**payload, "simulated": True}
+    env = {"kind": kind, "bank": bank, "key_id": key_id, "signed_at": signed_at or now_iso(), "payload": payload}
+    sig = private_key(key_id).sign(canonical(env).encode())
+    return {**env, "signature": b64(sig), "simulated": True}
+
+
+class _Base:
+    def __init__(self, db: Session) -> None:
+        self.db = db
+
+    def key_for(self, bank: str) -> str:
+        """The bank's current signing key: the newest one that is neither ended nor compromised."""
+        rows = self.db.scalars(select(m.BankSigner).where(m.BankSigner.bank == bank).order_by(m.BankSigner.key_id.desc())).all()
+        for r in rows:
+            if not r.ended_at and not r.compromised_from:
+                return r.key_id
+        return rows[0].key_id if rows else f"{bank}-K1"
+
+
+class SimAdvice(_Base, i.AdviceChannel):
+    def credit_advice(self, bank, utr, amount, value_date, remitter_name, remitter_account, narrative, beneficiary_account=AICTE_POOL_ACCOUNT):
+        return sign(bank, self.key_for(bank), "credit_advice", {
+            "utr": utr, "amount": amount, "value_date": value_date, "remitter_name": remitter_name,
+            "remitter_account": remitter_account, "narrative": narrative, "beneficiary_account": beneficiary_account})
+
+    def debit_advice(self, refund_id, utr, amount, beneficiary_account, beneficiary_ifsc):
+/home/dharshan
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

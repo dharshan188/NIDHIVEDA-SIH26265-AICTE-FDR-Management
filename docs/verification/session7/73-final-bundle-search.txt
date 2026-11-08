@@ -1,0 +1,16 @@
+$ .venv/bin/python tools/baseline/bundle_check.py
+'demo': 0 matches
+'OTP on screen': 0 matches
+'Reset demo data': 0 matches
+'Use demo credentials': 0 matches
+'Bank debits (issues UTR)': 0 matches
+'Bank returns payment': 0 matches
+'Beneficiary bank confirms credit': 0 matches
+'/api/sim/': 0 matches
+'/sim/totp/': 0 matches
+'/sim/otp-outbox/': 0 matches
+'Sample FDR PDF': 0 matches
+'Sign with simulated DSC': 0 matches
+Production assets searched: 3; matched assets (with repeats): 0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

@@ -1,0 +1,54 @@
+$ bash -lc 'sed -n "120,140p" backend/app/nudge/insights.py; sed -n "360,380p" backend/tests/test_nudge.py; sed -n "122,130p" frontend/src/styles/nudge.css'
+    notes = db.scalars(select(m.Notification).where(m.Notification.at >= since, m.Notification.template.is_not(None))).all()
+    ids = [n.id for n in notes]
+    dels = db.scalars(select(m.NotificationDelivery).where(m.NotificationDelivery.notification_id.in_(ids))).all() if ids else []
+    by_channel: dict[str, Counter] = defaultdict(Counter)
+    for d in dels:
+        c = by_channel[d.channel]
+        c["total"] += 1
+        # "sent" below is a semantic count, including delivered rows; count each once.
+        if d.status != "sent":
+            c[d.status] += 1
+        if d.sent_at or d.status in ("sent", "delivered", "digested"):
+            c["sent"] += 1 if d.status != "digested" else 0
+        if d.delivered_at:
+            c["delivered_simulated" if d.receipt_simulated else "delivered_receipt"] += 1
+        if d.simulated:
+            c["simulated"] += 1
+    roots = [n for n in notes if n.template not in ("digest",)]
+    acked = [n for n in roots if n.ack_at]
+    by_rung = {}
+    for r in ("info", "action", "deadline", "overdue"):
+        rs = [n for n in roots if n.rung == r]
+    assert a.get("/api/nudge/health").status_code == 403
+    h = api().login(MEERA, OFF, "totp").get("/api/nudge/health").json()
+    assert h["totals"]["acknowledged"] >= 1 and h["by_channel"]["email"]["simulated"] >= 1
+    assert h["by_channel"]["email"].get("delivered_receipt", 0) == 0      # simulated sends are never counted as delivered
+    # A delivery whose status is already "sent" must not also increment the same counter twice.
+    with SessionLocal() as db:
+        ids = select(m.Notification.id).where(m.Notification.at >= h["since"], m.Notification.template.is_not(None))
+        deliveries = db.scalars(select(m.NotificationDelivery).where(m.NotificationDelivery.notification_id.in_(ids))).all()
+        for channel, counts in h["by_channel"].items():
+            expected = sum(1 for d in deliveries if d.channel == channel and d.status != "digested"
+                           and (d.sent_at or d.status in ("sent", "delivered")))
+            assert counts.get("sent", 0) == expected
+            assert counts.get("sent", 0) <= counts["total"]
+    row = next(r for r in h["per_institution"] if r["institution_id"] == "INST0001")
+    assert row["acknowledged"] >= 1 and row["median_hours_to_action"] is not None
+
+
+def test_what_changed_since_last_login(api):
+    abc = api().login(ABC, INS)
+    first = abc.get("/api/nudge/what-changed").json()
+    assert first["first_visit"] is True
+.checks li.bad { color: var(--red-ink); font-weight: 600; }
+.checks li.bad svg { flex: none; margin-top: 2px; }
+.checks li.skip { color: var(--muted); }
+.obs-reply { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.tl-item.b::before { border-color: var(--primary); }
+/* Future events use a dashed marker; fading text would reduce its contrast. */
+.tl-item.future::before { border-style: dashed; }
+.bad-ink { color: var(--red-ink); }
+.up-file { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm, 6px); margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

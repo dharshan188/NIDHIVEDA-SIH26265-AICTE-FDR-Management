@@ -1,0 +1,173 @@
+{
+  "results": [
+    {
+      "label": "/login",
+      "violations": []
+    },
+    {
+      "label": "/aicte",
+      "violations": []
+    },
+    {
+      "label": "/aicte/institutions",
+      "violations": []
+    },
+    {
+      "label": "/aicte/submissions",
+      "violations": []
+    },
+    {
+      "label": "/aicte/verification",
+      "violations": []
+    },
+    {
+      "label": "/aicte/reconciliation",
+      "violations": []
+    },
+    {
+      "label": "/aicte/renewals",
+      "violations": []
+    },
+    {
+      "label": "/aicte/releases",
+      "violations": []
+    },
+    {
+      "label": "/aicte/payments",
+      "violations": []
+    },
+    {
+      "label": "/aicte/audit-trail",
+      "violations": []
+    },
+    {
+      "label": "/aicte/reports",
+      "violations": []
+    },
+    {
+      "label": "/aicte/notifications",
+      "violations": []
+    },
+    {
+      "label": "/aicte/guidelines",
+      "violations": []
+    },
+    {
+      "label": "/aicte/rules",
+      "violations": []
+    },
+    {
+      "label": "/aicte/fdr/FDR202600124",
+      "violations": []
+    },
+    {
+      "label": "/aicte/institutions/INST0001",
+      "violations": []
+    },
+    {
+      "label": "/institution",
+      "violations": []
+    },
+    {
+      "label": "/institution/profile",
+      "violations": []
+    },
+    {
+      "label": "/institution/fdrs",
+      "violations": []
+    },
+    {
+      "label": "/institution/upload",
+      "violations": []
+    },
+    {
+      "label": "/institution/renewals",
+      "violations": []
+    },
+    {
+      "label": "/institution/release",
+      "violations": []
+    },
+    {
+      "label": "/institution/payments",
+      "violations": []
+    },
+    {
+      "label": "/institution/notifications",
+      "violations": []
+    },
+    {
+      "label": "/institution/communication",
+      "violations": []
+    },
+    {
+      "label": "/institution/guidelines",
+      "violations": []
+    },
+    {
+      "label": "/institution/help",
+      "violations": []
+    },
+    {
+      "label": "/institution/fdr/FDR202600125",
+      "violations": []
+    },
+    {
+      "label": "/auditor",
+      "violations": []
+    },
+    {
+      "label": "/auditor/assignments",
+      "violations": []
+    },
+    {
+      "label": "/auditor/institutions",
+      "violations": []
+    },
+    {
+      "label": "/auditor/fdrs",
+      "violations": []
+    },
+    {
+      "label": "/auditor/compliance",
+      "violations": []
+    },
+    {
+      "label": "/auditor/discrepancies",
+      "violations": []
+    },
+    {
+      "label": "/auditor/renewals",
+      "violations": []
+    },
+    {
+      "label": "/auditor/releases",
+      "violations": []
+    },
+    {
+      "label": "/auditor/payments",
+      "violations": []
+    },
+    {
+      "label": "/auditor/audit-trail",
+      "violations": []
+    },
+    {
+      "label": "/auditor/reports",
+      "violations": []
+    },
+    {
+      "label": "/auditor/notifications",
+      "violations": []
+    },
+    {
+      "label": "/auditor/guidelines",
+      "violations": []
+    },
+    {
+      "label": "/auditor/fdr/FDR202600124",
+      "violations": []
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,70 @@
+# Local stack: PostgreSQL, S3-compatible object store, ClamAV, Mailpit (mock e-mail provider) and the API.
+# Secrets come from your environment / .env, never from this file:
+#   TL_PG_PASSWORD, TL_S3_ACCESS_KEY, TL_S3_SECRET_KEY, TL_MASTER_KEY (32 bytes, base64), TL_SECRET_KEY, TL_DATA_KEY
+#
+# Object store: MinIO was the requested service, but MinIO no longer publishes public images or binaries (pulls from
+# Docker Hub and quay.io were refused and dl.min.io returned 410 on 2026-10-24). SeaweedFS's S3 API is used instead. The
+# backend's S3Store is plain S3: point TL_S3_ENDPOINT at MinIO or AWS S3 without code changes.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: trustledger
+      POSTGRES_USER: trustledger
+      POSTGRES_PASSWORD: ${TL_PG_PASSWORD:?set TL_PG_PASSWORD}
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U trustledger"], interval: 5s, retries: 10}
+
+  objectstore:
+    image: chrislusf/seaweedfs:3.97
+    command: server -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json -dir=/data
+    entrypoint: ["/bin/sh", "-c", "printf '{\"identities\":[{\"name\":\"tl\",\"credentials\":[{\"accessKey\":\"%s\",\"secretKey\":\"%s\"}],\"actions\":[\"Admin\",\"Read\",\"Write\",\"List\",\"Tagging\"]}]}' \"$$S3_ACCESS_KEY\" \"$$S3_SECRET_KEY\" > /etc/seaweedfs/s3.json && exec /entrypoint.sh \"$$@\"", "--"]
+    environment:
+      S3_ACCESS_KEY: ${TL_S3_ACCESS_KEY:?set TL_S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${TL_S3_SECRET_KEY:?set TL_S3_SECRET_KEY}
+    ports: ["127.0.0.1:8333:8333"]
+    volumes: [objects:/data]
+
+  clamav:
+    image: clamav/clamav:1.4
+    ports: ["127.0.0.1:3310:3310"]
+    volumes: [clamdb:/var/lib/clamav]
+    healthcheck: {test: ["CMD", "clamdcheck.sh"], interval: 30s, retries: 20, start_period: 120s}
+
+  mailpit:   # mock e-mail provider: real SMTP, local inbox at http://localhost:8025 (labelled SIMULATED in the portal)
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:1025:1025", "127.0.0.1:8025:8025"]
+
+  api:
+    build: {context: .., dockerfile: backend/Dockerfile}
+    depends_on:
+      db: {condition: service_healthy}
+      clamav: {condition: service_healthy}
+      objectstore: {condition: service_started}
+      mailpit: {condition: service_started}
+    environment:
+      TL_ENV: ${TL_ENV:-dev}
+      TL_DATABASE_URL: postgresql+psycopg://trustledger:${TL_PG_PASSWORD}@db:5432/trustledger
+      TL_SECRET_KEY: ${TL_SECRET_KEY:-}
+      TL_DATA_KEY: ${TL_DATA_KEY:-}
+      TL_MASTER_KEY: ${TL_MASTER_KEY:-}
+      TL_OBJECT_STORE: s3
+      TL_S3_ENDPOINT: objectstore:8333
+      TL_S3_ACCESS_KEY: ${TL_S3_ACCESS_KEY}
+      TL_S3_SECRET_KEY: ${TL_S3_SECRET_KEY}
+      TL_SCANNER: clamd
+      TL_CLAMD_HOST: clamav
+      TL_EMAIL_PROVIDER: smtp
+      TL_SMTP_HOST: mailpit
+      TL_SMTP_PORT: "1025"
+      TL_SMTP_SINK: "true"
+      TL_SMS_PROVIDER: sim         # planned: a DLT-registered SMS gateway (TL_SMS_PROVIDER=http, TL_SMS_URL, TL_SMS_API_KEY)
+      TL_WHATSAPP_PROVIDER: sim    # planned: WhatsApp Business Cloud API (TL_WHATSAPP_PROVIDER=cloud)
+      TL_PUSH_PROVIDER: sim        # planned: FCM (TL_PUSH_PROVIDER=fcm, TL_FCM_CREDENTIALS)
+    ports: ["127.0.0.1:8000:8000"]
+
+volumes:
+  pgdata:
+  objects:
+  clamdb:

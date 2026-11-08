@@ -1,0 +1,217 @@
+$ bash -lc 'sed -n "215,280p" frontend/src/pages/shared/Misc.tsx; sed -n "390,430p" frontend/src/pages/shared/Nudge.tsx; sed -n "60,100p" frontend/src/App.tsx; cat tools/ui-checks/pdf_check.mjs'
+  { path: 'payments.reissue_target_working_days', label: 'Re-issue a returned payment within (working days)', kind: 'days' },
+];
+const getAt = (o: Pol, path: string) => path.split('.').reduce<any>((x, k) => x?.[k], o);
+function setAt(o: Pol, path: string, v: unknown): Pol {
+  const copy = structuredClone(o);
+  const ks = path.split('.');
+  ks.slice(0, -1).reduce<any>((x, k) => x[k], copy)[ks.at(-1)!] = v;
+  return copy;
+}
+
+/** Release policy: approving AICTE roles only. Before and after are shown before publishing; the server records the same
+ * difference, the reason and the officer in the hash-chained portal audit, and the ledger applies it to future commands. */
+function ReleasePolicyEditor() {
+  const { run } = useStore();
+  const d = useApi<{ active: Pol; editable: boolean; versions: { id: number; created_at: string; created_by: string }[] }>('/policy');
+  const [draft, setDraft] = useState<Pol | null>(null);
+  const [reason, setReason] = useState('');
+  useEffect(() => setDraft(d.data ? structuredClone(d.data.active) : null), [d.data]);
+  if (d.error) return <Panel title="Release policy"><ErrorBox text={d.error} /></Panel>;
+  if (!d.data || !draft) return <Panel title="Release policy"><Loading rows={4} /></Panel>;
+  const changes = diffLeaves(d.data.active, draft);
+  const v = d.data.versions[0];
+  const publish = async () => {
+    if (await run(() => api('/policy', { method: 'PUT', json: { policy: draft, reason } }), 'Release policy published') !== undefined) setReason('');
+  };
+  return (
+    <Panel title="Release policy" sub={`${v ? `Version ${v.id} · ${v.created_by} · ${fmtDateTime(v.created_at)}` : 'Kernel defaults (TL-POLICY-v5), proposed for AICTE approval'}`}>
+      {!d.data.editable && <p className="muted small">Read only: only a deputy director or director of AICTE can change the release policy.</p>}
+      <div className="pol-form">
+        {EDITABLE.map((f) => {
+          const id = `pol-${f.path.replace(/\W/g, '-')}`;
+          const val = getAt(draft, f.path);
+          return f.kind === 'bool' ? (
+            <label key={f.path} className="check" htmlFor={id} style={{ alignSelf: 'center' }}>
+              <input id={id} type="checkbox" checked={!!val} disabled={!d.data!.editable} onChange={(e) => setDraft(setAt(draft, f.path, e.target.checked))} /> {f.label}
+            </label>
+          ) : (
+            <label key={f.path} htmlFor={id}>{f.label}
+              <input id={id} className="inp num" type="number" min={1} step={1} value={val ?? ''} disabled={!d.data!.editable}
+                onChange={(e) => setDraft(setAt(draft, f.path, e.target.value === '' ? '' : Number(e.target.value)))} />
+            </label>
+          );
+        })}
+      </div>
+      <h3 className="small" style={{ marginTop: 14, color: 'var(--navy)' }}>Before and after</h3>
+      <DiffTable changes={changes} caption="Release policy: values before and after this change" />
+      {d.data.editable && (
+        <div className="pol-form">
+          <label htmlFor="pol-reason">Reason for the change (required, recorded in the audit trail)
+            <input id="pol-reason" className="inp" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Council resolution 2026/14, item 6" />
+          </label>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-primary" disabled={!changes.length || reason.trim().length < 10} onClick={publish}>Publish new version</button>
+            <button className="btn btn-ghost" disabled={!changes.length} onClick={() => setDraft(structuredClone(d.data!.active))}>Discard</button>
+          </div>
+        </div>
+      )}
+    </Panel>
+  );
+}
+
+export function Profile() {
+  const { user } = useStore();
+  const d = useApi<{ institution: Institution }>(user?.institution_id ? `/institutions/${user.institution_id}` : null);
+  const payee = useApi<{ payee: { account_masked: string; ifsc: string; name: string; verified: boolean } | null }>(user?.institution_id ? `/payees/${user.institution_id}` : null);
+  if (!d.data) return d.error ? <ErrorBox text={d.error} /> : <Loading />;
+  const next = { ...p, reminders: { ...p.reminders, before_maturity_days: before.split(',').map((x) => Number(x.trim())).filter(Boolean) },
+    ladder: { ...p.ladder, deadline_within_days: deadline, action_needed_within_days: action } };
+  const changes = diffLeaves(p, next);
+  const save = async () => {
+    if (await run(() => api('/nudge/policy', { method: 'PUT', json: { reason, policy: next } }), 'Notification policy published') !== undefined) setReason('');
+  };
+  return (
+    <Panel title="Notification policy (Nudge Ladder)" sub={`${t('Version')} ${d.data.version} · ${d.data.updated_by}${d.data.updated_at ? ` · ${fmtDateTime(d.data.updated_at)}` : ''}`}>
+      <dl className="pk-kv">
+        <dt>{t('Daily sweep')}</dt><dd>{p.reminders.run_at} IST</dd>
+        <dt>{t('Quiet hours')}</dt><dd>{p.quiet_hours.start}–{p.quiet_hours.end} IST ({p.quiet_hours.channels.join(', ')}; {t('not for overdue')})</dd>
+        <dt>{t('Escalation chain')}</dt><dd>{p.escalation.chain.join(' → ')}, {t('every')} {p.escalation.step_after_days} {t('days')}; {t('holds')}: {p.escalation.hold_review_days} {t('days')}</dd>
+      </dl>
+      {d.data.editable ? (
+        <>
+          <div className="pol-form">
+            <label>{t('Reminder windows (days before maturity)')}<input className="inp" value={before} onChange={(e) => setBefore(e.target.value)} /></label>
+            <label>{t('Deadline rung within (days)')}<input className="inp num" type="number" min={1} value={deadline} onChange={(e) => setDeadline(Number(e.target.value))} /></label>
+            <label>{t('Action-needed rung within (days)')}<input className="inp num" type="number" min={2} value={action} onChange={(e) => setAction(Number(e.target.value))} /></label>
+          </div>
+          <h3 className="small" style={{ marginTop: 14, color: 'var(--navy)' }}>{t('Before and after')}</h3>
+          <DiffTable changes={changes} caption="Notification policy: values before and after this change" />
+          <div className="pol-form">
+            <label>{t('Reason for the change (required, recorded in the audit trail)')}<input className="inp" value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. circular AICTE/2026/14" /></label>
+            <div><button className="btn btn-primary" disabled={!changes.length || reason.trim().length < 5} onClick={save}>{t('Publish new version')}</button></div>
+          </div>
+        </>
+      ) : <p className="muted small">{t('Only AICTE officials can change the notification policy.')}</p>}
+    </Panel>
+  );
+}
+
+/** /l/:token — an action link from an e-mail, SMS or WhatsApp. It opens the record; it never acts on its own. */
+export function LinkLanding() {
+  const { token } = useParams();
+  const { user, checking } = useStore();
+  const resolving = useRef<string | null>(null);
+  const nav = useNavigate();
+  const t = useT();
+  const [msg, setMsg] = useState<string | null>(null);
+  useEffect(() => {
+            <Route path="fdrs" element={<FdrList />} />
+            <Route path="upload" element={<Upload />} />
+            <Route path="renewals" element={<Renewals />} />
+            <Route path="release" element={<Releases />} />
+            <Route path="payments" element={<Payments />} />
+            <Route path="notifications" element={<NotificationCentre />} />
+            <Route path="communication" element={<Communication />} />
+            <Route path="guidelines" element={<Guidelines />} />
+            <Route path="help" element={<Help />} />
+            <Route path="missing-documents" element={<MissingDocuments />} />
+            <Route path="fdr/:id" element={<FdrDetail />} />
+          </Route>
+          <Route path="/auditor" element={<AppShell role="auditor" />}>
+            <Route index element={<AuditorDashboard />} />
+            <Route path="assignments" element={<Assignments />} />
+            <Route path="institutions" element={<Institutions />} />
+            <Route path="institutions/:id" element={<InstitutionDetail />} />
+            <Route path="fdrs" element={<FdrList />} />
+            <Route path="compliance" element={<Institutions complianceView />} />
+            <Route path="discrepancies" element={<Verification readOnly />} />
+            <Route path="renewals" element={<Renewals />} />
+            <Route path="releases" element={<Releases />} />
+            <Route path="payments" element={<Payments />} />
+            <Route path="audit-trail" element={<AuditTrail />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="escalations" element={<Escalations />} />
+            <Route path="notification-health" element={<NotificationHealth />} />
+            <Route path="missing-documents" element={<MissingDocuments />} />
+            <Route path="notifications" element={<NotificationCentre />} />
+            <Route path="guidelines" element={<Guidelines />} />
+            <Route path="fdr/:id" element={<FdrDetail />} />
+          </Route>
+          <Route path="/sso-complete" element={<SsoComplete />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </AnimatePresence>
+      <Toasts />
+    </>
+  );
+}
+
+// Every PDF export that carries bank data must say SIMULATED. Downloads are made by clicking the export buttons in the
+// browser (table exports, the missing-documents report, the evidence packet); text is read back with pdftotext.
+// A table without bank data (audit events) is exported as a control: it must not be labelled SIMULATED.
+// Usage: node pdf_check.mjs   (needs the dev servers from serve.py)
+import { execFileSync } from 'node:child_process';
+import { mkdirSync } from 'node:fs';
+import { BASE, apiFor, launch, newContext, open, settle, uiLogin, watchConsole } from './lib.mjs';
+
+const TMP = new URL('../../.ui-check/pdfs/', import.meta.url).pathname;
+mkdirSync(TMP, { recursive: true });
+const errors = [];
+const results = [];
+const browser = await launch();
+const ctx = await newContext(browser, { width: 1536, height: 1024 });
+const page = await ctx.newPage();
+watchConsole(page, errors, 'aicte');
+const { csrf } = await uiLogin(page, 'aicte');
+const api = apiFor(ctx, csrf);
+
+async function download(name, click) {
+  const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 30000 }), click()]);
+  const path = `${TMP}${name}.pdf`;
+  await dl.saveAs(path);
+  const text = execFileSync('pdftotext', ['-layout', path, '-']).toString();
+  const pages = Number(/Pages:\s+(\d+)/.exec(execFileSync('pdfinfo', [path]).toString())?.[1] ?? 0);
+  return { path, text, pages };
+}
+function record(name, r, expectSim) {
+  const has = /SIMULATED/.test(r.text);
+  const line = r.text.split('\n').find((l) => /SIMULATED/.test(l))?.trim() ?? '';
+  const ok = has === expectSim && r.pages > 0;
+  results.push(ok);
+  console.log(`${ok ? 'PASS' : 'FAIL'} ${name}: ${r.pages} page(s); SIMULATED ${has ? 'present' : 'absent'} (expected ${expectSim ? 'present' : 'absent'})${line ? ` :: "${line.slice(0, 140)}"` : ''}`);
+}
+const tablePdf = (label) => () => page.getByRole('button', { name: `Export PDF: ${label}` }).first().click();
+
+const fdr = (await api.get('/fdrs?size=1&bucket=active')).items[0].id;
+await open(page, `${BASE}/aicte/fdr/${fdr}`);
+await settle(page, 1200);
+record(`table export "Declared vs bank-confirmed, ${fdr}"`, await download('table-comparison', tablePdf(`Declared vs bank-confirmed, ${fdr}`)), true);
+record(`evidence packet ${fdr}`, await download('evidence-packet', () => page.getByRole('button', { name: /Download PDF packet/ }).click()), true);
+
+await open(page, `${BASE}/aicte/payments`);
+await settle(page, 1200);
+record('table export "Payment attempts"', await download('table-payments', tablePdf('Payment attempts')), true);
+
+await open(page, `${BASE}/aicte/reconciliation`);
+await settle(page, 1200);
+record('table export "Bank messages"', await download('table-bank-messages', tablePdf('Bank messages')), true);
+record('table export "Per-institution certification"', await download('table-certification', tablePdf('Per-institution certification')), true);
+
+await open(page, `${BASE}/aicte/missing-documents`);
+await settle(page, 1200);
+record('missing-documents report (PDF button)', await download('missing-documents', () => page.getByRole('button', { name: 'PDF', exact: true }).click()), true);
+record('table export "Missing documents"', await download('table-missing', tablePdf('Missing documents')), true);
+
+await open(page, `${BASE}/aicte/audit-trail`);
+await settle(page, 1200);
+record('control: table export "Audit events" (no bank data)', await download('table-audit', tablePdf('Audit events')), false);
+
+await ctx.close();
+await browser.close();
+const failed = results.filter((x) => !x).length;
+console.log(`\nPDF exports: ${results.length - failed}/${results.length} as expected; console errors: ${errors.length}`);
+for (const e of errors.slice(0, 10)) console.log('  ' + e);
+process.exit(failed || errors.length ? 1 : 0);
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

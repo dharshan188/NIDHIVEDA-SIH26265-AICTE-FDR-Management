@@ -1,0 +1,4 @@
+$ .ui-check/tools-venv/bin/python -m pip_audit --path .venv/lib/python3.11/site-packages --cache-dir .ui-check/pip-audit-cache --progress-spinner off --format json --output docs/verification/session7/pip-audit.json
+No known vulnerabilities found
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

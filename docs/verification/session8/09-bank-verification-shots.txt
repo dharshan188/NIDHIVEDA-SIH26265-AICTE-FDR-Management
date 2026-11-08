@@ -1,0 +1,3 @@
+16-bank-verification-confirmed.png FDR202600124 verified confidence: instrument_no=BANK_CONFIRMED bank=BANK_CONFIRMED amount=BANK_CONFIRMED maturity_date=BANK_CONFIRMED status=BANK_CONFIRMED lien_holder=BANK_CONFIRMED | problems: []
+17-bank-verification-mismatch.png FDR202600123 discrepancy confidence: instrument_no=BANK_CONFIRMED bank=BANK_CONFIRMED amount=MISMATCH maturity_date=BANK_CONFIRMED status=BANK_CONFIRMED lien_holder=BANK_CONFIRMED | problems: ["bank-confirmed principal ₹20,00,000 differs from declared ₹25,00,000"]
+console errors: 0

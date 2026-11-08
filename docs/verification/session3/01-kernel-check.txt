@@ -1,0 +1,66 @@
+ZIP: /home/dharshan/Downloads/fdr-trust-ledger-final(2).zip
+ZIP members: 48; local files: 48
+ZIP manifest SHA-256: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0
+Local before SHA-256: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0
+All ZIP members byte-identical; no extra non-cache files.
+Earlier rmdir targets: docs/verification/final-baseline, docs/verification, docs (all empty).
+Kernel docs exists now: False; ZIP contains docs: False
+Scratch: /tmp/tl-baseline-kernel-_jc4y7gi/kernel
+...................................................................      [100%]
+=============================== warnings summary ===============================
+trustledger/crypto.py:26
+  /tmp/tl-baseline-kernel-_jc4y7gi/kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_controls_extra.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /tmp/tl-baseline-kernel-_jc4y7gi/kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_round8_security.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /tmp/tl-baseline-kernel-_jc4y7gi/kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_v6_findings.py)
+    class TestBankSigner:
+
+trustledger/crypto.py:26
+  /tmp/tl-baseline-kernel-_jc4y7gi/kernel/trustledger/crypto.py:26: PytestCollectionWarning: cannot collect test class 'TestBankSigner' because it has a __init__ constructor (from: tests/test_v7_findings.py)
+    class TestBankSigner:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+67 passed, 4 warnings in 6.11s
+killed    Refund marked settled at bank debit (reviewer Issue 1)
+killed    Returned payment does not reopen the attempt
+killed    Allocation may exceed money received
+killed    Obligation may be over-funded
+killed    Release counts declared money as proven
+killed    Holds ignored
+killed    Compromised signer still trusted
+killed    Signer validity judged at the (forgeable) signed_at
+killed    Stale FDR evidence accepted (age)
+killed    Evidence older than last maturity accepted
+killed    Unverified rule pack applied silently
+killed    Conflict-of-interest check removed
+killed    Mandatory clearance can be overridden
+killed    Account-related return does not force payee re-verification
+killed    Returned money can be re-used as a new deposit
+killed    Machine-reference basis not checked
+killed    Remitter from another institution not flagged
+killed    Hash excludes previous hash
+SURVIVED  Payment re-issue skips evidence re-check
+killed    Policy hold-scope rule ignored (institution-wide holds allowed)
+killed    V6-T01 other bank may settle a payment
+killed    V6-T03 dispute award may over-fund
+killed    V6-T06 substring reference match
+killed    V6-T07 invalid pool evidence still matches
+killed    V7-1 other bank may confirm an FDR
+killed    V7-3 payment UTR reuse allowed
+killed    V7-4 case id reuse allowed
+killed    R8-T16 FDR principal mismatch ignored
+killed    R8-T17 obligation id reuse allowed
+killed    R8-T18 instrument id reuse allowed
+killed    R8-T19 second NOC allowed
+killed    R8-T20 confirmation amount not checked
+killed    R8-T20 confirmation beneficiary not checked
+
+32/33 mutants killed
+Local after SHA-256: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; unchanged: True; ZIP match: True
+Harness exit: 1 (1 means at least one survivor; expected 32/33)
+kernel exit 0

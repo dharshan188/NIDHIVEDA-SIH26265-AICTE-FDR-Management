@@ -1,0 +1,6 @@
+$ python3 -c 'import sqlite3,json; c=sqlite3.connect(".ui-check/session7-final/ui.db"); c.row_factory=sqlite3.Row; q="SELECT id,status,maturity_date,renewal_of,renewed_by FROM fdrs WHERE maturity_date < date(\"now\") AND status IN (\"verified\",\"pending\",\"discrepancy\") AND renewed_by IS NULL"; print("SQL:",q); rows=[dict(r) for r in c.execute(q)]; print(json.dumps(rows,indent=2)); print("Live expired unrenewed candidates:",len(rows)); c.close()'
+SQL: SELECT id,status,maturity_date,renewal_of,renewed_by FROM fdrs WHERE maturity_date < date("now") AND status IN ("verified","pending","discrepancy") AND renewed_by IS NULL
+[]
+Live expired unrenewed candidates: 0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

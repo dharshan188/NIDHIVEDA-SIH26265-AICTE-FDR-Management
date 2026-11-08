@@ -1,0 +1,12 @@
+{
+  "edition_id": "TEST-ADDENDUM-2026-27",
+  "title": "SYNTHETIC test addendum (not a real AICTE document)",
+  "effective_from": "2026-07-01",
+  "effective_to": "2027-06-30",
+  "source_status": "synthetic_test_only",
+  "enabled": false,
+  "source_note": "Used only by tests to prove that conflicting editions are escalated, not silently resolved.",
+  "rules": {
+    "deposit.term_years": {"value": 5, "cite": "Synthetic test clause"}
+  }
+}

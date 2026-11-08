@@ -1,0 +1,12 @@
+$ bash -lc 'ls -l .ui-check/tools-venv/bin/python*; head -n 1 .ui-check/tools-venv/bin/pip-audit; cat .ui-check/tools-venv/pyvenv.cfg; .ui-check/tools-venv/bin/python --version; ls .ui-check/tools-venv/lib'
+lrwxrwxrwx 1 dharshan dharshan  7 Oct 24 15:08 .ui-check/tools-venv/bin/python -> python3
+lrwxrwxrwx 1 dharshan dharshan 37 Oct 24 15:08 .ui-check/tools-venv/bin/python3 -> /home/dharshan/sih2/.venv/bin/python3
+lrwxrwxrwx 1 dharshan dharshan  7 Oct 24 15:08 .ui-check/tools-venv/bin/python3.10 -> python3
+#!/home/dharshan/sih2/.ui-check/tools-venv/bin/python3
+home = /home/dharshan/sih2/.venv/bin
+include-system-site-packages = false
+version = 3.10.12
+Python 3.11.17
+python3.10
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

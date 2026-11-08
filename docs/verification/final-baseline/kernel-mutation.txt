@@ -1,0 +1,24 @@
+Scratch kernel: /tmp/tl-kernel-baseline-98eplqpq/kernel
+killed    Refund marked settled at bank debit (reviewer Issue 1)
+killed    Returned payment does not reopen the attempt
+killed    Allocation may exceed money received
+killed    Obligation may be over-funded
+killed    Release counts declared money as proven
+killed    Holds ignored
+killed    Compromised signer still trusted
+killed    Signer validity judged at the (forgeable) signed_at
+killed    Stale FDR evidence accepted (age)
+killed    Evidence older than last maturity accepted
+killed    Unverified rule pack applied silently
+killed    Conflict-of-interest check removed
+killed    Mandatory clearance can be overridden
+killed    Account-related return does not force payee re-verification
+killed    Returned money can be re-used as a new deposit
+killed    Machine-reference basis not checked
+killed    Remitter from another institution not flagged
+killed    Hash excludes previous hash
+SURVIVED  Payment re-issue skips evidence re-check
+killed    Policy hold-scope rule ignored (institution-wide holds allowed)
+killed    V6-T01 other bank may settle a payment
+killed    V6-T03 dispute award may over-fund
+killed    V6-T06 substring reference match

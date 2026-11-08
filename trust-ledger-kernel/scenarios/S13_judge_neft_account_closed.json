@@ -1,0 +1,209 @@
+{
+ "id": "S13",
+ "title": "Judge's 13th: NEFT refund returned 'account closed'; new account via Affidavit-9; name look-up fails once; then settles",
+ "reviewer_ref": "Round 4: Question 3 (13th scenario without code changes). Written after the code hash was recorded.",
+ "include": [
+  "online_base"
+ ],
+ "steps": [
+  {
+   "do": "authorise",
+   "case_id": "R13",
+   "obligation_id": "O1",
+   "at": "2026-09-10T10:00",
+   "approver": "deputy_director:meera",
+   "rail": "NEFT"
+  },
+  {
+   "do": "initiate",
+   "refund_id": "R13",
+   "at": "2026-09-10T11:00",
+   "actor": "finance_officer:ravi"
+  },
+  {
+   "do": "evidence",
+   "id": "E-DR",
+   "key": "SBI-K1",
+   "kind": "debit_advice",
+   "at": "2026-09-10T11:30",
+   "payload": {
+    "refund_id": "R13",
+    "utr": "N-001",
+    "amount_lakh": 35
+   }
+  },
+  {
+   "do": "evidence",
+   "id": "E-RET",
+   "key": "SBI-K1",
+   "kind": "return_advice",
+   "at": "2026-09-10T13:00",
+   "payload": {
+    "original_utr": "N-001",
+    "return_utr": "N-R01",
+    "amount_lakh": 35,
+    "reason_code": "ACCOUNT_CLOSED",
+    "returned_at": "2026-09-10T13:00"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R13",
+   "equals": "REISSUE_REQUIRED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 35,
+   "in_transit_lakh": 0
+  },
+  {
+   "expect": "notification",
+   "to": "institution:INST-A",
+   "kind": "refund_returned",
+   "contains": "Affidavit-9"
+  },
+  {
+   "expect": "error",
+   "code": "GateBlocked",
+   "step": {
+    "do": "initiate",
+    "refund_id": "R13",
+    "at": "2026-09-10T14:00",
+    "actor": "finance_officer:ravi"
+   }
+  },
+  {
+   "expect": "error",
+   "code": "StateError",
+   "step": {
+    "do": "payee",
+    "inst_id": "INST-A",
+    "account": "A-NEW-9001",
+    "ifsc": "HDFC0000999",
+    "name": "Alpha Institute of Technology",
+    "at": "2026-09-11T10:00",
+    "actor": "institution:INST-A"
+   }
+  },
+  {
+   "do": "payee",
+   "inst_id": "INST-A",
+   "account": "A-NEW-9001",
+   "ifsc": "HDFC0000999",
+   "name": "Alpha Institute of Technology",
+   "at": "2026-09-11T10:05",
+   "actor": "institution:INST-A",
+   "change_basis": {
+    "affidavit": "AFFIDAVIT-9",
+    "ter_fee_paid": true
+   }
+  },
+  {
+   "do": "evidence",
+   "id": "E-NL-bad",
+   "key": "SBI-K1",
+   "kind": "name_lookup",
+   "at": "2026-09-11T11:00",
+   "payload": {
+    "account": "A-NEW-9001",
+    "ifsc": "HDFC0000999",
+    "name_at_bank": "Alpha Educational Trust"
+   }
+  },
+  {
+   "expect": "notification",
+   "to": "institution:INST-A",
+   "kind": "payee_name_mismatch",
+   "contains": "Alpha Educational Trust"
+  },
+  {
+   "expect": "error",
+   "code": "GateBlocked",
+   "step": {
+    "do": "initiate",
+    "refund_id": "R13",
+    "at": "2026-09-11T11:10",
+    "actor": "finance_officer:ravi"
+   }
+  },
+  {
+   "do": "evidence",
+   "id": "E-NL-ok",
+   "key": "SBI-K1",
+   "kind": "name_lookup",
+   "at": "2026-09-12T10:00",
+   "payload": {
+    "account": "A-NEW-9001",
+    "ifsc": "HDFC0000999",
+    "name_at_bank": "Alpha Institute of Technology"
+   }
+  },
+  {
+   "do": "initiate",
+   "refund_id": "R13",
+   "at": "2026-09-12T10:30",
+   "actor": "finance_officer:ravi"
+  },
+  {
+   "do": "evidence",
+   "id": "E-DR2",
+   "key": "SBI-K1",
+   "kind": "debit_advice",
+   "at": "2026-09-12T11:00",
+   "payload": {
+    "refund_id": "R13",
+    "utr": "N-002",
+    "amount_lakh": 35
+   }
+  },
+  {
+   "do": "tick",
+   "at": "2026-09-12T13:30"
+  },
+  {
+   "expect": "notification",
+   "to": "finance",
+   "kind": "confirmation_overdue",
+   "contains": "N-002"
+  },
+  {
+   "do": "evidence",
+   "id": "E-N10",
+   "key": "SBI-K1",
+   "kind": "credit_confirmation",
+   "at": "2026-09-12T13:40",
+   "payload": {
+    "utr": "N-002",
+    "credited_at": "2026-09-12T13:35",
+    "amount_lakh": 35,
+    "beneficiary_account": "A-NEW-9001"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R13",
+   "equals": "SETTLED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 0,
+   "settled_refunds_lakh": 35
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R13",
+   "path": "attempts",
+   "len": 2
+  },
+  {
+   "expect": "chain",
+   "valid": true
+  },
+  {
+   "expect": "replay_matches"
+  }
+ ]
+}

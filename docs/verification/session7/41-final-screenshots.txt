@@ -1,0 +1,39 @@
+$ node tools/ui-checks/shots.mjs
+saved 01-login.png
+saved 03-dashboard-institution.png
+saved 05-upload-checks-and-scan.png
+saved 06-upload-encryption-status.png
+uploaded FDR202600372
+saved 09-notification-centre.png
+nudge run: {"now":"2026-10-24T16:44:58+05:30","reminders":{"ran":false,"reason":"already ran for 2026-10-24 (IST)"},"escalation":{"rung_up":8,"chain":7,"stopped_by_ack":0},"digest":7,"delivery":{"planned":260,"sent":210,"deferred":0,"failed":0,"retry":0,"skipped":50}}
+saved 02-dashboard-aicte.png
+saved 07-fdr-detail-documents.png
+renewal gaps: 0; timeline shot uses FDR202600372
+NO RENEWAL GAP EXISTS in the live API result; no gap was created. Timeline screenshot is not gap proof.
+Timeline gap evidence: []
+saved 08-fdr-detail-timeline-no-gap.png
+saved 10-escalations.png
+saved 11-notification-health.png
+saved 12-missing-documents.png
+saved 13-rules-policy-editor.png
+saved 14-pdf-export-missing-documents.png
+saved 04-dashboard-auditor.png
+
+14 screenshots:
+01-login.png 1536x1024
+03-dashboard-institution.png 1536x1024
+05-upload-checks-and-scan.png 1536x1024
+06-upload-encryption-status.png 1536x1024
+09-notification-centre.png 1536x1024
+02-dashboard-aicte.png 1536x1024
+07-fdr-detail-documents.png 1536x1024
+08-fdr-detail-timeline-no-gap.png 1536x1024
+10-escalations.png 1536x1024
+11-notification-health.png 1536x1024
+12-missing-documents.png 1536x1024
+13-rules-policy-editor.png 1536x1024
+14-pdf-export-missing-documents.png 1536x1024
+04-dashboard-auditor.png 1536x1024
+console errors: 0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

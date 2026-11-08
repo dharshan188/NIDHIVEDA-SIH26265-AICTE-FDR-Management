@@ -1,0 +1,79 @@
+$ bash -lc 'sed -n "423,451p" backend/app/models.py; rg -n -A 36 "ProviderSimMessage\(" backend/app/nudge/channels.py; rg -n "url|link" backend/app/nudge/worker.py | head -20'
+    __tablename__ = "provider_sim_messages"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    idempotency_key: Mapped[str] = mapped_column(String(80), unique=True)
+    channel: Mapped[str] = mapped_column(String(10), index=True)
+    provider: Mapped[str] = mapped_column(String(40))
+    to_role: Mapped[str] = mapped_column(String(80))
+    to_masked: Mapped[str] = mapped_column(String(40))
+    lang: Mapped[str] = mapped_column(String(2))
+    subject: Mapped[str | None] = mapped_column(Text, nullable=True)
+    body: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[str] = mapped_column(String(32), index=True)
+    calls: Mapped[int] = mapped_column(Integer, default=1)   # how many times the sender called with this key
+
+
+class NotifyPolicyVersion(Base):
+    """Notification policy (backend/policy.json) overrides, versioned. Edited by AICTE roles only."""
+    __tablename__ = "notify_policy_versions"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    created_by: Mapped[str] = mapped_column(String(120))
+    reason: Mapped[str] = mapped_column(Text)
+    policy: Mapped[dict] = mapped_column(JSON)
+
+
+class SchedulerRun(Base):
+    """One row per scheduled job per IST day: the daily sweep cannot run twice for the same day, even across restarts."""
+    __tablename__ = "scheduler_runs"
+    job: Mapped[str] = mapped_column(String(40), primary_key=True)
+    run_date: Mapped[str] = mapped_column(String(10), primary_key=True)
+95:                row = m.ProviderSimMessage(idempotency_key=msg.idempotency_key, channel=self.channel, provider=self.name, to_role=msg.to_role,
+96-                                           to_masked=msg.to_masked, lang=msg.lang, subject=msg.subject if self.channel == "email" else None,
+97-                                           body=msg.body if self.channel == "email" else msg.short, created_at=iso(now_ist()))
+98-                ps.add(row)
+99-            ps.commit()
+100-            ref = f"SIM-{row.id}"
+101-        return SendResult(self.name, ref, "sent", True, "SIMULATED: stored by the provider simulator, nothing left this machine")
+102-
+103-
+104-# ------------------------------------------------------------------ real adapters
+105-class SmtpEmail:
+106-    """Any SMTP relay (NIC mail relay, SES, SendGrid SMTP). With TL_SMTP_SINK=true (Mailpit in docker-compose) messages
+107-    land in a local inbox and are labelled SIMULATED."""
+108-
+109-    def __init__(self, host: str, port: int, user: str, password: str, sender: str, starttls: bool, sink: bool):
+110-        self.host, self.port, self.user, self.password, self.sender, self.starttls = host, port, user, password, sender, starttls
+111-        self.simulated = sink
+112-        self.name = "smtp-mailpit-sink" if sink else f"smtp:{host}"
+113-
+114-    def send(self, db: Session, msg: OutMsg) -> SendResult:
+115-        em = EmailMessage()
+116-        em["From"], em["To"], em["Subject"] = self.sender, msg.to, msg.subject
+117-        em["Message-ID"] = f"<{msg.idempotency_key}@fdr-trust-ledger>"   # the relay / mailbox can de-duplicate on it
+118-        em["Content-Language"] = msg.lang
+119-        em.set_content(f"{msg.body}\n\n{msg.link}\n")
+120-        try:
+121-            with smtplib.SMTP(self.host, self.port, timeout=20) as s:
+122-                if self.starttls:
+123-                    s.starttls()
+124-                if self.user:
+125-                    s.login(self.user, self.password)
+126-                s.send_message(em)
+127-        except (OSError, smtplib.SMTPException) as e:
+128-            raise ProviderError(f"SMTP: {e}") from e
+129-        return SendResult(self.name, em["Message-ID"], "sent", self.simulated, "accepted by the SMTP server (not a delivery receipt)")
+130-
+131-
+90:def _message(db: Session, d: m.NotificationDelivery, n: m.Notification, u: m.User, link: str) -> OutMsg | None:
+95:    params = {**(n.params or {}), "link": link}
+99:                  short=render(tmpl, lang, params, "sms"), link=link, data={"path": link, "notification_id": n.id})
+110:    from .links import issue
+131:        base = get_settings().public_url.rstrip("/")
+133:        link = base + open_path(n.audience, n.ref)
+135:            link = f"{base}/l/{issue(db, u.id, open_path(n.audience, n.ref), 'open', n.id, now)}"
+136:        msg = _message(db, d, n, u, link)
+143:        db.commit()   # claim and link are stored before anything leaves the process
+203:    """Opening in-app or clicking the action link acknowledges. First acknowledgement wins; later ones change nothing."""
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

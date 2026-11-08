@@ -1,0 +1,48 @@
+$ env UI_BASE=http://localhost:5175 AXE_RESULT=/home/dharshan/sih2/docs/verification/session7/axe-light.json node tools/ui-checks/axe.mjs --theme light
+OK   /login
+OK   /aicte
+OK   /aicte/institutions
+OK   /aicte/submissions
+OK   /aicte/verification
+OK   /aicte/reconciliation
+OK   /aicte/renewals
+OK   /aicte/releases
+OK   /aicte/payments
+OK   /aicte/audit-trail
+OK   /aicte/reports
+OK   /aicte/notifications
+OK   /aicte/guidelines
+OK   /aicte/rules
+OK   /aicte/fdr/FDR202600124
+OK   /aicte/institutions/INST0001
+OK   /institution
+OK   /institution/profile
+OK   /institution/fdrs
+OK   /institution/upload
+OK   /institution/renewals
+OK   /institution/release
+OK   /institution/payments
+OK   /institution/notifications
+OK   /institution/communication
+OK   /institution/guidelines
+OK   /institution/help
+OK   /institution/fdr/FDR202600125
+OK   /auditor
+OK   /auditor/assignments
+OK   /auditor/institutions
+OK   /auditor/fdrs
+OK   /auditor/compliance
+OK   /auditor/discrepancies
+OK   /auditor/renewals
+OK   /auditor/releases
+OK   /auditor/payments
+OK   /auditor/audit-trail
+OK   /auditor/reports
+OK   /auditor/notifications
+OK   /auditor/guidelines
+OK   /auditor/fdr/FDR202600124
+
+axe: theme=light lang=en reduced=false width=1536: 42 pages, 0 with violations, 0 violations
+console errors: 0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

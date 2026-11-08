@@ -1,0 +1,13 @@
+$ .venv/bin/python tools/session7_review.py
+Final documentation: 6 files, 101 local links resolved.
+Changelog lists: ['Built and tested', 'Built with a simulator (named)', 'Planned (real service needed / remaining acceptance)']
+18 final screenshot hashes match manifest; dimensions recorded as 1536x1024.
+Current scenario JSON/Markdown: 6 scenarios / 52 passed / 0 failed.
+68-axe-light-complete 42 views, zero violations/errors
+69-axe-dark-complete 42 views, zero violations/errors
+66-axe-panels-light-final 18 views, zero violations/errors
+76-axe-panels-dark-complete 18 views, zero violations/errors
+Visual QA performed this session via view_image: login, three dashboards, FDR documents/timeline, upload prechecks/encryption, notification centre, escalation, health, missing report, Rules and rendered PDF. SIMULATED label visible on the PDF; no gap proof claimed.
+No git commit performed; no kernel edits; ZAP unverified and 2 moderate npm findings retained.
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

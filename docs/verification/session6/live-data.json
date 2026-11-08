@@ -1,0 +1,75 @@
+{
+  "database": "/home/dharshan/sih2/.ui-check/session6-ui/ui.db",
+  "results": [
+    {
+      "page": "notification centre",
+      "field": "open overdue notices",
+      "ui": 0,
+      "database": 0,
+      "ok": true,
+      "query": "SELECT count(*) AS n FROM notifications WHERE rung='overdue' AND ack_at IS NULL AND audience IN ('institution:' || (SELECT institution_id FROM users WHERE username=?), 'user:' || (SELECT id FROM users WHERE username=?))",
+      "params": [
+        "1-12345678",
+        "1-12345678"
+      ]
+    },
+    {
+      "page": "escalation view",
+      "field": "steps in root 114",
+      "ui": 2,
+      "database": 2,
+      "ok": true,
+      "query": "WITH RECURSIVE family(id) AS (SELECT id FROM notifications WHERE id=? UNION SELECT n.id FROM notifications n JOIN family f ON n.parent_id=f.id) SELECT count(*) AS n FROM family",
+      "params": [
+        114
+      ]
+    },
+    {
+      "page": "health panel",
+      "field": "notices in displayed 30-day window",
+      "ui": 57,
+      "database": 57,
+      "ok": true,
+      "query": "SELECT count(*) AS n FROM notifications WHERE at>=? AND template IS NOT NULL AND template<>'digest'",
+      "params": [
+        "2026-09-24T16:08:37"
+      ]
+    },
+    {
+      "page": "notification preferences panel (inside centre)",
+      "field": "notice language",
+      "ui": "en",
+      "database": "en",
+      "ok": true,
+      "query": "SELECT lang FROM users WHERE username=?",
+      "params": [
+        "1-12345678"
+      ]
+    },
+    {
+      "page": "action-link page",
+      "field": "successful destination path",
+      "ui": "/institution/fdr/FDR202600126",
+      "database": "/institution/fdr/FDR202600126",
+      "ok": true,
+      "query": "SELECT path,used_at FROM action_tokens WHERE id=?",
+      "params": [
+        "2f24a5f9a31e3690b599d6a7"
+      ]
+    },
+    {
+      "page": "action-link page",
+      "field": "reuse is refused",
+      "ui": true,
+      "database": true,
+      "ok": true,
+      "query": "SELECT used_at IS NOT NULL AS used FROM action_tokens WHERE id=?",
+      "params": [
+        "2f24a5f9a31e3690b599d6a7"
+      ]
+    }
+  ],
+  "errors": [
+    "institution console: Failed to load resource: the server responded with a status of 409 (Conflict)"
+  ]
+}

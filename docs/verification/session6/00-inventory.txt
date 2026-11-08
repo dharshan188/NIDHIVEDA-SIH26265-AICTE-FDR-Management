@@ -1,0 +1,37 @@
+$ bash -lc 'git rev-parse --show-toplevel; rg --files -g AGENTS.md -g "!node_modules" -g "!__pycache__"; ls docs/verification/session3 docs/verification/session4; command -v uv || true; docker ps --format "{{.Names}} {{.Status}}"; df -h /'
+/home/dharshan
+docs/verification/session3:
+00-kernel-tests-scenarios.txt
+01-kernel-check.txt
+02-backend-sqlite.txt
+03-backend-postgres.txt
+04-frontend-build-baseline.txt
+05-axe-baseline-light.txt
+06-axe-baseline-dark.txt
+
+docs/verification/session4:
+01-axe-a11y-fix-light.txt
+02-axe-a11y-fix-dark.txt
+03-migration-check.txt
+04-devdb-migrate.txt
+05-seed-reset.txt
+06a-s01-browser-attempt1-script-defect.txt
+06-s01-browser.txt
+07-pdf-simulated-labels.txt
+08a-screenshots-attempt1-s3-volume.txt
+08-screenshots.txt
+09b-pip-audit-severity.txt
+09-pip-audit.txt
+10-npm-audit.txt
+11-gitleaks.txt
+12-test-completion-sqlite.txt
+13-kernel-hash.txt
+tl-baseline-s3 Up 37 minutes
+tl-gap-mailpit Up 37 minutes (healthy)
+tl-gap-clamav Up 37 minutes (healthy)
+tl-gap-pg Up 37 minutes
+buildhub-pg Up 44 minutes
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  259G  211G   35G  86% /
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

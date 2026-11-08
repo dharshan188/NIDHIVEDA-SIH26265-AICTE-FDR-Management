@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "label": "aicte: What changed card",
+      "violations": []
+    },
+    {
+      "label": "aicte/escalations",
+      "violations": []
+    },
+    {
+      "label": "aicte/notification-health",
+      "violations": []
+    },
+    {
+      "label": "aicte/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "release policy editor: before/after and reason",
+      "violations": []
+    },
+    {
+      "label": "notification policy editor: before/after",
+      "violations": []
+    },
+    {
+      "label": "FDR timeline, documents, observations and field list",
+      "violations": []
+    },
+    {
+      "label": "raise observation dialog",
+      "violations": []
+    },
+    {
+      "label": "permitted field edit dialog",
+      "violations": []
+    },
+    {
+      "label": "institution: What changed card",
+      "violations": []
+    },
+    {
+      "label": "institution/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "institution/notifications",
+      "violations": []
+    },
+    {
+      "label": "institution observation reply and status",
+      "violations": []
+    },
+    {
+      "label": "auditor: What changed card",
+      "violations": []
+    },
+    {
+      "label": "auditor/escalations",
+      "violations": []
+    },
+    {
+      "label": "auditor/notification-health",
+      "violations": []
+    },
+    {
+      "label": "auditor/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "auditor/institutions/INST0001",
+      "violations": []
+    }
+  ],
+  "errors": []
+}

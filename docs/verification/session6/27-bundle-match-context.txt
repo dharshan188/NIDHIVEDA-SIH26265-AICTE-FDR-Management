@@ -1,0 +1,29 @@
+$ python3 -c 'from pathlib import Path; import re; root=Path("frontend"); files=list((root/"dist").rglob("*.js"))+list((root/"dist").rglob("*.css")); files+=list((root/"src").rglob("*.tsx"))+list((root/"src").rglob("*.css")); [(print(str(p)+": "+p.read_text()[max(0,m.start()-55):m.end()+75].replace("\n"," "))) for p in files for m in re.finditer("demo",p.read_text(),re.I)]'
+frontend/dist/assets/index-CUyhheds.js: chTimeline(e){return this.canAccelerate=!1,this.group?.demote(!0),super.attachTimeline(e)}};function xi(e){let t=e.current,n=new Set,r
+frontend/dist/assets/index-CUyhheds.js: ==r)),O.schedule(!1)}),e.oncancel=()=>s.includes(r)&&O.demote(),s.push(r)},y=(e,t,n)=>{let r=(t,n)=>Math.abs(e(n)-e(t)),i=r(t,n);for(;
+frontend/dist/assets/index-CUyhheds.js: ()))return;for(let e of n)if(!e.canAccelerate)return O.demote(!0);O.isJS&&(O.isJS=!1,c=!0,n.forEach(e=>e.js?.stop()));let r=c,a=d;if(c
+frontend/dist/assets/index-CUyhheds.js: t r=c,a=d;if(c=d=!1,r||!T(t)){if(a){if(t-f<di)return O.demote();f=t}if(!w(t))return O.demote()}},O={tracks:n,isJS:!1,isFinishing:!1,sc
+frontend/dist/assets/index-CUyhheds.js: f(a){if(t-f<di)return O.demote();f=t}if(!w(t))return O.demote()}},O={tracks:n,isJS:!1,isFinishing:!1,schedule(e,t){u||(c||=e,d||=!!t,l
+frontend/dist/assets/index-CUyhheds.js:  i)if(_i(e,t)!==i[t]&&!p(t))return O.schedule(!0,!0)}},demote(e){O.isJS||u||(n.forEach(t=>{t.isAccelerated()&&t.sync(),e||(t.canAccele
+frontend/dist/assets/index-CUyhheds.js: e,0),r&&(r[e]=0))}var Is=({instance:e})=>e&&oi.get(e)?.demote();function Ls(e){if(e.hasCheckedOptimisedAppear=!0,e.root===e)return;let
+frontend/dist/assets/index-CUyhheds.js: rmTemplate&&!n||e.onUpdate&&!r)&&oi.get(this.current)?.demote(),this.prevProps=this.props,this.props=e,this.prevPresenceContext=this.p
+frontend/dist/assets/index-CUyhheds.js: chain head`,note:`the checkpoint here is a local file (demo grade)`})}),(0,B.jsxs)(Y,{children:[(0,B.jsx)(ub,{id:`chain`,value:n,onCha
+frontend/dist/assets/index-l5ywwwlQ.css: 5ed71f}.otp.bad input{border-color:var(--c-bd-ef4444)}.demo-hint{background:var(--c-bg-fff7e8);color:var(--c-fg-8a5300);font-size:var(
+frontend/dist/assets/index-l5ywwwlQ.css: p:12px;margin-top:16px;padding:12px 16px;display:flex}.demo-hint code{letter-spacing:1px;color:var(--c-fg-6b3f00);background:var(--c-b
+frontend/src/components/CommandPalette.tsx:      id: 'c:reset', group: 'Commands', label: t('Reset demo data (dev build)'), hint: 'scripts/seed.py --reset', icon: <RotateCcw size
+frontend/src/pages/Login.tsx: ['Tamper-evident', 'and transparent'] }, ];  interface DemoAccount { username: string; password: string; role: Role; kernel_role: stri
+frontend/src/pages/Login.tsx: etUsername('');     setPassword('');   };    const fillDemo = async () => {     const res = await api<{ accounts: DemoAccount[] }>('/s
+frontend/src/pages/Login.tsx:  = async () => {     const res = await api<{ accounts: DemoAccount[] }>('/sim/demo-accounts').catch(() => ({ accounts: [] as DemoAccou
+frontend/src/pages/Login.tsx: nst res = await api<{ accounts: DemoAccount[] }>('/sim/demo-accounts').catch(() => ({ accounts: [] as DemoAccount[] }));     const pic
+frontend/src/pages/Login.tsx: >('/sim/demo-accounts').catch(() => ({ accounts: [] as DemoAccount[] }));     const pick = res.accounts.find((a) => a.role === role &&
+frontend/src/pages/Login.tsx: ick.password);       setErr('');     } else setErr('No demo account available. Is the backend running in dev mode?');   };    const st
+frontend/src/pages/Login.tsx: {{ color: 'var(--muted)', fontSize: 13 }} onClick={fillDemo}>                       <KeyRound size={13} style={{ verticalAlign: -2, ma
+frontend/src/pages/Login.tsx: verticalAlign: -2, marginRight: 5 }} aria-hidden />Use demo credentials (dev build)                     </button>                   ) 
+frontend/src/pages/Login.tsx: EV && devCode && (                     <div className="demo-hint"><KeyRound size={16} aria-hidden /> Dev build: the {method === 'otp' 
+frontend/src/pages/Login.tsx: and the signature.</p>         {DEV && <div className="demo-hint" style={{ justifyContent: 'center' }}><KeyRound size={16} aria-hidden
+frontend/src/pages/institution/Upload.tsx: tring): File {   // A minimal valid PDF, for dev-build demos only.   const body = `%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endob
+frontend/src/pages/shared/AuditTrail.tsx: chain head" note="the checkpoint here is a local file (demo grade)" />       </div>       <Panel>         <Tabs id="chain" value={chai
+frontend/src/styles.css:  .otp.bad input { border-color: var(--c-bd-ef4444); } .demo-hint { display: flex; gap: 12px; align-items: center; padding: 12px 16px; 
+frontend/src/styles.css: n-top: 16px; border: 1px dashed var(--c-bd-f5c97a); } .demo-hint code { font-weight: 700; letter-spacing: 1px; color: var(--c-fg-6b3f0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

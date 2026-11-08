@@ -1,0 +1,61 @@
+$ .venv/bin/python tools/baseline/backend_check.py sqlite tests/test_nudge.py::test_centre_open_acknowledges_and_health_measures
+Application fixture backend: sqlite; PostgreSQL 16.15; disposable database: tl_baseline_fffaf44cbe1340e89d2d7d7f116e8ff2
+Required services: real ClamAV :3310, SeaweedFS :8334, Mailpit SMTP :1025 / HTTP :8025, PostgreSQL :55433
+Credentials loaded into child environment only (redacted). Command: python -m pytest -q -rs --tb=short -p hypothesis.extra.pytestplugin --require-services tests/test_nudge.py::test_centre_open_acknowledges_and_health_measures
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_centre_open_acknowledges_and_health_measures _______________
+tests/test_nudge.py:371: in test_centre_open_acknowledges_and_health_measures
+    assert counts.get("sent", 0) == expected
+E   AssertionError: assert 2 == 1
+E    +  where 2 = <built-in method get of dict object at 0x7cad6c5e60c0>('sent', 0)
+E    +    where <built-in method get of dict object at 0x7cad6c5e60c0> = {'total': 1, 'sent': 2, 'simulated': 1}.get
+----------------------------- Captured stderr call -----------------------------
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP [REDACTED] (valid 5 min)
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/otp-outbox/1-12345678 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING trustledger.auth: [MOCK SMS] to ••••••9493 for 1-xyz-demo: OTP [REDACTED] (valid 5 min)
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/otp-outbox/1-xyz-demo "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 404 Not Found"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/health "HTTP/1.1 403 Forbidden"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/totp/meera@aicte-india.org "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/health "HTTP/1.1 200 OK"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING  trustledger.auth:auth.py:120 [MOCK SMS] to ••••••9457 for 1-12345678: OTP [REDACTED] (valid 5 min)
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/otp-outbox/1-12345678 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING  trustledger.auth:auth.py:120 [MOCK SMS] to ••••••9493 for 1-xyz-demo: OTP [REDACTED] (valid 5 min)
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/otp-outbox/1-xyz-demo "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/nudge/notifications/118/open "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/health "HTTP/1.1 403 Forbidden"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/totp/meera@aicte-india.org "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/health "HTTP/1.1 200 OK"
+=============================== warnings summary ===============================
+../.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /home/dharshan/sih2/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 failed, 1 warning in 3.76s
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

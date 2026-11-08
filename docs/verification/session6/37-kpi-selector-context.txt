@@ -1,0 +1,46 @@
+$ bash -lc 'rg -n -A 40 "export function Kpi" frontend/src/components/ui.tsx; rg -n "preferences" frontend/src -g "*.tsx" | head -12'
+163:export function Kpi({ icon, tone, label, value, sub, extra, onClick, compact, chevron }: { icon: ReactNode; tone: string; label: string; value: ReactNode; sub?: ReactNode; extra?: ReactNode; onClick?: () => void; compact?: boolean; chevron?: boolean }) {
+164-  const t = useT();
+165-  const body = (
+166-    <>
+167-      <div className={`kpi-ico t-${tone}`} aria-hidden>{icon}</div>
+168-      <div style={{ minWidth: 0 }}>
+169-        <div className="lbl">{t(label)}</div>
+170-        <div className="val">{value}</div>
+171-        {sub && <div className="sub">{sub}</div>}
+172-        {extra}
+173-      </div>
+174-      {chevron && <ChevronRight className="chev" size={20} aria-hidden />}
+175-    </>
+176-  );
+177-  return onClick ? (
+178-    <motion.button type="button" className={`card kpi${compact ? ' compact' : ''}`} variants={item} onClick={onClick}>
+179-      {body}
+180-    </motion.button>
+181-  ) : (
+182-    <motion.div className={`card kpi static${compact ? ' compact' : ''}`} variants={item}>
+183-      {body}
+184-    </motion.div>
+185-  );
+186-}
+187-
+188-export function Tabs<K extends string>({ tabs, value, onChange, id }: { tabs: { key: K; label: string }[]; value: K; onChange: (k: K) => void; id: string }) {
+189-  const t = useT();
+190-  return (
+191-    <div className="tabs" role="tablist">
+192-      {tabs.map((tb) => (
+193-        <button key={tb.key} role="tab" aria-selected={value === tb.key} className={`tab${value === tb.key ? ' on' : ''}`} onClick={() => onChange(tb.key)}>
+194-          {t(tb.label)}
+195-          {value === tb.key && <motion.span layoutId={`tab-${id}`} className="tab-line" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+196-        </button>
+197-      ))}
+198-    </div>
+199-  );
+200-}
+201-
+202-export function DaysLeft({ days }: { days: number }) {
+203-  const cls = days < 0 ? 'over' : days <= 5 ? 'd1' : days <= 15 ? 'd2' : days <= 30 ? 'd3' : days <= 40 ? 'd4' : 'd5';
+frontend/src/pages/shared/Nudge.tsx:144:    <Panel title="My notification preferences" sub={d.data?.note}>
+frontend/src/lib/prefs.tsx:4:/** Per-viewer display preferences: theme and language. Stored in the browser only (they are conveniences, not records). */
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

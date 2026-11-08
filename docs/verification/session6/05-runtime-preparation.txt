@@ -1,0 +1,35 @@
+$ bash -lc 'cat tools/ui-checks/stop.sh; ls -la .ui-check | head -20; .venv/bin/python -c "import sys,importlib.metadata as m; print(sys.version); print({n:m.version(n) for n in [\"Pillow\",\"reportlab\",\"setuptools\",\"pip\"]})"; cat .gitignore'
+#!/bin/sh
+# Stops whatever serve.py started: the processes listening on :8000 (uvicorn) and :5173 (vite).
+for port in 8000 5173; do
+  for pid in $(ss -ltnpH "sport = :$port" | grep -o 'pid=[0-9]*' | cut -d= -f2 | sort -u); do kill "$pid"; done
+done
+sleep 1
+ss -ltnH '( sport = :8000 or sport = :5173 )' | grep -q . && echo "still listening" || echo "stopped"
+total 5512
+drwxrwxr-x  8 dharshan dharshan    4096 Oct 24 15:34 .
+drwxrwxr-x 10 dharshan dharshan    4096 Oct 24 15:24 ..
+-rw-rw-r--  1 dharshan dharshan    2032 Oct 24 15:14 checkpoints.jsonl
+-rw-rw-r--  1 dharshan dharshan   12748 Oct 24 15:14 commit-candidates.txt
+drwxrwxr-x  8 dharshan dharshan    4096 Oct 24 15:14 commit-set
+drwxrwxr-x  2 dharshan dharshan    4096 Oct 24 14:59 devdb
+-rw-r--r--  1 root     root      197302 Oct 24 15:14 gitleaks-all.json
+drwxrwxr-x  2 dharshan dharshan    4096 Oct 24 15:10 pdfs
+-rw-rw-r--  1 dharshan dharshan     760 Oct 24 15:21 pillow-ghsa.txt
+-rw-rw-r--  1 dharshan dharshan    4877 Oct 24 15:22 pillow-osv.txt
+drwxrwxr-x  3 dharshan dharshan    4096 Oct 24 15:34 pip-cache
+-rw-rw-r--  1 dharshan dharshan   35164 Oct 24 15:20 serve2.log
+-rw-rw-r--  1 dharshan dharshan  146747 Oct 24 15:02 serve-first.log
+-rw-rw-r--  1 dharshan dharshan   67626 Oct 24 15:13 serve.log
+drwxrwxr-x  2 dharshan dharshan    4096 Oct 24 15:15 shots
+-rw-rw-r--  1 dharshan dharshan      59 Oct 24 15:09 tool-install.log
+drwxrwxr-x  5 dharshan dharshan    4096 Oct 24 15:08 tools-venv
+-rw-r--r--  1 dharshan dharshan 5074944 Oct 24 15:20 ui.db
+-rw-r--r--  1 dharshan dharshan   32768 Oct 24 15:20 ui.db-shm
+3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]
+{'Pillow': '12.3.0', 'reportlab': '5.1.0', 'setuptools': '84.2.1', 'pip': '26.2.2'}
+.venv/
+__pycache__/
+.ui-check/
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

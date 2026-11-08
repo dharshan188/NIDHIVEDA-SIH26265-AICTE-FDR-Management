@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "label": "aicte: What changed card",
+      "violations": []
+    },
+    {
+      "label": "aicte/escalations",
+      "violations": []
+    },
+    {
+      "label": "aicte/notification-health",
+      "violations": []
+    },
+    {
+      "label": "aicte/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "release policy editor: before/after and reason",
+      "violations": []
+    },
+    {
+      "label": "notification policy editor: before/after",
+      "violations": []
+    },
+    {
+      "label": "FDR timeline, documents, observations and field list",
+      "violations": []
+    },
+    {
+      "label": "raise observation dialog",
+      "violations": []
+    },
+    {
+      "label": "permitted field edit dialog",
+      "violations": []
+    }
+  ],
+  "errors": []
+}

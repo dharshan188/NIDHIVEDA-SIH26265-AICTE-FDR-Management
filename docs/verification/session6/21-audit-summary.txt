@@ -1,0 +1,7 @@
+$ .venv/bin/python -c 'import json; d=json.load(open("docs/verification/session6/pip-audit.json")); a=d["dependencies"]; v=[(p["name"],q["id"]) for p in a for q in p.get("vulns",[])]; print("Audited distributions:",len(a)); print("Pillow:",[p for p in a if p["name"].lower()=="pillow"]); print("Known advisories:",len(v)); print("High/critical advisories: 0" if not v else v); assert not v'
+Audited distributions: 56
+Pillow: [{'name': 'pillow', 'version': '13.0.0', 'vulns': []}]
+Known advisories: 0
+High/critical advisories: 0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

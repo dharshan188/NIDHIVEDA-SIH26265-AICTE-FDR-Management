@@ -1,0 +1,35 @@
+killed     Refund marked settled at bank debit (reviewer Issue 1)
+killed     Returned payment does not reopen the attempt
+killed     Allocation may exceed money received
+killed     Obligation may be over-funded
+killed     Release counts declared money as proven
+killed     Holds ignored
+killed     Compromised signer still trusted
+killed     Signer validity judged at the (forgeable) signed_at
+killed     Stale FDR evidence accepted (age)
+killed     Evidence older than last maturity accepted
+killed     Unverified rule pack applied silently
+killed     Conflict-of-interest check removed
+killed     Mandatory clearance can be overridden
+killed     Account-related return does not force payee re-verification
+killed     Returned money can be re-used as a new deposit
+killed     Machine-reference basis not checked
+killed     Remitter from another institution not flagged
+killed     Hash excludes previous hash
+SURVIVED   Payment re-issue skips evidence re-check
+killed     Policy hold-scope rule ignored (institution-wide holds allowed)
+killed     V6-T01 other bank may settle a payment
+killed     V6-T03 dispute award may over-fund
+killed     V6-T06 substring reference match
+killed     V6-T07 invalid pool evidence still matches
+killed     V7-1 other bank may confirm an FDR
+killed     V7-3 payment UTR reuse allowed
+killed     V7-4 case id reuse allowed
+killed     R8-T16 FDR principal mismatch ignored
+killed     R8-T17 obligation id reuse allowed
+killed     R8-T18 instrument id reuse allowed
+killed     R8-T19 second NOC allowed
+killed     R8-T20 confirmation amount not checked
+killed     R8-T20 confirmation beneficiary not checked
+
+32/33 killed

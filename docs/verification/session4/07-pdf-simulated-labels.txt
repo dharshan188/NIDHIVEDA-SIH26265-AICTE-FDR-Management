@@ -1,0 +1,10 @@
+PASS table export "Declared vs bank-confirmed, FDR202600124": 1 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS evidence packet FDR202600124: 2 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS table export "Payment attempts": 1 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS table export "Bank messages": 1 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS table export "Per-institution certification": 1 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS missing-documents report (PDF button): 82 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS table export "Missing documents": 17 page(s); SIMULATED present (expected present) :: "SIMULATED bank data"
+PASS control: table export "Audit events" (no bank data): 4 page(s); SIMULATED absent (expected absent)
+
+PDF exports: 8/8 as expected; console errors: 0

@@ -1,0 +1,615 @@
+$ .venv/bin/python tools/baseline/restart_ui_check.py
+Stopping own Session 6 server parent 55131; credentials carried only in process memory.
+Restarting without --reset; database and environment keys preserved.
+INFO:     Will watch for changes in these directories: ['/home/dharshan/sih2/backend/app']
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [59256] using WatchFiles
+error when starting dev server:
+Error: Port 5174 is already in use
+    at httpServerStart (file:///home/dharshan/sih2/frontend/node_modules/vite/dist/node/chunks/node.js:14661:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async startServer (file:///home/dharshan/sih2/frontend/node_modules/vite/dist/node/chunks/node.js:25127:30)
+    at async Object.listen (file:///home/dharshan/sih2/frontend/node_modules/vite/dist/node/chunks/node.js:24933:4)
+    at async CAC.<anonymous> (file:///home/dharshan/sih2/frontend/node_modules/vite/dist/node/cli.js:735:3)
+INFO:     Started server process [59269]
+INFO:     Waiting for application startup.
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO apscheduler.scheduler: Added job "job_daily_digest" to job store "default"
+INFO apscheduler.scheduler: Added job "job_worker" to job store "default"
+INFO apscheduler.scheduler: Added job "job_escalation" to job store "default"
+INFO apscheduler.scheduler: Added job "job_kernel_tick" to job store "default"
+INFO apscheduler.scheduler: Scheduler started
+INFO apscheduler.scheduler: Added job "job_daily_reminders" to job store "default"
+INFO trustledger.scheduler: scheduler started: ['catch_up_reminders', 'nudge_worker', 'kernel_tick', 'escalation', 'daily_reminders', 'daily_digest']
+INFO:     Application startup complete.
+INFO apscheduler.executors.default: Running job "job_daily_reminders (trigger: date[2026-10-24 16:07:58 IST], next run at: 2026-10-24 16:07:58 IST)" (scheduled at 2026-10-24 16:07:58.060584+05:30)
+INFO apscheduler.scheduler: Removed job catch_up_reminders
+INFO apscheduler.executors.default: Job "job_daily_reminders (trigger: date[2026-10-24 16:07:58 IST], next run at: 2026-10-24 16:07:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:08:58 IST)" (scheduled at 2026-10-24 16:08:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:08:58 IST)" executed successfully
+INFO:     127.0.0.1:48356 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48364 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48380 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42652 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 039245 (valid 5 min)
+INFO:     127.0.0.1:42658 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42674 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42682 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42698 - "GET /api/fdrs?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42704 - "POST /api/fdrs/FDR202600126/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42714 - "POST /api/sim/nudge/run HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42726 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42728 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42730 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42770 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42744 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42786 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42758 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42772 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42798 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42806 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42808 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42830 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42814 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42838 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42840 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42850 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42906 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42866 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42918 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42878 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42902 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42888 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42944 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42930 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42966 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42956 - "GET /api/nudge/escalations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42970 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42986 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43032 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43038 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43000 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43010 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43014 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43046 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43058 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43072 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43070 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43026 - "GET /api/nudge/health?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43096 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43080 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43110 - "POST /api/nudge/links/resolve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43170 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43124 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43176 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43160 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43206 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43212 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43224 - "POST /api/nudge/links/resolve HTTP/1.1" 409 Conflict
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:09:28 IST)" (scheduled at 2026-10-24 16:08:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:09:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:09:58 IST)" (scheduled at 2026-10-24 16:08:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:09:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:09:58 IST)" (scheduled at 2026-10-24 16:09:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:09:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:10:28 IST)" (scheduled at 2026-10-24 16:09:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:10:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:10:58 IST)" (scheduled at 2026-10-24 16:09:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:10:58 IST)" executed successfully
+INFO:     127.0.0.1:60098 - "POST /api/auth/login HTTP/1.1" 200 OK
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 341762 (valid 5 min)
+INFO:     127.0.0.1:60104 - "POST /api/auth/otp/send HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60106 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60108 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60112 - "POST /api/auth/otp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60132 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60116 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60162 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60178 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60146 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60194 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60180 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60142 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60198 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60214 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:10:58 IST)" (scheduled at 2026-10-24 16:10:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:10:58 IST)" executed successfully
+INFO:     127.0.0.1:58118 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58134 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58136 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58144 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58150 - "GET /api/fdrs?size=1&bucket=active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58152 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58166 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58174 - "GET /api/institutions?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58178 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58182 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58198 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58204 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58214 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58196 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58228 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58222 - "GET /api/dashboard/institution/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58240 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58234 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58250 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58252 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58262 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58278 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58288 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58338 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58352 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58358 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58316 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58300 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58394 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58380 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58372 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58410 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58418 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58424 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58434 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58450 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58438 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58482 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58476 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58462 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:11:28 IST)" (scheduled at 2026-10-24 16:10:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:11:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:11:58 IST)" (scheduled at 2026-10-24 16:10:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:11:58 IST)" executed successfully
+INFO:     127.0.0.1:58502 - "POST /api/documents/precheck HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58492 - "POST /api/documents/precheck HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53654 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53652 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53682 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53694 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53706 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53668 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53718 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53696 - "GET /api/institutions?page=1&size=14 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53728 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53740 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53770 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53756 - "GET /api/institutions?page=1&size=14 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53778 - "POST /api/fdrs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53786 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53822 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53808 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53800 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53818 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53828 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53838 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53844 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53850 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53868 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53874 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53900 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53938 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53924 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53936 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53952 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53886 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53968 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53852 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53974 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53970 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53976 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53992 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53912 - "GET /api/fdrs?page=1&size=12&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53866 - "GET /api/fdrs?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53980 - "GET /api/fdrs?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53986 - "GET /api/fdrs?page=1&size=12&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59076 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59086 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59092 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59094 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59130 - "GET /api/fdrs?bucket=discrepancy&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59104 - "GET /api/fdrs?bucket=pending&sort=maturity&size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59118 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59096 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59132 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59142 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59146 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59162 - "GET /api/fdrs?bucket=pending&sort=maturity&size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59180 - "GET /api/fdrs?bucket=discrepancy&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59158 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59088 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59164 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59182 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59192 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59196 - "GET /api/fdrs/FDR202600341 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59204 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59218 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59222 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59266 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59230 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59246 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59280 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59254 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59292 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59282 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59312 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59252 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59296 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59308 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59314 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59330 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59344 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59358 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59362 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59400 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59376 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59410 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59380 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59416 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59384 - "GET /api/bank/messages?page=1&size=12 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59430 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59452 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59382 - "GET /api/reconciliation HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59444 - "GET /api/bank/messages?page=1&size=12 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59440 - "GET /api/reconciliation HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42880 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42870 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42928 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42882 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42916 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42892 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42912 - "GET /api/fdrs?bucket=maturing&sort=maturity&size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42908 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42964 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42948 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42950 - "GET /api/fdrs?bucket=maturing&sort=maturity&size=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42940 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42972 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42966 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42976 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42992 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43028 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43036 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43058 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43008 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:11:58 IST)" (scheduled at 2026-10-24 16:11:28.050127+05:30)
+INFO:     127.0.0.1:43048 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43020 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43078 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43074 - "GET /api/release-requests?stage=open&size=100 HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:11:58 IST)" executed successfully
+INFO:     127.0.0.1:54720 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54716 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54734 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54778 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54794 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54802 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54742 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54758 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54804 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54808 - "GET /api/payments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54816 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54842 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54832 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54892 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54844 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54860 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54894 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54896 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54928 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54910 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54876 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54878 - "GET /api/audit-trail?chain=kernel&page=1&size=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54922 - "GET /api/audit-trail?chain=kernel&page=1&size=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45302 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45288 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45312 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45354 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45370 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45320 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45334 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45350 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45384 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45388 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45344 - "GET /api/reports/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45386 - "GET /api/reports/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45390 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45396 - "POST /api/sim/nudge/run HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45402 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45412 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45422 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45438 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45444 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45458 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45496 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45468 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45484 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45464 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45504 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45506 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45514 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45528 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45532 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45550 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45538 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45584 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45544 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45596 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45630 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45602 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45628 - "GET /api/fdrs?size=5&sort=submitted HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45578 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45566 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45558 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45616 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45536 - "GET /api/dashboard/aicte HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45644 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45654 - "GET /api/nudge/what-changed HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45370 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45376 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45390 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45394 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45412 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45402 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45440 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45420 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45434 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45450 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45460 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45472 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45474 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45528 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45512 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45544 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45484 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45556 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45574 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45488 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45558 - "GET /api/fdrs/FDR202600372 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45504 - "GET /api/fdrs/FDR202600372 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45624 - "GET /api/fdrs/FDR202600372/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45578 - "GET /api/fdrs/FDR202600372/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45626 - "GET /api/records/fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45596 - "GET /api/records/fdr/FDR202600372/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45640 - "GET /api/records/fdr/FDR202600372/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45608 - "GET /api/fdrs/FDR202600372/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45586 - "GET /api/records/fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45644 - "GET /api/fdrs/FDR202600372/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45646 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45660 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45664 - "POST /api/fdrs/FDR202600372/documents/1616/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45676 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45696 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45756 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45812 - "GET /api/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45728 - "GET /api/policy/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45814 - "GET /api/fdrs/FDR202600372/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45830 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45714 - "GET /api/nudge/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45844 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45834 - "GET /api/fdrs/FDR202600372 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45780 - "GET /api/fdrs/FDR202600372/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45744 - "GET /api/rules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45766 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45852 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45866 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45862 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45818 - "GET /api/rules/resolve?key=release.fdr_instrument&on_date=2026-10-24 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45882 - "GET /api/nudge/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45894 - "GET /api/policy/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45778 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45906 - "GET /api/rules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45686 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45872 - "GET /api/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45926 - "GET /api/rules/resolve?key=release.fdr_instrument&on_date=2026-10-24 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45922 - "GET /api/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45930 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45804 - "GET /api/records/fdr/FDR202600372/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45708 - "GET /api/policy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45794 - "GET /api/records/fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45946 - "GET /api/policy/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45938 - "GET /api/renewals/gaps HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:12:28 IST)" (scheduled at 2026-10-24 16:11:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:12:58 IST)" (scheduled at 2026-10-24 16:11:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:12:28 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:12:58 IST)" executed successfully
+INFO:     127.0.0.1:45958 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45970 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46020 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46006 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45992 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45974 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45984 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45994 - "GET /api/fdrs/FDR202600124 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46034 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46042 - "GET /api/fdrs/FDR202600124 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46050 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46032 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46060 - "GET /api/fdrs/FDR202600124/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46078 - "GET /api/records/fdr/FDR202600124/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46070 - "GET /api/records/fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46090 - "GET /api/records/fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46102 - "GET /api/records/fdr/FDR202600124/changes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46080 - "GET /api/fdrs/FDR202600124/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46106 - "GET /api/fdrs/FDR202600124/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46086 - "GET /api/fdrs/FDR202600124/observations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43882 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43886 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43940 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43902 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43920 - "GET /api/institutions/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43934 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43900 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43916 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43950 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43960 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43970 - "GET /api/institutions/INST0001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43978 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43984 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43990 - "POST /api/auth/otp/send HTTP/1.1" 429 Too Many Requests
+INFO:     127.0.0.1:44004 - "GET /api/sim/otp-outbox/1-12345678 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44006 - "POST /api/auth/otp/verify HTTP/1.1" 401 Unauthorized
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:12:58 IST)" (scheduled at 2026-10-24 16:12:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:12:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:13:28 IST)" (scheduled at 2026-10-24 16:12:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:13:58 IST)" (scheduled at 2026-10-24 16:12:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:13:58 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:13:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:13:58 IST)" (scheduled at 2026-10-24 16:13:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:13:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:14:28 IST)" (scheduled at 2026-10-24 16:13:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:14:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:14:58 IST)" (scheduled at 2026-10-24 16:13:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:14:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:14:58 IST)" (scheduled at 2026-10-24 16:14:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:14:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:15:28 IST)" (scheduled at 2026-10-24 16:14:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:15:58 IST)" (scheduled at 2026-10-24 16:14:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:15:28 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:15:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:15:58 IST)" (scheduled at 2026-10-24 16:15:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:15:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:16:28 IST)" (scheduled at 2026-10-24 16:15:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:16:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:16:58 IST)" (scheduled at 2026-10-24 16:15:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:16:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:16:58 IST)" (scheduled at 2026-10-24 16:16:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:16:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:17:28 IST)" (scheduled at 2026-10-24 16:16:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:17:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:17:58 IST)" (scheduled at 2026-10-24 16:16:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:17:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:17:58 IST)" (scheduled at 2026-10-24 16:17:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:17:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:18:28 IST)" (scheduled at 2026-10-24 16:17:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:18:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:18:58 IST)" (scheduled at 2026-10-24 16:17:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:18:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:18:58 IST)" (scheduled at 2026-10-24 16:18:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:18:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:19:28 IST)" (scheduled at 2026-10-24 16:18:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:19:58 IST)" (scheduled at 2026-10-24 16:18:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:19:28 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:19:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:19:58 IST)" (scheduled at 2026-10-24 16:19:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:19:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:20:28 IST)" (scheduled at 2026-10-24 16:19:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:20:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:20:58 IST)" (scheduled at 2026-10-24 16:19:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:20:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:20:58 IST)" (scheduled at 2026-10-24 16:20:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:20:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:21:28 IST)" (scheduled at 2026-10-24 16:20:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:21:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:21:58 IST)" (scheduled at 2026-10-24 16:20:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:21:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:21:58 IST)" (scheduled at 2026-10-24 16:21:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:21:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:22:28 IST)" (scheduled at 2026-10-24 16:21:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:22:58 IST)" (scheduled at 2026-10-24 16:21:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:22:58 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:22:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:22:58 IST)" (scheduled at 2026-10-24 16:22:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:22:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:23:28 IST)" (scheduled at 2026-10-24 16:22:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:23:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_escalation (trigger: interval[0:15:00], next run at: 2026-10-24 16:37:58 IST)" (scheduled at 2026-10-24 16:22:58.050226+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:23:58 IST)" (scheduled at 2026-10-24 16:22:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:23:58 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_escalation (trigger: interval[0:15:00], next run at: 2026-10-24 16:37:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:23:58 IST)" (scheduled at 2026-10-24 16:23:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:23:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:24:28 IST)" (scheduled at 2026-10-24 16:23:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:24:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:24:58 IST)" (scheduled at 2026-10-24 16:23:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:24:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:24:58 IST)" (scheduled at 2026-10-24 16:24:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:24:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:25:28 IST)" (scheduled at 2026-10-24 16:24:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:25:58 IST)" (scheduled at 2026-10-24 16:24:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:25:28 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:25:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:25:58 IST)" (scheduled at 2026-10-24 16:25:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:25:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:26:28 IST)" (scheduled at 2026-10-24 16:25:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:26:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:26:58 IST)" (scheduled at 2026-10-24 16:25:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:26:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:26:58 IST)" (scheduled at 2026-10-24 16:26:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:26:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:27:28 IST)" (scheduled at 2026-10-24 16:26:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:27:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:27:58 IST)" (scheduled at 2026-10-24 16:26:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:27:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:27:58 IST)" (scheduled at 2026-10-24 16:27:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:27:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:28:28 IST)" (scheduled at 2026-10-24 16:27:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:28:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:28:58 IST)" (scheduled at 2026-10-24 16:27:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:28:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:28:58 IST)" (scheduled at 2026-10-24 16:28:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:28:58 IST)" executed successfully
+INFO:     127.0.0.1:43664 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43680 - "GET /api/sim/totp/meera%40aicte-india.org HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43682 - "POST /api/auth/totp/verify HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43696 - "GET /api/fdrs?size=1&bucket=active HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43704 - "GET /api/institutions?size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43720 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43724 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43734 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43766 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43784 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43750 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43782 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43788 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43786 - "GET /api/notifications?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43764 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43802 - "GET /api/fdrs?bucket=pending&size=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43840 - "GET /api/meta/freshness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43818 - "GET /api/nudge/prefs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43832 - "GET /api/nudge/centre?size=60&status=open HTTP/1.1" 200 OK
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:29:28 IST)" (scheduled at 2026-10-24 16:28:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:29:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:29:58 IST)" (scheduled at 2026-10-24 16:28:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:29:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:29:58 IST)" (scheduled at 2026-10-24 16:29:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:29:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:30:28 IST)" (scheduled at 2026-10-24 16:29:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:30:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:30:58 IST)" (scheduled at 2026-10-24 16:29:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:30:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:30:58 IST)" (scheduled at 2026-10-24 16:30:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:30:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:31:28 IST)" (scheduled at 2026-10-24 16:30:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:31:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:31:58 IST)" (scheduled at 2026-10-24 16:30:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:31:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:31:58 IST)" (scheduled at 2026-10-24 16:31:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:31:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:32:28 IST)" (scheduled at 2026-10-24 16:31:58.050127+05:30)
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:32:58 IST)" (scheduled at 2026-10-24 16:31:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:32:28 IST)" executed successfully
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:32:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:32:58 IST)" (scheduled at 2026-10-24 16:32:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:32:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:33:28 IST)" (scheduled at 2026-10-24 16:32:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:33:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:33:58 IST)" (scheduled at 2026-10-24 16:32:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:33:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:33:58 IST)" (scheduled at 2026-10-24 16:33:28.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:33:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:34:28 IST)" (scheduled at 2026-10-24 16:33:58.050127+05:30)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:34:28 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:34:58 IST)" (scheduled at 2026-10-24 16:33:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:34:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:34:58 IST)" (scheduled at 2026-10-24 16:34:28.050127+05:30)
+WARNING apscheduler.scheduler: Execution of job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:34:58 IST)" skipped: maximum number of running instances reached (1)
+INFO apscheduler.executors.default: Job "job_worker (trigger: interval[0:00:30], next run at: 2026-10-24 16:34:58 IST)" executed successfully
+INFO apscheduler.executors.default: Running job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:35:58 IST)" (scheduled at 2026-10-24 16:34:58.050295+05:30)
+INFO apscheduler.executors.default: Job "job_kernel_tick (trigger: interval[0:01:00], next run at: 2026-10-24 16:35:58 IST)" executed successfully
+                                                                                                                                                                                                                                                                                                                              

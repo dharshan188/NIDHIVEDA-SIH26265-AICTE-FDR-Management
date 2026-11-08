@@ -1,0 +1,416 @@
+$ bash -lc 'cat tools/ui-checks/axe.mjs; cat tools/ui-checks/shots.mjs; cat tools/ui-checks/s01.mjs; head -n 45 docs/scenario-report.md; cat frontend/package.json'
+// axe-core WCAG 2 A/AA scan of every route for all three roles plus the login page.
+// Usage: node axe.mjs [--theme dark] [--lang hi] [--reduced] [--width 1536]
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { BASE, PAGES, apiFor, launch, login, newContext, open, settle, watchConsole } from './lib.mjs';
+
+const arg = (k, d) => {
+  const i = process.argv.indexOf(`--${k}`);
+  return i > 0 ? process.argv[i + 1] ?? true : d;
+};
+const theme = arg('theme', 'light');
+const lang = arg('lang', 'en');
+const reduced = process.argv.includes('--reduced');
+const width = Number(arg('width', 1536));
+const AXE = readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
+
+const browser = await launch();
+const errors = [];
+const results = [];
+
+async function scan(page, label) {
+  await page.addScriptTag({ content: AXE });
+  const r = await page.evaluate(async () => {
+    // eslint-disable-next-line no-undef
+    const out = await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] }, resultTypes: ['violations'] });
+    return out.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.slice(0, 4).map((n) => n.target.join(' ') + ' :: ' + (n.failureSummary ?? '').split('\n')[1]) }));
+  });
+  results.push({ label, violations: r });
+  console.log(`${r.length === 0 ? 'OK  ' : 'FAIL'} ${label}${r.length ? '  ' + r.map((v) => `${v.id}(${v.nodes.length})`).join(', ') : ''}`);
+}
+
+// login page (signed out)
+{
+  const ctx = await newContext(browser, { width, theme, lang, reducedMotion: reduced });
+  const page = await ctx.newPage();
+  watchConsole(page, errors, 'login');
+  await open(page, `${BASE}/login`);
+  await settle(page, 900);
+  await scan(page, '/login');
+  await ctx.close();
+}
+
+for (const role of ['aicte', 'institution', 'auditor']) {
+  const ctx = await newContext(browser, { width, theme, lang, reducedMotion: reduced });
+  const { csrf } = await login(ctx, role);
+  const api = apiFor(ctx, csrf);
+  const fdrs = await api.get('/fdrs?size=1&bucket=active');
+  const fdr = fdrs.items[0]?.id;
+  const inst = role === 'institution' ? '' : (await api.get('/institutions?size=1')).items[0]?.id;
+  const page = await ctx.newPage();
+  watchConsole(page, errors, role);
+  for (const p of PAGES[role]) {
+    const path = `/${role}${p ? '/' + p.replace(':fdr', fdr).replace(':inst', inst) : ''}`;
+    await open(page, `${BASE}${path}`);
+    await settle(page, reduced ? 300 : 1200);
+    await scan(page, path);
+  }
+  await ctx.close();
+}
+await browser.close();
+
+const bad = results.filter((r) => r.violations.length);
+console.log(`\naxe: theme=${theme} lang=${lang} reduced=${reduced} width=${width}: ${results.length} pages, ${bad.length} with violations, ${results.reduce((n, r) => n + r.violations.length, 0)} violations`);
+for (const b of bad) for (const v of b.violations) console.log(`  ${b.label} ${v.id} [${v.impact}] ${v.help}\n    ${v.nodes.join('\n    ')}`);
+console.log(`console errors: ${errors.length}`);
+for (const e of errors.slice(0, 20)) console.log('  ' + e);
+process.exit(bad.length || errors.length ? 1 : 0);
+// Screenshots at 1536x1024 into docs/screenshots/final/: login, the three dashboards, upload (checks, then encryption),
+// FDR detail (documents with SHA-256 re-check; timeline with rule in force and renewal gap), notification centre,
+// escalations, health, missing documents, the Rules page policy editor, and page 1 of a PDF export.
+// Every figure on screen comes from the API; the upload goes through the real ClamAV and the encrypted object store.
+// Usage: node shots.mjs   (needs the dev servers from serve.py)
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { BASE, apiFor, launch, newContext, open, settle, uiLogin, watchConsole } from './lib.mjs';
+
+const OUT = new URL('../../docs/screenshots/final/', import.meta.url).pathname;
+const TMP = new URL('../../.ui-check/shots/', import.meta.url).pathname;
+mkdirSync(OUT, { recursive: true });
+mkdirSync(TMP, { recursive: true });
+const errors = [];
+const taken = [];
+const browser = await launch();
+
+async function session(who) {
+  const ctx = await newContext(browser, { width: 1536, height: 1024 });
+  const page = await ctx.newPage();
+  watchConsole(page, errors, who);
+  const { csrf } = await uiLogin(page, who);
+  return { ctx, page, api: apiFor(ctx, csrf) };
+}
+async function shot(page, name, path, { scrollTo, before } = {}) {
+  if (path) {
+    await open(page, `${BASE}${path}`);
+    await settle(page, 1200);
+  }
+  if (before) await before(page);
+  if (scrollTo) {
+    await page.locator(scrollTo).first().evaluate((el) => el.scrollIntoView({ block: 'start' }));
+    await page.evaluate(() => window.scrollBy(0, -90));   // keep the sticky header from covering the panel title
+    await page.waitForTimeout(500);
+  }
+  await page.screenshot({ path: `${OUT}${name}.png` });
+  taken.push(name);
+  console.log(`saved ${name}.png`);
+}
+const panel = (title) => `section.panel:has(h2:text-is("${title}")), .panel:has(:is(h2,h3):text-is("${title}"))`;
+
+/** A small, valid, unencrypted PDF (no scripts, forms or attachments). */
+function makePdf(title) {
+  const text = `${title} - test document for the FDR Trust Ledger prototype (not a real FDR)`;
+  const objs = ['<</Type/Catalog/Pages 2 0 R>>', '<</Type/Pages/Kids[3 0 R]/Count 1>>',
+    '<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>',
+    null, '<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>'];
+  const stream = `BT /F1 14 Tf 60 760 Td (${text}) Tj ET`;
+  objs[3] = `<</Length ${stream.length}>>\nstream\n${stream}\nendstream`;
+  let body = '%PDF-1.4\n';
+  const offs = [];
+  objs.forEach((o, i) => { offs.push(body.length); body += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = body.length;
+  body += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${offs.map((o) => `${String(o).padStart(10, '0')} 00000 n \n`).join('')}`;
+  body += `trailer\n<</Size ${objs.length + 1}/Root 1 0 R>>\nstartxref\n${xref}\n%%EOF\n`;
+  return Buffer.from(body, 'latin1');
+}
+
+// ---------------------------------------------------------------- signed out
+{
+  const ctx = await newContext(browser, { width: 1536, height: 1024 });
+  const page = await ctx.newPage();
+  watchConsole(page, errors, 'login');
+  await shot(page, '01-login', '/login');
+  await ctx.close();
+}
+
+// ---------------------------------------------------------------- institution: dashboard, upload, notifications
+const abc = await session('institution');
+await shot(abc.page, '03-dashboard-institution', '/institution');
+await open(abc.page, `${BASE}/institution/upload`);
+await settle(abc.page, 800);
+const no = `SBI-SHOT-${Date.now() % 1e6}`;
+const today = new Date();
+const iso = (d) => d.toISOString().slice(0, 10);
+await abc.page.locator('#f-ref').fill(no);
+await abc.page.locator('#f-bank').selectOption('SBI');
+await abc.page.locator('#f-branch').fill('Coimbatore Main Branch');
+await abc.page.locator('#f-amount').fill('3500000');
+await abc.page.locator('#f-issue').fill(iso(new Date(today.getTime() - 5 * 864e5)));
+await abc.page.locator('#f-maturity').fill(iso(new Date(today.getTime() + (3 * 365 + 5) * 864e5)));
+await abc.page.getByRole('button', { name: 'Continue' }).click();
+writeFileSync(`${TMP}FDR_scan_${no}.pdf`, makePdf(`Scanned FDR ${no}`));
+writeFileSync(`${TMP}Lien_letter_${no}.pdf`, makePdf(`Bank lien letter for ${no}`));
+await abc.page.locator('input[type=file]').setInputFiles([`${TMP}FDR_scan_${no}.pdf`, `${TMP}Lien_letter_${no}.pdf`]);
+await abc.page.getByText('Ready to submit').nth(1).waitFor({ timeout: 30000 });
+await shot(abc.page, '05-upload-checks-and-scan', null, { scrollTo: '.up-file' });
+await abc.page.getByRole('button', { name: 'Continue' }).click();
+await abc.page.locator('input.chk[type=checkbox]').check();
+await abc.page.getByRole('button', { name: 'Submit for verification' }).click();
+await abc.page.getByText('FDR submitted').waitFor({ timeout: 30000 });
+await abc.page.waitForTimeout(600);
+await shot(abc.page, '06-upload-encryption-status');
+const fid = (await abc.api.get(`/fdrs?size=5&sort=submitted`)).items.find((f) => f.instrument_no === no)?.id;
+console.log('uploaded', fid);
+await shot(abc.page, '09-notification-centre', '/institution/notifications');
+
+// ---------------------------------------------------------------- AICTE official
+const aicte = await session('aicte');
+// let the scheduled jobs run now (dev control) so the centre, health and escalations reflect current outbox rows
+console.log('nudge run:', JSON.stringify(await aicte.api.post('/sim/nudge/run', { reminders: true, escalate: true, digest: true, deliver: true })).slice(0, 300));
+await shot(aicte.page, '02-dashboard-aicte', '/aicte');
+await shot(aicte.page, '07-fdr-detail-documents', `/aicte/fdr/${fid}`, {
+  scrollTo: '.doc-list',
+  before: async (p) => {
+    await p.getByRole('button', { name: 'Check SHA-256 now' }).first().click();
+    await p.getByText(/SHA-256 matches/).first().waitFor({ timeout: 15000 });
+  },
+});
+// timeline: an FDR with a renewal gap, so the flag and the rule in force on each date are visible
+const gaps = await aicte.api.get('/renewals/gaps');
+const gapFdr = gaps.items.find((g) => g.kind === 'renewal_notice_missing')?.fdr_id ?? gaps.items[0]?.fdr_id;
+if (!gapFdr) throw new Error('no FDR with a renewal gap in the seeded data');
+console.log(`renewal gaps: ${gaps.total}; timeline shot uses ${gapFdr}`);
+await shot(aicte.page, '08-fdr-detail-timeline', `/aicte/fdr/${gapFdr}`, { scrollTo: '.timeline' });
+await shot(aicte.page, '10-escalations', '/aicte/escalations');
+await shot(aicte.page, '11-notification-health', '/aicte/notification-health');
+await shot(aicte.page, '12-missing-documents', '/aicte/missing-documents');
+await shot(aicte.page, '13-rules-policy-editor', '/aicte/rules', { scrollTo: '.pol-form' });
+
+// PDF export: the missing-documents report, page 1 rendered to PNG at 1536x1024
+const res = await aicte.ctx.request.get(`${BASE}/api/reports/missing-documents.pdf`, { headers: { 'X-TL-Client': 'web' } });
+writeFileSync(`${TMP}missing-documents.pdf`, await res.body());
+execFileSync('pdftoppm', ['-png', '-r', '110', '-f', '1', '-l', '1', '-singlefile', `${TMP}missing-documents.pdf`, `${TMP}missing-p1`]);
+execFileSync('convert', [`${TMP}missing-p1.png`, '-resize', '1536x1024', '-background', '#e5e7eb', '-gravity', 'north', '-extent', '1536x1024', `${OUT}14-pdf-export-missing-documents.png`]);
+taken.push('14-pdf-export-missing-documents');
+console.log('saved 14-pdf-export-missing-documents.png');
+
+// ---------------------------------------------------------------- auditor
+const aud = await session('auditor');
+await shot(aud.page, '04-dashboard-auditor', '/auditor');
+
+for (const s of [abc, aicte, aud]) await s.ctx.close();
+await browser.close();
+const sizes = execFileSync('identify', ['-format', '%f %wx%h\n', ...taken.map((n) => `${OUT}${n}.png`)]).toString();
+console.log(`\n${taken.length} screenshots:\n${sizes}console errors: ${errors.length}`);
+for (const e of errors.slice(0, 20)) console.log('  ' + e);
+process.exit(errors.length ? 1 : 0);
+// S01 in the browser with four separate users, each in its own browser context, every action a click in the UI:
+//   institution XYZ (OTP) requests release of its Rs 35 lakh online deposit -> section officer Kiran (TOTP) records scrutiny
+//   -> deputy director Meera (TOTP) approves with DSC (SIMULATED issuer) -> finance officer Ravi (TOTP) initiates payment
+//   -> SIMULATED bank debits (UTR) -> institution sees "NOT yet complete" -> SIMULATED return -> institution sees
+//   "AICTE still owes you ₹35.00 lakh" -> Ravi re-issues -> debit -> SIMULATED positive credit confirmation -> "Completed".
+// Asserts the institution never sees "Completed" before the credit confirmation. Screenshots to docs/screenshots/final/.
+// Usage: node s01.mjs   (needs the dev servers from serve.py on a freshly seeded database)
+import { mkdirSync } from 'node:fs';
+import { BASE, apiFor, launch, newContext, open, settle, uiLogin, watchConsole } from './lib.mjs';
+
+const SHOTS = new URL('../../docs/screenshots/final/', import.meta.url).pathname;
+mkdirSync(SHOTS, { recursive: true });
+const OBLIGATION = 'ONL-XYZ-UG';
+const errors = [];
+const results = [];
+const check = (name, ok, detail = '') => {
+  results.push({ name, ok });
+  console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${detail ? ` :: ${detail}` : ''}`);
+};
+
+const browser = await launch();
+async function user(who) {
+  const ctx = await newContext(browser, { width: 1536, height: 1024 });
+  const page = await ctx.newPage();
+  watchConsole(page, errors, who);
+  const { csrf, user: u } = await uiLogin(page, who);
+  console.log(`signed in through the login page: ${u.username} (${u.role}${u.kernel_role ? ` / ${u.kernel_role}` : ''})`);
+  return { ctx, page, api: apiFor(ctx, csrf), u };
+}
+const shot = (page, name) => page.screenshot({ path: `${SHOTS}${name}.png` });
+
+const inst = await user('xyz');
+const kiran = await user('kiran');
+const meera = await user('aicte');
+const ravi = await user('ravi');
+
+// 1. institution raises the request
+await open(inst.page, `${BASE}/institution/release`);
+await settle(inst.page, 600);
+await inst.page.getByRole('tab', { name: 'Online deposit (RTGS)' }).click();
+await inst.page.locator('#rf').selectOption({ value: OBLIGATION });
+await inst.page.locator('#rr').fill('Programme closed by AICTE order; refund of the security deposit requested (S01 browser run)');
+await inst.page.getByRole('button', { name: 'Submit request' }).click();
+await inst.page.getByText('Release request submitted').first().waitFor({ timeout: 15000 });
+const req = (await inst.api.get('/release-requests?size=100')).items.find((r) => r.obligation_id === OBLIGATION && r.stage === 'SUBMITTED');
+check('institution submitted the release request', !!req, req?.id);
+const rid = req.id;
+
+// 2. section officer: scrutiny (maker)
+async function openCard(page, path) {
+  await open(page, `${BASE}${path}`);
+  await settle(page, 600);
+  const head = page.getByRole('button', { name: new RegExp(rid) }).first();
+  await head.click();
+  return head;
+}
+await openCard(kiran.page, '/aicte/releases');
+await kiran.page.getByRole('button', { name: 'Record scrutiny' }).click();
+await kiran.page.locator('.modal textarea, [role=dialog] textarea').first().fill('Entitlement: programme closure order on file; Affidavit-6 in the prescribed format');
+await kiran.page.getByRole('button', { name: 'Record', exact: true }).click();
+await kiran.page.getByText('Scrutiny recorded').first().waitFor({ timeout: 15000 });
+check('section officer recorded scrutiny', (await kiran.api.get(`/release-requests/${rid}`)).stage === 'SCRUTINY_DONE');
+
+// 3. deputy director: gate preview, then DSC approval (checker; the SIMULATED DSC issuer signs in the dev build)
+await openCard(meera.page, '/aicte/releases');
+await meera.page.getByText('All checks pass').first().waitFor({ timeout: 15000 });
+await shot(meera.page, 's01-1-release-gate');
+await meera.page.getByRole('button', { name: 'Approve with DSC' }).click();
+await meera.page.getByText(/approved with DSC/).first().waitFor({ timeout: 15000 });
+const approved = await meera.api.get(`/release-requests/${rid}`);
+check('deputy director approved with DSC', approved.stage === 'APPROVED' && !!approved.dsc_serial, approved.dsc_serial?.slice(0, 12));
+const refund = approved.refund?.refund_id;
+check('refund authorised for the approved request', !!refund, refund);
+
+// 4. finance officer initiates; the SIMULATED bank debits and issues a UTR
+const card = (page) => page.locator('article', { hasText: refund }).first();
+async function payments(page, base) {
+  await open(page, `${BASE}${base}/payments`);
+  await settle(page, 600);
+  await page.getByRole('tab', { name: /^All \(/ }).click();   // "Needs attention" hides settled payments
+  await card(page).waitFor({ timeout: 15000 });
+  await card(page).scrollIntoViewIfNeeded();
+}
+await payments(ravi.page, '/aicte');
+await card(ravi.page).getByRole('button', { name: 'Initiate payment' }).click();
+await ravi.page.getByText('Payment initiated').first().waitFor({ timeout: 15000 });
+await card(ravi.page).getByRole('button', { name: 'Bank debits (issues UTR)' }).click();
+await ravi.page.getByText(/debited the payment/).first().waitFor({ timeout: 15000 });
+
+async function institutionSees() {
+  await payments(inst.page, '/institution');
+  return (await card(inst.page).locator('.pay-status').innerText()).trim();
+}
+let txt = await institutionSees();
+check('after the bank debit the institution sees "NOT yet complete"', txt.includes('NOT yet complete'), txt);
+check('...and not "Completed"', !/Completed/.test(txt));
+await shot(inst.page, 's01-2-sent-not-complete');
+
+// 5. the beneficiary bank returns the payment (SIMULATED return advice)
+await payments(ravi.page, '/aicte');
+await card(ravi.page).getByRole('button', { name: 'Bank returns payment' }).click();
+await ravi.page.getByText('Return advice received').first().waitFor({ timeout: 15000 });
+txt = await institutionSees();
+check('after the return the institution sees "AICTE still owes you ₹35.00 lakh"', txt.includes('AICTE still owes you ₹35.00 lakh'), txt);
+check('...and not "Completed"', !/Completed/.test(txt));
+await shot(inst.page, 's01-3-returned-still-owed');
+
+// 6. re-issue, debit again, then the positive credit confirmation
+await payments(ravi.page, '/aicte');
+await card(ravi.page).getByRole('button', { name: 'Re-issue' }).click();
+await ravi.page.getByText('Re-issue initiated').first().waitFor({ timeout: 15000 });
+await card(ravi.page).getByRole('button', { name: 'Bank debits (issues UTR)' }).click();
+await ravi.page.getByText(/debited the payment/).first().waitFor({ timeout: 15000 });
+txt = await institutionSees();
+check('after the second debit the institution still sees "NOT yet complete"', txt.includes('NOT yet complete') && !/Completed/.test(txt), txt);
+await payments(ravi.page, '/aicte');
+await card(ravi.page).getByRole('button', { name: /Beneficiary bank confirms credit/ }).click();
+await ravi.page.getByText('Positive credit confirmation received').first().waitFor({ timeout: 15000 });
+txt = await institutionSees();
+check('only after the positive credit confirmation the institution sees "Completed"', txt.startsWith('Completed'), txt);
+await shot(inst.page, 's01-4-completed');
+const final = await ravi.api.get(`/payments/${refund}`);
+check('ledger state SETTLED with two attempts (one returned, one settled)',
+  final.state === 'SETTLED' && final.attempts.length === 2 && final.attempts[0].status === 'RETURNED' && final.attempts[1].status === 'SETTLED',
+  `${final.state}, attempts ${final.attempts.map((a) => a.status).join(' / ')}`);
+const audit = await meera.api.post('/audit-trail/verify');
+check('both hash chains verify after the run', audit.kernel_chain.valid && audit.portal_chain.valid);
+
+for (const u of [inst, kiran, meera, ravi]) await u.ctx.close();
+await browser.close();
+const failed = results.filter((r) => !r.ok).length;
+console.log(`\nS01 browser run: ${results.length - failed}/${results.length} checks passed; console errors: ${errors.length}`);
+for (const e of errors.slice(0, 20)) console.log('  ' + e);
+process.exit(failed || errors.length ? 1 : 0);
+# Required scenarios — report
+
+Generated 2026-10-24T11:22:56 by `backend/scripts/run_required_scenarios.py` against a fresh seeded database. Bank, SMS/e-mail/WhatsApp/push providers and the clock are the dev simulators (SIMULATED).
+
+**6 scenarios, 52 checks passed, 0 failed.**
+
+## R1 — New submission: upload, encrypt, scan, bank confirmation, verification, notices both ways
+
+| Check | Result |
+|---|---|
+| institution uploads the FDR with two PDFs | pass |
+| both documents encrypted at rest (AES-256-GCM envelope) | pass |
+| both documents malware-scanned clean | pass |
+| status pending until the bank confirms | pass |
+| AICTE notified through the outbox (fdr_submitted) | pass |
+| download decrypts and the SHA-256 matches | pass |
+| verification refused before any bank confirmation | pass |
+| issuing bank (SIMULATED) confirms every field | pass |
+| officer verifies | pass |
+| institution notified in English and Hindi | pass |
+
+## R2 — Validity tracking: daily sweep, ladder rungs, buckets from queries, rules in force per date
+
+| Check | Result |
+|---|---|
+| 08:00 IST sweep runs | pass |
+| a second run the same IST day sends nothing new | pass |
+| dashboard 'maturing' count equals the list query | pass |
+| a maturing FDR has a scheduled reminder | pass |
+| reminder window is the tightest one reached | pass |
+| ladder rung follows days to maturity | pass |
+| timeline shows the rule editions in force on the issue date | pass |
+
+## R3 — Approaching maturity: T-7 deadline rung, quiet hours, acknowledgement stops the ladder
+
+| Check | Result |
+|---|---|
+| T-7 reminder created on the deadline rung | pass |
+| channels: in-app, e-mail and SMS | pass |
+| in-app and e-mail go out at 21:00 | pass |
+| SMS held for quiet hours (20:00–08:00 IST) | pass |
+| e-mail marked SIMULATED (provider simulator) | pass |
+| SMS sent at 08:00 next morning | pass |
+| institution opens it: acknowledged | pass |
+| no rung-up after acknowledgement | pass |
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "framer-motion": "^14.6.0",
+    "lucide-react": "^1.61.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^6.30.6",
+    "recharts": "^3.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "oxlint": "^1.88.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  }
+}
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

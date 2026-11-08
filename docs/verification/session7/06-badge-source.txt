@@ -1,0 +1,42 @@
+$ bash -lc 'rg -n -A 9 -B 2 "badge-dot" frontend/src/styles*.css frontend/src/styles/*.css; docker image inspect ghcr.io/zaproxy/zaproxy:stable --format "{{.Id}}" 2>/dev/null || true'
+frontend/src/styles/polish.css-29-:lang(hi) .nav-item, :lang(hi) .tab, :lang(hi) .btn { line-height: 1.5; }
+frontend/src/styles/polish.css-30-h1, h2, h3, h4 { font-weight: 600; }
+frontend/src/styles/polish.css:31:.num, .tbl td.num, .kpi .val, .legend-grid b, .dlegend .v, .dlegend .p, .nav-count, .badge-dot, .pager { font-variant-numeric: tabular-nums; }
+frontend/src/styles/polish.css-32-::selection { background: color-mix(in srgb, var(--primary-solid) 28%, transparent); }
+frontend/src/styles/polish.css-33-::-webkit-scrollbar-thumb { background: var(--line); }
+frontend/src/styles/polish.css-34-:focus-visible { outline-color: var(--focus); }
+frontend/src/styles/polish.css-35-.hide-sm { }
+frontend/src/styles/polish.css-36-
+frontend/src/styles/polish.css-37-/* ---------------------------------------------------------------- header additions */
+frontend/src/styles/polish.css-38-.pref-controls { display: flex; align-items: center; gap: 4px; }
+frontend/src/styles/polish.css-39-.lang-switch { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-pill); padding: 2px; background: var(--surface-2); }
+frontend/src/styles/polish.css-40-.lang-switch button { border: 0; background: none; height: 32px; min-width: 40px; padding: 0 8px; border-radius: var(--radius-pill); font-size: var(--fs-13); font-weight: 600; color: var(--muted); }
+--
+frontend/src/styles/polish.css-56-.user-chip b { color: var(--navy); }
+frontend/src/styles/polish.css-57-.user-chip span { color: var(--muted); }
+frontend/src/styles/polish.css:58:.badge-dot { border-color: var(--card); }
+frontend/src/styles/polish.css-59-
+frontend/src/styles/polish.css-60-/* notification centre */
+frontend/src/styles/polish.css-61-.notif-pop { width: 392px; max-width: calc(100vw - 24px); }
+frontend/src/styles/polish.css-62-.notif-pop header { color: var(--navy); }
+frontend/src/styles/polish.css-63-.notif-pop header button:disabled { color: var(--faint); cursor: default; }
+frontend/src/styles/polish.css-64-.notif-tabs { display: flex; gap: 4px; padding: 8px 12px 0; border-bottom: 1px solid var(--line); }
+frontend/src/styles/polish.css-65-.notif-tabs button { width: auto !important; border: 0 !important; background: none; padding: 8px 12px !important; border-radius: 0 !important; font-size: var(--fs-13) !important; color: var(--muted) !important; border-bottom: 2px solid transparent !important; }
+frontend/src/styles/polish.css-66-.notif-tabs button.on { color: var(--navy) !important; font-weight: 600; border-bottom-color: var(--primary-solid) !important; }
+frontend/src/styles/polish.css-67-.notif-scroll { max-height: 380px; overflow: auto; }
+--
+frontend/src/styles.css-54-.icon-btn:hover { background: var(--c-bg-eef2f8); }
+frontend/src/styles.css-55-.burger { display: none; }
+frontend/src/styles.css:56:.badge-dot {
+frontend/src/styles.css-57-  position: absolute; top: 0; right: 1px; min-width: 19px; height: 19px; padding: 0 4px; border-radius: 10px; background: var(--c-bg-e5383b);
+frontend/src/styles.css-58-  color: var(--on-solid); font-size: var(--fs-12); font-weight: 700; display: grid; place-items: center; border: 2px solid var(--c-bd-ffffff);
+frontend/src/styles.css-59-}
+frontend/src/styles.css-60-.user-chip {
+frontend/src/styles.css-61-  display: flex; align-items: center; gap: 12px; padding: 4px 8px 4px 4px; border-radius: 10px; border: 0; background: none; text-align: left; position: relative;
+frontend/src/styles.css-62-}
+frontend/src/styles.css-63-.user-chip:hover { background: var(--surface-2); }
+frontend/src/styles.css-64-.user-chip .av { width: 48px; height: 48px; border-radius: 9px; background: var(--c-bg-e9edf4); display: grid; place-items: center; color: var(--c-fg-23365f); flex: none; }
+frontend/src/styles.css-65-.user-chip b { display: block; font-size: var(--fs-16); color: var(--navy); font-weight: 700; }
+
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

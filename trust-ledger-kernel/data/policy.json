@@ -1,0 +1,77 @@
+{
+  "policy_id": "TL-POLICY-v5",
+  "status": "proposed_requires_AICTE_approval",
+  "note": "Every number and rule here is a PROPOSAL for AICTE to approve or change. None of it is presented as an AICTE regulation. Changing it changes behaviour without code changes.",
+  "release": {
+    "online_sufficient_confidence": [
+      "TRACEABLE",
+      "CORROBORATED"
+    ],
+    "allow_partial_release_of_undisputed_amount": true,
+    "fdr_current_instrument_max_evidence_age_days": 90,
+    "fdr_evidence_must_postdate_last_maturity": true
+  },
+  "holds": {
+    "scope": "affected_items_only",
+    "who_may_place": [
+      "finance_reconciliation_officer",
+      "internal_audit"
+    ],
+    "basis_required": true,
+    "review_after_days": 30,
+    "on_review_due": "escalate_to_competent_authority"
+  },
+  "confirmations": {
+    "request_only_for": [
+      "UNCERTAIN"
+    ],
+    "order_of_checks": [
+      "AICTE's own bank (statement line, remitter details)",
+      "just-in-time bank confirmation at release",
+      "institution, only when bank evidence conflicts with the register"
+    ],
+    "non_response_effect": "none",
+    "note": "v4 proposed annual confirmation by every institution. v5 drops it: institutions are contacted only when bank evidence conflicts with the register."
+  },
+  "payments": {
+    "settlement_requires": "positive_credit_confirmation",
+    "confirmation_window_minutes": {
+      "RTGS": 60,
+      "NEFT": 120
+    },
+    "window_source": "RTGS: credit within 30 min or return within 1 h of receipt (SBI RTGS FAQ). NEFT: return within 2 h of batch completion, N10 credit acknowledgement (RBI circular DPSS CO EPPD No.168, 5 Feb 2010; page lists it under withdrawn notifications, so AICTE's bank must confirm current timelines).",
+    "return_reasons_requiring_payee_reverification": [
+      "ACCOUNT_CLOSED",
+      "ACCOUNT_DOES_NOT_EXIST",
+      "NAME_MISMATCH",
+      "INVALID_IFSC"
+    ],
+    "reissue_target_working_days": 5,
+    "finance_bank": "SBI",
+    "finance_bank_note": "AICTE Finance's own banker: the only bank whose debit advices and beneficiary name look-ups are accepted (RBI name look-up is run by the remitter's bank). Proposed; AICTE to confirm."
+  },
+  "payee": {
+    "name_lookup_required": true
+  },
+  "admin_checks": {
+    "AFFIDAVIT_FORMAT": {
+      "description": "Affidavit-6 on record but format deviates from template",
+      "override_roles": [
+        "section_officer",
+        "deputy_director"
+      ]
+    }
+  },
+  "roles": {
+    "approve_release": [
+      "deputy_director",
+      "director"
+    ],
+    "initiate_payment": [
+      "finance_officer"
+    ],
+    "legal_ruling": [
+      "legal_cell"
+    ]
+  }
+}

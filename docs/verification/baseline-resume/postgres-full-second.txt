@@ -1,0 +1,401 @@
+Application fixture backend: postgres; PostgreSQL 16.15; disposable database: tl_baseline_a1d4cf3851514303bbae76c68cd6a5d0
+Required services: real ClamAV :3310, SeaweedFS :8334, Mailpit SMTP :1025 / HTTP :8025, PostgreSQL :55433
+Credentials loaded into child environment only (redacted). Command: python -m pytest -q -rs --tb=short -p hypothesis.extra.pytestplugin --require-services tests
+...........................................................FFF.F.F...... [ 52%]
+.........................................................F.......        [100%]
+=================================== FAILURES ===================================
+_________________ test_db_refuses_over_allocation_of_a_credit __________________
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.RaiseException: INVARIANT: allocations exceed credit amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 10 at RAISE
+
+The above exception was the direct cause of the following exception:
+tests/test_ledger_db.py:29: in test_db_refuses_over_allocation_of_a_credit
+    db.flush()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+../.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1049: in _emit_insert_statements
+    result = connection.execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1428: in execute
+    return meth(
+../.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1855: in _execute_context
+    return self._exec_single_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) INVARIANT: allocations exceed credit amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 10 at RAISE
+E   [SQL: INSERT INTO allocations (alloc_id, credit_id, obligation_id, amount_paise, basis, active) VALUES (%(alloc_id)s::VARCHAR, %(credit_id)s::VARCHAR, %(obligation_id)s::VARCHAR, %(amount_paise)s::BIGINT, %(basis)s::VARCHAR, %(active)s)]
+E   [parameters: {'alloc_id': 'X-A', 'credit_id': 'CR-UTR-LMN-2017-0507', 'obligation_id': 'X-O', 'amount_paise': 1, 'basis': 'institution_declaration', 'active': True}]
+E   (Background on this error at: https://sqlalche.me/e/20/f405)
+__________________ test_db_refuses_allocation_beyond_required __________________
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.RaiseException: INVARIANT: allocations exceed required amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 11 at RAISE
+
+The above exception was the direct cause of the following exception:
+tests/test_ledger_db.py:38: in test_db_refuses_allocation_beyond_required
+    db.flush()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+../.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1049: in _emit_insert_statements
+    result = connection.execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1428: in execute
+    return meth(
+../.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1855: in _execute_context
+    return self._exec_single_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) INVARIANT: allocations exceed required amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 11 at RAISE
+E   [SQL: INSERT INTO allocations (alloc_id, credit_id, obligation_id, amount_paise, basis, active) VALUES (%(alloc_id)s::VARCHAR, %(credit_id)s::VARCHAR, %(obligation_id)s::VARCHAR, %(amount_paise)s::BIGINT, %(basis)s::VARCHAR, %(active)s)]
+E   [parameters: {'alloc_id': 'X-A', 'credit_id': 'X-C', 'obligation_id': 'ONL-XYZ-UG', 'amount_paise': 1, 'basis': 'institution_declaration', 'active': True}]
+E   (Background on this error at: https://sqlalche.me/e/20/f405)
+________________ test_db_refuses_allocating_a_returned_payment _________________
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.RaiseException: INVARIANT: returned-payment credit cannot be allocated
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 7 at RAISE
+
+The above exception was the direct cause of the following exception:
+tests/test_ledger_db.py:46: in test_db_refuses_allocating_a_returned_payment
+    db.flush()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+../.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1049: in _emit_insert_statements
+    result = connection.execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1428: in execute
+    return meth(
+../.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1855: in _execute_context
+    return self._exec_single_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) INVARIANT: returned-payment credit cannot be allocated
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 7 at RAISE
+E   [SQL: INSERT INTO allocations (alloc_id, credit_id, obligation_id, amount_paise, basis, active) VALUES (%(alloc_id)s::VARCHAR, %(credit_id)s::VARCHAR, %(obligation_id)s::VARCHAR, %(amount_paise)s::BIGINT, %(basis)s::VARCHAR, %(active)s)]
+E   [parameters: {'alloc_id': 'X-A', 'credit_id': 'RET-SBINRR20261014678312', 'obligation_id': 'ONL-PQR-UG', 'amount_paise': 1, 'basis': 'institution_declaration', 'active': True}]
+E   (Background on this error at: https://sqlalche.me/e/20/f405)
+_______________________ test_event_store_is_insert_only ________________________
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.RaiseException: INVARIANT: kernel_events is insert-only
+E   CONTEXT:  PL/pgSQL function tl_insert_only() line 2 at RAISE
+
+The above exception was the direct cause of the following exception:
+tests/test_ledger_db.py:66: in test_event_store_is_insert_only
+    db.execute(text("DELETE FROM kernel_events WHERE seq = 1"))
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:2373: in execute
+    return self._execute_internal(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:2280: in _execute_internal
+    result = conn.execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1428: in execute
+    return meth(
+../.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1855: in _execute_context
+    return self._exec_single_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) INVARIANT: kernel_events is insert-only
+E   CONTEXT:  PL/pgSQL function tl_insert_only() line 2 at RAISE
+E   [SQL: DELETE FROM kernel_events WHERE seq = 1]
+E   (Background on this error at: https://sqlalche.me/e/20/f405)
+____ test_hypothesis_db_trigger_blocks_any_overallocation_bypassing_kernel _____
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   psycopg.errors.RaiseException: INVARIANT: allocations exceed credit amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 10 at RAISE
+
+The above exception was the direct cause of the following exception:
+tests/test_ledger_db.py:104: in test_hypothesis_db_trigger_blocks_any_overallocation_bypassing_kernel
+    @given(st.integers(1, 10**6))
+tests/test_ledger_db.py:112: in test_hypothesis_db_trigger_blocks_any_overallocation_bypassing_kernel
+    db.flush()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+../.venv/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+../.venv/lib/python3.10/site-packages/sqlalchemy/orm/persistence.py:1049: in _emit_insert_statements
+    result = connection.execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1428: in execute
+    return meth(
+../.venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1855: in _execute_context
+    return self._exec_single_context(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+../.venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+../.venv/lib/python3.10/site-packages/psycopg/cursor.py:117: in execute
+    raise ex.with_traceback(None)
+E   sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) INVARIANT: allocations exceed credit amount
+E   CONTEXT:  PL/pgSQL function tl_check_allocation() line 10 at RAISE
+E   [SQL: INSERT INTO allocations (alloc_id, credit_id, obligation_id, amount_paise, basis, active) VALUES (%(alloc_id)s::VARCHAR, %(credit_id)s::VARCHAR, %(obligation_id)s::VARCHAR, %(amount_paise)s::BIGINT, %(basis)s::VARCHAR, %(active)s)]
+E   [parameters: {'alloc_id': 'BY-1', 'credit_id': 'CR-UTR-XYZ-2016-0042', 'obligation_id': 'BY-1', 'amount_paise': 1, 'basis': 'x', 'active': True}]
+E   (Background on this error at: https://sqlalche.me/e/20/f405)
+E   Failing test case: test_hypothesis_db_trigger_blocks_any_overallocation_bypassing_kernel(
+E       db_path=PosixPath('/tmp/pytest-of-dharshan/pytest-5/test_hypothesis_db_trigger_blo0/t.db'),
+E       extra=1,  # or any other generated value
+E   )
+_________________________ test_six_required_scenarios __________________________
+tests/test_required_scenarios.py:15: in test_six_required_scenarios
+    assert not failed, failed
+E   AssertionError: [('R6', 'deputy director approves with DSC: NOC issued', '401'), ('R6', 'institution told: not complete until lien discharge', ''), ('R6', 'bank (SIMULATED) confirms lien discharge', 'None'), ('R6', 'only now: released', '')]
+E   assert not [('R6', 'deputy director approves with DSC: NOC issued', '401'), ('R6', 'institution told: not complete until lien discharge', ''), ('R6', 'bank (SIMULATED) confirms lien discharge', 'None'), ('R6', 'only now: released', '')]
+----------------------------- Captured stderr call -----------------------------
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 873830 (valid 5 min)
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/otp-outbox/1-12345678 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/totp/meera@aicte-india.org "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/totp/kiran@aicte-india.org "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/documents/1616 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 409 Conflict"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/bank-confirmation "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/dashboard/aicte "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&size=1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&sort=maturity&size=200 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202100201/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/nudge/notifications/157/open "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/notifications/157 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/renewals/gaps "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/bank-confirmation "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/verify "HTTP/1.1 409 Conflict"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/discrepancy "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600374 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/observations "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/observations/1/replies "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/observations/1/close "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/reports/missing-documents?state=unverified&size=500 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/scrutiny "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 401 Unauthorized"
+INFO httpx: HTTP Request: GET https://testserver/api/release-requests/REL202600121/gate "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/dsc/sign "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 401 Unauthorized"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/lien-discharge "HTTP/1.1 409 Conflict"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+------------------------------ Captured log call -------------------------------
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING  trustledger.auth:auth.py:120 [MOCK SMS] to ••••••9457 for 1-12345678: OTP 873830 (valid 5 min)
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/otp-outbox/1-12345678 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/totp/meera@aicte-india.org "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/sim/totp/kiran@aicte-india.org "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202600372/documents/1616 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 409 Conflict"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600372/bank-confirmation "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/dashboard/aicte "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&size=1 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&sort=maturity&size=200 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202100201/timeline "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/nudge/notifications/157/open "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/notifications/157 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/renewals/gaps "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600374/bank-confirmation "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600374/verify "HTTP/1.1 409 Conflict"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600374/discrepancy "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600374 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/fdrs/FDR202600374/observations "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/observations/1/replies "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/observations/1/close "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/reports/missing-documents?state=unverified&size=500 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/release-requests "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/release-requests/REL202600121/scrutiny "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 401 Unauthorized"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/release-requests/REL202600121/gate "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/sim/dsc/sign "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 401 Unauthorized"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1025 HTTP Request: POST https://testserver/api/release-requests/REL202600121/lien-discharge "HTTP/1.1 409 Conflict"
+INFO     httpx:_client.py:1025 HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+=============================== warnings summary ===============================
+../.venv/lib/python3.10/site-packages/fastapi/testclient.py:1
+  /home/dharshan/sih2/.venv/lib/python3.10/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+6 failed, 131 passed, 1 warning in 167.90s (0:02:47)

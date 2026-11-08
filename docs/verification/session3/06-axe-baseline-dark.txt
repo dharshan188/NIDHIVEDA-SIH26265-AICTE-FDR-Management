@@ -1,0 +1,58 @@
+OK   /login
+OK   /aicte
+OK   /aicte/institutions
+OK   /aicte/submissions
+FAIL /aicte/verification  color-contrast(4)
+OK   /aicte/reconciliation
+OK   /aicte/renewals
+OK   /aicte/releases
+OK   /aicte/payments
+OK   /aicte/audit-trail
+FAIL /aicte/reports  nested-interactive(1)
+OK   /aicte/notifications
+OK   /aicte/guidelines
+OK   /aicte/rules
+OK   /aicte/fdr/FDR202600124
+OK   /aicte/institutions/INST0001
+OK   /institution
+OK   /institution/profile
+OK   /institution/fdrs
+OK   /institution/upload
+OK   /institution/renewals
+OK   /institution/release
+OK   /institution/payments
+OK   /institution/notifications
+FAIL /institution/communication  color-contrast(1)
+OK   /institution/guidelines
+OK   /institution/help
+OK   /institution/fdr/FDR202600125
+FAIL /auditor  nested-interactive(1)
+OK   /auditor/assignments
+OK   /auditor/institutions
+OK   /auditor/fdrs
+OK   /auditor/compliance
+OK   /auditor/discrepancies
+OK   /auditor/renewals
+OK   /auditor/releases
+OK   /auditor/payments
+OK   /auditor/audit-trail
+FAIL /auditor/reports  nested-interactive(1)
+OK   /auditor/notifications
+OK   /auditor/guidelines
+OK   /auditor/fdr/FDR202600124
+
+axe: theme=dark lang=en reduced=false width=1536: 42 pages, 5 with violations, 5 violations
+  /aicte/verification color-contrast [serious] Elements must meet minimum color contrast ratio thresholds
+    li:nth-child(1) > span:nth-child(2) ::   Element has insufficient color contrast of 1.4 (foreground color: #c9d3e6, background color: #f5f7fb, font size: 10.1pt (13.5px), font weight: normal). Expected contrast ratio of 4.5:1
+    li:nth-child(1) > span:nth-child(2) > b ::   Element has insufficient color contrast of 1.4 (foreground color: #c9d3e6, background color: #f5f7fb, font size: 10.1pt (13.5px), font weight: bold). Expected contrast ratio of 4.5:1
+    ul > li:nth-child(2) > span:nth-child(2) ::   Element has insufficient color contrast of 1.4 (foreground color: #c9d3e6, background color: #f5f7fb, font size: 10.1pt (13.5px), font weight: normal). Expected contrast ratio of 4.5:1
+    li:nth-child(2) > span:nth-child(2) > b ::   Element has insufficient color contrast of 1.4 (foreground color: #c9d3e6, background color: #f5f7fb, font size: 10.1pt (13.5px), font weight: bold). Expected contrast ratio of 4.5:1
+  /aicte/reports nested-interactive [serious] Interactive controls must not be nested
+    #_r_c_ > figure ::   Element has focusable descendants
+  /institution/communication color-contrast [serious] Elements must meet minimum color contrast ratio thresholds
+    .me > time ::   Element has insufficient color contrast of 3.52 (foreground color: #bed0f3, background color: #2563d6, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1
+  /auditor nested-interactive [serious] Interactive controls must not be nested
+    #_r_c_ > figure ::   Element has focusable descendants
+  /auditor/reports nested-interactive [serious] Interactive controls must not be nested
+    #_r_c_ > figure ::   Element has focusable descendants
+console errors: 0

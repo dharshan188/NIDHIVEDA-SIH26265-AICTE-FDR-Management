@@ -1,0 +1,1 @@
+backend/tests/service_config.py:44:        pytest.skip(reason + " (use --require-services to fail instead)")

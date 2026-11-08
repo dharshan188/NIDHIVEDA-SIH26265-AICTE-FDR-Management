@@ -1,0 +1,10 @@
+$ UI_BASE=http://localhost:5176 node .ui-check/sidebar-check.mjs   (fresh seed; TL_UI_WORK=.ui-check/sidebar-fix; 1536x1024)
+aicte_escalations-light {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+aicte-light {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+aicte_escalations-dark {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+aicte-dark {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+auditor-light {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+auditor-dark {"items":16,"navScrolls":false,"lastItemVisible":true,"photoHeight":184}
+institution-light {"items":12,"navScrolls":false,"lastItemVisible":true,"photoHeight":228}
+institution-dark {"items":12,"navScrolls":false,"lastItemVisible":true,"photoHeight":228}
+exit 0

@@ -1,0 +1,7 @@
+Two SHA-256 hash chains: the ledger (every financial control) and the portal (sign-ins, submissions, policy changes)
+Ledger intact: every hash recomputed and matched
+Ledger chain
+: 3,412 events, intact (head 50708abe2cc9…)
+Portal chain
+: 3 events, intact (head 4ca6b977ee9b…)
+saved 15-audit-trail-verify.png; console errors: 0

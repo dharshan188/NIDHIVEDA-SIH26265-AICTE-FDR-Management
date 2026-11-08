@@ -1,0 +1,31 @@
+$ env UI_BASE=http://localhost:5174 TL_UI_DB=/home/dharshan/sih2/.ui-check/session6-ui/ui.db node tools/ui-checks/live_data.mjs
+PASS notification centre: open overdue notices; UI=0; SQL=0
+  SQL: SELECT count(*) AS n FROM notifications WHERE rung='overdue' AND ack_at IS NULL AND audience IN ('institution:' || (SELECT institution_id FROM users WHERE username=?), 'user:' || (SELECT id FROM users WHERE username=?))
+  params: ["1-12345678","1-12345678"]
+PASS escalation view: steps in root 114; UI=2; SQL=2
+  SQL: WITH RECURSIVE family(id) AS (SELECT id FROM notifications WHERE id=? UNION SELECT n.id FROM notifications n JOIN family f ON n.parent_id=f.id) SELECT count(*) AS n FROM family
+  params: [114]
+PASS health panel: notices in displayed 30-day window; UI=55; SQL=55
+  SQL: SELECT count(*) AS n FROM notifications WHERE at>=? AND template IS NOT NULL AND template<>'digest'
+  params: ["2026-09-24T15:59:47"]
+PASS notification preferences panel (inside centre): notice language; UI="en"; SQL="en"
+  SQL: SELECT lang FROM users WHERE username=?
+  params: ["1-12345678"]
+PASS action-link page: successful destination path; UI="/institution/notifications"; SQL="/institution/notifications"
+  SQL: SELECT path,used_at FROM action_tokens WHERE id=?
+  params: ["e4e2277e0c82dbccc8b8fff0"]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByText('this link has already been used') to be visible[22m
+
+    at /home/dharshan/sih2/tools/ui-checks/live_data.mjs:74:77 {
+  name: 'TimeoutError'
+}
+
+Node.js v24.11.0
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

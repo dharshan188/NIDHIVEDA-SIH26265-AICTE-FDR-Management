@@ -1,0 +1,145 @@
+$ bash -lc 'sed -n "206,245p" frontend/src/pages/shared/Nudge.tsx; rg -n -A 100 "def health" backend/app/nudge/insights.py; sed -n "1,70p" backend/app/nudge/recipients.py; rg -n "preferences|LinkLanding" frontend/src/App.tsx frontend/src/routes* 2>/dev/null'
+  per_institution: { institution_id: string; institution: string; notices: number; acknowledged: number; ack_rate: number; median_hours_to_action: number | null; escalated: number }[];
+  note: string;
+}
+
+export function NotificationHealth() {
+  const { base } = useRole();
+  const t = useT();
+  const [days, setDays] = useState(30);
+  const d = useApi<Health>(`/nudge/health?days=${days}`, [days]);
+  const h = d.data;
+  const pct = (x: number | null) => (x == null ? '—' : `${(x * 100).toFixed(1)}%`);
+  return (
+    <Stagger>
+      <PageHead title="Notification health" sub="Measured from outbox and delivery rows: sent, delivered (provider receipts only), acknowledged, escalated, time-to-action"
+        crumbs={[{ label: 'Dashboard', to: base }, { label: 'Notification health' }]}
+        actions={<select className="sel" aria-label={t('Window')} value={days} onChange={(e) => setDays(Number(e.target.value))}><option value={7}>7 days</option><option value={30}>30 days</option><option value={90}>90 days</option></select>} />
+      {d.error ? <ErrorBox text={d.error} /> : !h ? <Loading rows={6} /> : (
+        <>
+          <div className="kpis k4">
+            <Kpi compact tone="blue" icon={<BellRing size={30} />} label="Notices" value={h.totals.notices} sub={`${h.totals.deliveries} deliveries`} />
+            <Kpi compact tone="green" icon={<CheckCircle2 size={30} />} label="Acknowledged" value={h.totals.acknowledged} sub={`ack rate ${pct(h.totals.ack_rate)}`} />
+            <Kpi compact tone="orange" icon={<TrendingUp size={30} />} label="Escalated" value={h.totals.escalated} sub={`${h.totals.escalation_notices} escalation notices`} />
+            <Kpi compact tone="purple" icon={<Clock3 size={30} />} label="Median time to action" value={h.totals.median_hours_to_action == null ? '—' : `${h.totals.median_hours_to_action} h`} sub="created → acknowledged" />
+          </div>
+          <div className="row g-2">
+            <Panel title="By channel" sub={h.note}>
+              <TableWrap label="Notification health by channel" simulated>
+                <table className="tbl">
+                  <thead><tr><th>Channel</th><th>Provider</th><th className="r">Total</th><th className="r">Sent</th><th className="r">Delivered (receipt)</th><th className="r">Delivered (simulated receipt)</th><th className="r">Deferred</th><th className="r">Batched / digested</th><th className="r">Failed</th></tr></thead>
+                  <tbody>
+                    {Object.entries(h.by_channel).map(([ch, c]) => (
+                      <tr key={ch}>
+                        <td>{CH_LABEL[ch as Delivery['channel']] ?? ch}</td>
+                        <td>{h.providers[ch]?.provider} {h.providers[ch]?.simulated && <SimBadge title="Provider simulator: nothing leaves this machine." />}</td>
+                        <td className="r num">{c.total ?? 0}</td><td className="r num">{c.sent ?? 0}</td><td className="r num">{c.delivered_receipt ?? 0}</td>
+                        <td className="r num">{c.delivered_simulated ?? 0}</td><td className="r num">{c.deferred ?? 0}</td>
+                        <td className="r num">{(c.batched ?? 0) + (c.digested ?? 0)}</td><td className="r num">{c.failed ?? 0}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+117:def health(db: Session, days: int = 30, now: datetime | None = None) -> dict:
+118-    now = now or now_ist()
+119-    since = iso(now - timedelta(days=days))
+120-    notes = db.scalars(select(m.Notification).where(m.Notification.at >= since, m.Notification.template.is_not(None))).all()
+121-    ids = [n.id for n in notes]
+122-    dels = db.scalars(select(m.NotificationDelivery).where(m.NotificationDelivery.notification_id.in_(ids))).all() if ids else []
+123-    by_channel: dict[str, Counter] = defaultdict(Counter)
+124-    for d in dels:
+125-        c = by_channel[d.channel]
+126-        c["total"] += 1
+127-        c[d.status] += 1
+128-        if d.sent_at or d.status in ("sent", "delivered", "digested"):
+129-            c["sent"] += 1 if d.status != "digested" else 0
+130-        if d.delivered_at:
+131-            c["delivered_simulated" if d.receipt_simulated else "delivered_receipt"] += 1
+132-        if d.simulated:
+133-            c["simulated"] += 1
+134-    roots = [n for n in notes if n.template not in ("digest",)]
+135-    acked = [n for n in roots if n.ack_at]
+136-    by_rung = {}
+137-    for r in ("info", "action", "deadline", "overdue"):
+138-        rs = [n for n in roots if n.rung == r]
+139-        by_rung[r] = {"notices": len(rs), "acknowledged": sum(1 for n in rs if n.ack_at),
+140-                      "median_hours_to_action": _median_hours([(n.at, n.ack_at) for n in rs if n.ack_at])}
+141-    per_inst: dict[str, list[m.Notification]] = defaultdict(list)
+142-    for n in roots:
+143-        if n.institution_id:
+144-            per_inst[n.institution_id].append(n)
+145-    names = dict(db.execute(select(m.Institution.id, m.Institution.name).where(m.Institution.id.in_(list(per_inst)))).all()) if per_inst else {}
+146-    inst_rows = sorted(({"institution_id": i, "institution": names.get(i, i), "notices": len(ns), "acknowledged": sum(1 for n in ns if n.ack_at),
+147-                         "ack_rate": round(sum(1 for n in ns if n.ack_at) / len(ns), 3),
+148-                         "median_hours_to_action": _median_hours([(n.at, n.ack_at) for n in ns if n.ack_at]),
+149-                         "escalated": sum(1 for n in ns if n.escalated_at)} for i, ns in per_inst.items()),
+150-                       key=lambda r: (r["ack_rate"], -r["notices"]))
+151-    from .channels import summary
+152-    return {"window_days": days, "since": since, "generated_at": iso(now), "providers": summary(),
+153-            "totals": {"notices": len(roots), "deliveries": len(dels), "acknowledged": len(acked),
+154-                       "ack_rate": round(len(acked) / len(roots), 3) if roots else None,
+155-                       "escalated": sum(1 for n in roots if n.escalated_at), "escalation_notices": sum(1 for n in roots if n.template in ("rung_up", "escalation_copy")),
+156-                       "median_hours_to_action": _median_hours([(n.at, n.ack_at) for n in acked])},
+157-            "by_channel": {k: dict(v) for k, v in by_channel.items()}, "by_rung": by_rung, "per_institution": inst_rows[:50],
+158-            "note": "Measured from notification and delivery rows. 'delivered_receipt' counts real provider receipts only; "
+159-                    "simulated providers' receipts are counted separately as delivered_simulated."}
+"""Who reads which audience. The same mapping drives the notification centre, deliveries and escalation."""
+from __future__ import annotations
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from .. import models as m
+
+# escalation chain step -> audience
+CHAIN_AUDIENCE = {"institution": None, "aicte": "aicte", "competent_authority": "competent_authority"}
+
+
+def audiences(user: m.User) -> list[str]:
+    """Notification audiences a user reads."""
+    own = [f"user:{user.id}"]
+    if user.role == "INSTITUTION":
+        return [f"institution:{user.institution_id}", *own]
+    if user.role == "AUDITOR":
+        return ["internal_audit", "auditor", *own]
+    base = ["aicte"]
+    kr = user.kernel_role
+    if kr.startswith("finance"):
+        base.append("finance")
+    if kr == "legal_cell":
+        base.append("legal_cell")
+    if kr in ("director", "deputy_director"):
+        base.append("competent_authority")
+    return [*base, *own]
+
+
+def users_for(db: Session, audience: str) -> list[m.User]:
+    q = select(m.User).where(m.User.active.is_(True))
+    if audience.startswith("institution:"):
+        q = q.where(m.User.institution_id == audience.split(":", 1)[1])
+    elif audience.startswith("user:"):
+        q = q.where(m.User.id == int(audience.split(":", 1)[1]))
+    return [u for u in db.scalars(q.order_by(m.User.id)) if audience in audiences(u)]
+
+
+def role_of(user: m.User, audience: str) -> str:
+    """Recipient as recorded in the audit trail: a role, never a person's number."""
+    if user.role == "INSTITUTION":
+        return f"institution:{user.institution_id}"
+    return f"{user.role.lower()}:{user.kernel_role}"
+
+
+def open_path(audience: str, ref: str | None = None) -> str:
+    """Where a notification's link lands."""
+    if audience.startswith("institution:"):
+        base = "/institution"
+    elif audience in ("internal_audit", "auditor"):
+        base = "/auditor"
+    else:
+        base = "/aicte"
+    if ref and ref.startswith("FDR"):
+        return f"{base}/fdr/{ref}"
+    return f"{base}/notifications"
+frontend/src/App.tsx:25:import { Escalations, LinkLanding, MissingDocuments, NotificationCentre, NotificationHealth } from './pages/shared/Nudge';
+frontend/src/App.tsx:36:          <Route path="/l/:token" element={<LinkLanding />} />
+Command exit code: 2
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

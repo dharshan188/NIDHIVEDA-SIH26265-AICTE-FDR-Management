@@ -1,0 +1,61 @@
+import { createRequire } from 'node:module';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { BASE, apiFor, launch, newContext, login, open, settle, watchConsole } from './lib.mjs';
+const theme = process.argv[process.argv.indexOf('--theme') + 1] || 'light';
+const source = readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
+const browser = await launch(), errors = [], results = [];
+let observedFdr;
+async function scan(page, label) {
+  await settle(page, 600);
+  await page.addScriptTag({ content: source });
+  const violations = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a','wcag2aa','wcag21a','wcag21aa'] } })).violations.map(v => ({ id:v.id, impact:v.impact, nodes:v.nodes.map(n=>({target:n.target, summary:n.failureSummary})) })));
+  results.push({ label, violations });
+  console.log(`${violations.length ? 'FAIL' : 'OK'} ${theme}: ${label}: ${violations.length} violations`);
+  if (violations.length) console.log(JSON.stringify(violations));
+  if (process.env.AXE_RESULT) writeFileSync(process.env.AXE_RESULT, JSON.stringify({results,errors},null,2));
+}
+for (const role of ['aicte','institution','auditor']) {
+  const ctx = await newContext(browser, {width:1536,height:1024,theme});
+  try {
+    const {csrf} = await login(ctx,role), api=apiFor(ctx,csrf), page=await ctx.newPage();
+    watchConsole(page,errors,role);
+    await open(page,`${BASE}/${role}`); await scan(page,`${role}: What changed card`);
+    const routes = role==='institution' ? ['missing-documents','notifications'] : ['escalations','notification-health','missing-documents'];
+    if (role==='auditor') routes.push('institutions/'+(await api.get('/institutions?size=1')).items[0].id);
+    for (const route of routes) { await open(page,`${BASE}/${role}/${route}`); await scan(page,`${role}/${route}`); }
+    if (role==='aicte') {
+      await open(page,`${BASE}/aicte/rules`); await page.locator('#pol-reason').waitFor();
+      const input=page.locator('.pol-form input[type=number]').first();
+      await input.fill(String(Number(await input.inputValue())+1));
+      await page.locator('#pol-reason').fill('Accessibility preview only; not published');
+      await scan(page,'release policy editor: before/after and reason');
+      const deadline=page.getByLabel('Deadline rung within (days)',{exact:true});
+      await deadline.fill(String(Number(await deadline.inputValue())+1));
+      await scan(page,'notification policy editor: before/after');
+      const own=(await api.get('/fdrs?size=1&sort=submitted&bucket=pending')).items[0];
+      observedFdr=own.id;
+      await api.post(`/fdrs/${own.id}/observations`,{category:'query',text:'Accessibility verification: review the covering letter.'});
+      await open(page,`${BASE}/aicte/fdr/${own.id}`); await page.getByRole('button',{name:'Raise observation'}).waitFor();
+      await scan(page,'FDR timeline, documents, observations and field list');
+      await page.getByRole('button',{name:'Raise observation'}).click();
+      await page.locator('#obs-text').fill('Accessibility preview, not submitted');
+      await scan(page,'raise observation dialog');
+      await page.getByRole('dialog').getByRole('button',{name:'Cancel',exact:true}).click();
+      await page.getByRole('button',{name:/^Edit /}).first().click();
+      const editValue=page.locator('#fe-val'); await editValue.fill((await editValue.inputValue())+' accessibility preview');
+      await page.locator('#fe-reason').fill('Accessibility preview only; no record changed');
+      await scan(page,'permitted field edit dialog');
+      await page.getByRole('dialog').getByRole('button',{name:'Cancel',exact:true}).click();
+    }
+    if (role==='institution' && observedFdr) {
+      await open(page,`${BASE}/institution/fdr/${observedFdr}`);
+      await page.getByRole('textbox',{name:/Reply to observation/}).first().fill('Accessibility preview; reply not submitted');
+      await scan(page,'institution observation reply and status');
+    }
+  } finally {await ctx.close();}
+}
+await browser.close();
+const violations=results.reduce((n,r)=>n+r.violations.length,0);
+console.log(`New panels/routes (${theme}): ${results.length} views; ${violations} violations; console errors: ${errors.length}`);
+for(const e of errors)console.log(e);
+process.exit(violations||errors.length?1:0);

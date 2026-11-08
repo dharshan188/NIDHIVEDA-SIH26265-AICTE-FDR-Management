@@ -1,0 +1,32 @@
+$ bash -lc '.ui-check/tools-venv/bin/uv python install --help | rg -n -A 3 -B 2 "bin|directory|INSTALL_DIR|BIN_DIR"; ls .python'
+7-
+8-Options:
+9:  -i, --install-dir <INSTALL_DIR>
+10:          The directory to store the Python installation in [env: UV_PYTHON_INSTALL_DIR=]
+11:      --no-bin
+12:          Do not install a Python executable into the `bin` directory
+13-      --no-registry
+14-          Do not register the Python installation in the Windows registry
+15-      --mirror <MIRROR>
+--
+37-Cache options:
+38-  -n, --no-cache               Avoid reading from or writing to the cache, instead using a temporary
+39:                               directory for the duration of the operation [env: UV_NO_CACHE=]
+40:      --cache-dir <CACHE_DIR>  Path to the cache directory [env: UV_CACHE_DIR=]
+41-
+42-Python options:
+43-      --managed-python       Require use of uv-managed Python versions [env: UV_MANAGED_PYTHON=]
+--
+62-      --no-progress
+63-          Hide all progress outputs [env: UV_NO_PROGRESS=]
+64:      --directory <DIRECTORY>
+65:          Change to the given directory prior to running the command [env: UV_WORKING_DIR=]
+66-      --project <PROJECT>
+67:          Discover a project in the given directory [env: UV_PROJECT=]
+68-      --config-file <CONFIG_FILE>
+69-          The path to a `uv.toml` file to use for configuration [env: UV_CONFIG_FILE=]
+70-      --no-config
+cpython-3.11.17-linux-x86_64-gnu
+cpython-3.11-linux-x86_64-gnu
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

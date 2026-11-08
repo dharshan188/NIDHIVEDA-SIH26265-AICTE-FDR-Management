@@ -1,0 +1,21 @@
+$ node tools/ui-checks/axe_panels.mjs --theme dark
+OK dark: aicte: What changed card: 0 violations
+OK dark: aicte/escalations: 0 violations
+OK dark: aicte/notification-health: 0 violations
+OK dark: aicte/missing-documents: 0 violations
+OK dark: release policy editor: before/after and reason: 0 violations
+OK dark: notification policy editor: before/after: 0 violations
+OK dark: FDR timeline, documents, observations and field list: 0 violations
+OK dark: raise observation dialog: 0 violations
+OK dark: permitted field edit dialog: 0 violations
+file:///home/dharshan/sih2/tools/ui-checks/lib.mjs:81
+  if (!res.ok()) throw new Error(`mfa ${who}: ${res.status()} ${await res.text()}`);
+                       ^
+
+Error: mfa institution: 401 {"detail":"Code expired or already used. Request a new one."}
+    at login (file:///home/dharshan/sih2/tools/ui-checks/lib.mjs:81:24)
+    at async file:///home/dharshan/sih2/tools/ui-checks/axe_panels.mjs:20:20
+
+Node.js v24.11.0
+Command exit code: 1
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

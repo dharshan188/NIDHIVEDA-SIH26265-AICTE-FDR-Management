@@ -1,0 +1,23 @@
+$ env UI_BASE=http://localhost:5174 TL_UI_DB=/home/dharshan/sih2/.ui-check/session6-ui/ui.db node tools/ui-checks/live_data.mjs
+Created a real test observation 2 on FDR202600126; the outbox generates a fresh user-bound action link.
+PASS notification centre: open overdue notices; UI=0; SQL=0
+  SQL: SELECT count(*) AS n FROM notifications WHERE rung='overdue' AND ack_at IS NULL AND audience IN ('institution:' || (SELECT institution_id FROM users WHERE username=?), 'user:' || (SELECT id FROM users WHERE username=?))
+  params: ["1-12345678","1-12345678"]
+PASS escalation view: steps in root 114; UI=2; SQL=2
+  SQL: WITH RECURSIVE family(id) AS (SELECT id FROM notifications WHERE id=? UNION SELECT n.id FROM notifications n JOIN family f ON n.parent_id=f.id) SELECT count(*) AS n FROM family
+  params: [114]
+PASS health panel: notices in displayed 30-day window; UI=57; SQL=57
+  SQL: SELECT count(*) AS n FROM notifications WHERE at>=? AND template IS NOT NULL AND template<>'digest'
+  params: ["2026-09-24T16:08:37"]
+PASS notification preferences panel (inside centre): notice language; UI="en"; SQL="en"
+  SQL: SELECT lang FROM users WHERE username=?
+  params: ["1-12345678"]
+PASS action-link page: successful destination path; UI="/institution/fdr/FDR202600126"; SQL="/institution/fdr/FDR202600126"
+  SQL: SELECT path,used_at FROM action_tokens WHERE id=?
+  params: ["2f24a5f9a31e3690b599d6a7"]
+PASS action-link page: reuse is refused; UI=true; SQL=true
+  SQL: SELECT used_at IS NOT NULL AS used FROM action_tokens WHERE id=?
+  params: ["2f24a5f9a31e3690b599d6a7"]
+Live-data checks: 6/6 passed; unexpected console errors: 0; expected action-link reuse HTTP 409: 1
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

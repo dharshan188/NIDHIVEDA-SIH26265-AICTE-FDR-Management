@@ -1,0 +1,87 @@
+$ bash -lc 'cd backend && ../.venv/bin/python scripts/run_required_scenarios.py && ../.venv/bin/python scripts/run_scenarios.py'
+/home/dharshan/sih2/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+WARNING trustledger.auth: [MOCK SMS] to ••••••9457 for 1-12345678: OTP 278220 (valid 5 min)
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/send "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/otp-outbox/1-12345678 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/otp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/totp/meera@aicte-india.org "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/login "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/sim/totp/kiran@aicte-india.org "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/auth/totp/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/documents/1616 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 409 Conflict"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/bank-confirmation "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600372/verify "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/dashboard/aicte "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&size=1 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs?bucket=maturing&sort=maturity&size=200 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202100201/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/nudge/notifications/157/open "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/notifications/157 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/renewals/gaps "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600372/timeline "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/nudge/run "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600372 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/bank/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/bank-confirmation "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/verify "HTTP/1.1 409 Conflict"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/discrepancy "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=FDR202600374 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/fdrs/FDR202600374/observations "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/observations/1/replies "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/observations/1/close "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/reports/missing-documents?state=unverified&size=500 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/scrutiny "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 401 Unauthorized"
+INFO httpx: HTTP Request: GET https://testserver/api/release-requests/REL202600121/gate "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/sim/dsc/sign "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/approve "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/nudge/centre?size=100&ref=REL202600121 "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: POST https://testserver/api/release-requests/REL202600121/lien-discharge "HTTP/1.1 200 OK"
+INFO httpx: HTTP Request: GET https://testserver/api/fdrs/FDR202600125 "HTTP/1.1 200 OK"
+R1  OK   10 passed  New submission: upload, encrypt, scan, bank confirmation, verification, notices both ways
+R2  OK    7 passed  Validity tracking: daily sweep, ladder rungs, buckets from queries, rules in force per date
+R3  OK    8 passed  Approaching maturity: T-7 deadline rung, quiet hours, acknowledgement stops the ladder
+R4  OK    8 passed  Renewal: missed renewal goes overdue and escalates; a renewal FDR closes the gap and stops reminders
+R5  OK    9 passed  Discrepancy: bank says a different amount; verification blocked; flagged; observation answered and closed
+R6  OK   10 passed  Authorised release: scrutiny, DSC approval, NOC, completion only on bank lien discharge
+scenarios=6 checks_passed=52 checks_failed=0
+S01  OK     20 passed  0 failed   Rs 35 lakh RTGS refund debited with UTR, then returned by beneficiary bank
+S02  OK     13 passed  0 failed   Confirmation overdue, then settled, then a late return reverses the settlement
+S03  OK     13 passed  0 failed   One Rs 50 lakh UTR covers Rs 35 + 15 lakh obligations; one obligation paid in two parts
+S04  OK     18 passed  0 failed   Rs 20 lakh legacy credit mis-attributed; both institutions silent; pool still matches
+S05  OK     12 passed  0 failed   A discrepancy at B, or a contested credit, does not freeze A's independently proven money
+S06  OK     12 passed  0 failed   FDR matured in 2019, auto-renewed; release prepared in 2026
+S07  OK      9 passed  0 failed   Manual renewal after maturity: prohibited in one edition, unspecified in another
+S08  OK      6 passed  0 failed   Ten-year-old FDR evidence at release; bank renumbered one FDR and discharged another without an NOC
+S09  OK     12 passed  0 failed   Bank signer's authority ends vs. bank signer's key is compromised (with back-dating attempt)
+
+scenarios=9 checks_passed=115 checks_failed=0
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

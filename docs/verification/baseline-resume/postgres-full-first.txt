@@ -1,0 +1,6 @@
+EVIDENCE LIMITATION: the complete original log was lost when an attempted in-place compression hit ENOSPC.
+The session tool output recorded this failed invocation:
+.venv/bin/python tools/baseline/backend_check.py postgres
+1 failed, 13 passed, 1 warning, 123 errors in 13.63s
+Cause: the temporary master key was generated as URL-safe Base64, while crypto.kms expects standard Base64.
+This run is invalid and is not used as a passing baseline.

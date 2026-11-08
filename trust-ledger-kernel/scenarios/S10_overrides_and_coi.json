@@ -1,0 +1,28 @@
+{
+  "id": "S10",
+  "title": "Mandatory clearances cannot be overridden; administrative ones can, with a reason; conflict of interest",
+  "reviewer_ref": "Round 3-4: mandatory vs administrative checks, conflict of interest, maker-checker",
+  "include": ["online_base"],
+  "steps": [
+    {"do": "affidavit", "obligation_id": "O1", "kind": "AFFIDAVIT-6", "format_ok": false, "at": "2026-09-03T10:00", "actor": "section_officer:kiran"},
+    {"expect": "release", "obligation": "O1", "at": "2026-09-03T11:00", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["AFFIDAVIT_FORMAT"]},
+    {"expect": "error", "code": "MandatoryOverride", "step": {"do": "override", "obligation_id": "O1", "code": "M_PAYEE_VERIFIED", "at": "2026-09-03T11:05", "actor": "director:sunil", "reason": "urgent"}},
+    {"expect": "notification", "to": "internal_audit", "kind": "override_refused", "contains": "M_PAYEE_VERIFIED"},
+    {"expect": "error", "code": "StateError", "step": {"do": "override", "obligation_id": "O1", "code": "AFFIDAVIT_FORMAT", "at": "2026-09-03T11:06", "actor": "section_officer:kiran", "reason": ""}},
+    {"expect": "error", "code": "Unauthorised", "step": {"do": "override", "obligation_id": "O1", "code": "AFFIDAVIT_FORMAT", "at": "2026-09-03T11:07", "actor": "finance_officer:ravi", "reason": "looks fine"}},
+    {"do": "override", "obligation_id": "O1", "code": "AFFIDAVIT_FORMAT", "at": "2026-09-03T11:08", "actor": "section_officer:kiran", "reason": "Notary seal on page 2 instead of page 1; content matches template"},
+    {"expect": "release", "obligation": "O1", "at": "2026-09-03T12:00", "approver": "deputy_director:meera", "allowed": true},
+    {"note": "Conflict of interest: someone who prepared this case cannot approve it; wrong role cannot approve."},
+    {"expect": "release", "obligation": "O1", "at": "2026-09-03T12:00", "approver": "section_officer:kiran", "allowed": false, "blocked_by_includes": ["M_APPROVER_ROLE", "M_CONFLICT_OF_INTEREST"]},
+    {"do": "entitlement", "obligation_id": "O1", "basis": "Closure approved (re-recorded)", "at": "2026-09-03T12:10", "actor": "deputy_director:meera"},
+    {"expect": "release", "obligation": "O1", "at": "2026-09-03T12:20", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["M_CONFLICT_OF_INTEREST"]},
+    {"note": "Director Sunil tried to bypass a mandatory check on this case earlier, so he is now conflicted on it too."},
+    {"expect": "release", "obligation": "O1", "at": "2026-09-03T12:25", "approver": "director:sunil", "allowed": false, "blocked_by_includes": ["M_CONFLICT_OF_INTEREST"]},
+    {"do": "authorise", "case_id": "R10", "obligation_id": "O1", "at": "2026-09-03T12:30", "approver": "director:rao"},
+    {"expect": "error", "code": "Unauthorised", "step": {"do": "initiate", "refund_id": "R10", "at": "2026-09-03T12:40", "actor": "director:rao"}},
+    {"do": "initiate", "refund_id": "R10", "at": "2026-09-03T12:45", "actor": "finance_officer:ravi"},
+    {"expect": "error", "code": "InvalidEvidence", "step": {"do": "evidence", "id": "E-DR-BAD", "key": "SBI-K1", "kind": "debit_advice", "at": "2026-09-03T12:50", "payload": {"refund_id": "R10", "utr": "UTR-WRONG", "amount_lakh": 53}}},
+    {"expect": "chain", "valid": true},
+    {"expect": "replay_matches"}
+  ]
+}

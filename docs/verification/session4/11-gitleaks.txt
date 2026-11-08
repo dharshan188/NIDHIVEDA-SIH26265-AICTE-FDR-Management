@@ -1,0 +1,27 @@
+$ docker run --rm -v /home/dharshan/sih2:/repo:ro -v .ui-check:/out zricethezav/gitleaks:v8.18.4 detect --no-git --source /repo --redact --no-banner --report-format json --report-path /out/gitleaks-all.json   (whole sih2/, no exclusions)
+[90m9:44AM[0m [32mINF[0m scan completed in 15.1s
+[90m9:44AM[0m [31mWRN[0m leaks found: 288
+exit 1
+
+$ git -C /home/dharshan ls-files --others --exclude-standard sih2   -> 297 files (what a commit of sih2/ would contain; .gitignore excludes .venv, node_modules, *.db, .env, .dev-secrets.json, .dev-credentials.json, devcerts/, .ui-check/)
+$ copy those 297 files to .ui-check/commit-set; docker run --rm -v .ui-check/commit-set:/repo:ro zricethezav/gitleaks:v8.18.4 detect --no-git --source /repo --redact --no-banner -v
+[90m9:44AM[0m [32mINF[0m scan completed in 769ms
+[90m9:44AM[0m [32mINF[0m no leaks found
+exit 0
+
+Breakdown of the 288 whole-directory findings (count, rule, file); none is in a file a commit would contain:
+   203  generic-api-key    .ui-check/tools-venv (pip-audit install: licence index, setuptools)
+     2  aws-access-token   .venv (third-party test vectors: PyCryptodome SelfTest, cryptography, PIL, PyJWT, setuptools)
+    34  generic-api-key    .venv (third-party test vectors: PyCryptodome SelfTest, cryptography, PIL, PyJWT, setuptools)
+     1  jwt                .venv (third-party test vectors: PyCryptodome SelfTest, cryptography, PIL, PyJWT, setuptools)
+    30  private-key        .venv (third-party test vectors: PyCryptodome SelfTest, cryptography, PIL, PyJWT, setuptools)
+     7  generic-api-key    backend/.dev-credentials.json
+     4  generic-api-key    backend/.dev-secrets.json
+     1  private-key        backend/devcerts/1-12345678.key
+     1  private-key        backend/devcerts/1-xyz-demo.key
+     1  private-key        backend/devcerts/auditor_at_aicte-india.org.key
+     1  private-key        backend/devcerts/dev-ca.key
+     1  private-key        backend/devcerts/kiran_at_aicte-india.org.key
+     1  private-key        backend/devcerts/meera_at_aicte-india.org.key
+     1  private-key        backend/devcerts/sharma_at_aicte-india.org.key
+  backend/.dev-credentials.json, backend/.dev-secrets.json, backend/devcerts/*.key: this machine's generated dev secrets (mode 600), gitignored by backend/.gitignore, never committed.

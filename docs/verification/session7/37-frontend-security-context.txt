@@ -1,0 +1,5 @@
+$ python3 -c 'import json; p=json.load(open("frontend/package.json")); print("react-router-dom declared:",p["dependencies"]["react-router-dom"]); print("npm audit has 2 moderate dependencies, 0 high, 0 critical. Automatic fix requires React Router 7 major migration. SPA uses BrowserRouter, no SSR hydration; retained moderate URL-navigation advisory for follow-up.")'
+react-router-dom declared: ^6.30.6
+npm audit has 2 moderate dependencies, 0 high, 0 critical. Automatic fix requires React Router 7 major migration. SPA uses BrowserRouter, no SSR hydration; retained moderate URL-navigation advisory for follow-up.
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

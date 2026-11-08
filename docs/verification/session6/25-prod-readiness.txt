@@ -1,0 +1,14 @@
+$ bash -lc 'curl --fail -s http://127.0.0.1:5173/api/health; curl -s -o /dev/null -w "\nSimulator endpoint HTTP status: %{http_code}\n" http://127.0.0.1:5173/api/sim/status; curl -s -I http://127.0.0.1:5173/'
+{"ok":true,"env":"prod","kernel_events":3412,"bank_layer":"SIMULATED"}
+Simulator endpoint HTTP status: 404
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"5b9-OePLPKKtsTmwQEgHk3Sv+VWZ9zo"
+Date: Sat, 24 Oct 2026 10:20:46 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+Command exit code: 0
+Kernel manifest: 58406d492e427ab607d4818e8c4161c4dace45d58183b0fc9be5cdfa8fd387c0; 48 files; ZIP match: True

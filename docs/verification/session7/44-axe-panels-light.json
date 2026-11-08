@@ -1,0 +1,134 @@
+{
+  "results": [
+    {
+      "label": "aicte: What changed card",
+      "violations": []
+    },
+    {
+      "label": "aicte/escalations",
+      "violations": []
+    },
+    {
+      "label": "aicte/notification-health",
+      "violations": []
+    },
+    {
+      "label": "aicte/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "release policy editor: before/after and reason",
+      "violations": []
+    },
+    {
+      "label": "notification policy editor: before/after",
+      "violations": []
+    },
+    {
+      "label": "FDR timeline, documents, observations and field list",
+      "violations": []
+    },
+    {
+      "label": "raise observation dialog",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "time[datetime=\"2029-10-28\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.68 (foreground color: #7d859b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".future > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.06 (foreground color: #747e95, background color: #ffffff, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "permitted field edit dialog",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "time[datetime=\"2029-10-28\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.68 (foreground color: #7d859b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".future > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.06 (foreground color: #747e95, background color: #ffffff, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "institution: What changed card",
+      "violations": []
+    },
+    {
+      "label": "institution/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "institution/notifications",
+      "violations": []
+    },
+    {
+      "label": "institution observation reply and status",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "time[datetime=\"2029-10-28\"]"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.68 (foreground color: #7d859b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".future > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.06 (foreground color: #747e95, background color: #ffffff, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "auditor: What changed card",
+      "violations": []
+    },
+    {
+      "label": "auditor/escalations",
+      "violations": []
+    },
+    {
+      "label": "auditor/notification-health",
+      "violations": []
+    },
+    {
+      "label": "auditor/missing-documents",
+      "violations": []
+    },
+    {
+      "label": "auditor/institutions/INST0001",
+      "violations": []
+    }
+  ],
+  "errors": []
+}

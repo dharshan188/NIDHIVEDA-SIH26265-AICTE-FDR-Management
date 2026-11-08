@@ -1,0 +1,6 @@
+$ .venv/bin/python tools/ui-checks/serve.py --reset   (runs: backend/scripts/seed.py --reset -> alembic upgrade head -> seed)
+seed: {'institutions': 482, 'fdrs': 821, 'kernel_events': 3411, 'users': ['meera@aicte-india.org', 'kiran@aicte-india.org', 'ravi@aicte-india.org', 'anil@aicte-india.org', 'legal@aicte-india.org', 'sharma@aicte-india.org', 'auditor@aicte-india.org', '1-12345678', '1-xyz-demo']} in 2.9s
+Error: connect ECONNREFUSED 127.0.0.1:8000
+alembic_version [('0006',)]
+fdr_documents columns include integrity_status: True
+{"ok":true,"env":"dev","kernel_events":3412,"bank_layer":"SIMULATED"}

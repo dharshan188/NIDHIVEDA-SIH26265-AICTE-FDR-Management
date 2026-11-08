@@ -1,0 +1,224 @@
+{
+ "id": "S01",
+ "title": "Rs 35 lakh RTGS refund debited with UTR, then returned by beneficiary bank",
+ "reviewer_ref": "Round 4: Issue 1, Question 4, Question 9, Section 9 decisive scenario",
+ "include": [
+  "online_base"
+ ],
+ "steps": [
+  {
+   "do": "authorise",
+   "case_id": "R1",
+   "obligation_id": "O1",
+   "at": "2026-09-10T10:00",
+   "approver": "deputy_director:meera",
+   "rail": "RTGS"
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R1",
+   "equals": "AUTHORISED"
+  },
+  {
+   "do": "initiate",
+   "refund_id": "R1",
+   "at": "2026-09-10T11:00",
+   "actor": "finance_officer:ravi"
+  },
+  {
+   "do": "evidence",
+   "id": "E-DR-1",
+   "key": "SBI-K1",
+   "kind": "debit_advice",
+   "at": "2026-09-10T11:05",
+   "payload": {
+    "refund_id": "R1",
+    "utr": "SBINR52026091000077",
+    "amount_lakh": 35
+   }
+  },
+  {
+   "note": "Bank debit + UTR exist. A status-field workflow would now say Completed."
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R1",
+   "equals": "DEBITED"
+  },
+  {
+   "expect": "portal_text",
+   "refund": "R1",
+   "contains": [
+    "NOT yet complete",
+    "SBINR52026091000077"
+   ],
+   "not_contains": [
+    "Completed"
+   ]
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 35,
+   "in_transit_lakh": 35,
+   "settled_refunds_lakh": 0
+  },
+  {
+   "note": "35 minutes later the beneficiary bank rejects the credit and the money comes back."
+  },
+  {
+   "do": "evidence",
+   "id": "E-RET-1",
+   "key": "SBI-K1",
+   "kind": "return_advice",
+   "at": "2026-09-10T11:40",
+   "payload": {
+    "original_utr": "SBINR52026091000077",
+    "return_utr": "SBINR52026091000091",
+    "amount_lakh": 35,
+    "reason_code": "BENEFICIARY_BANK_REJECT",
+    "returned_at": "2026-09-10T11:40"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R1",
+   "equals": "REISSUE_REQUIRED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 35,
+   "in_transit_lakh": 0,
+   "settled_refunds_lakh": 0
+  },
+  {
+   "expect": "portal_text",
+   "refund": "R1",
+   "contains": [
+    "NOT complete",
+    "AICTE still owes you",
+    "Owner: AICTE Finance",
+    "Target re-issue"
+   ]
+  },
+  {
+   "expect": "notification",
+   "to": "finance",
+   "kind": "payment_returned",
+   "contains": "reopened"
+  },
+  {
+   "expect": "notification",
+   "to": "institution:INST-A",
+   "kind": "refund_returned",
+   "contains": "NOT complete"
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R1",
+   "path": "attempts.0.status",
+   "equals": "RETURNED"
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R1",
+   "path": "attempts.0.debit_evidence",
+   "equals": "E-DR-1"
+  },
+  {
+   "expect": "value",
+   "of": "book_balance",
+   "equals_lakh": 35
+  },
+  {
+   "expect": "error",
+   "code": "StateError",
+   "step": {
+    "do": "allocate",
+    "alloc_id": "BAD",
+    "credit_id": "RET-SBINR52026091000091",
+    "obligation_id": "O1",
+    "amount_lakh": 1,
+    "basis": "institution_declaration",
+    "at": "2026-09-10T11:45",
+    "actor": "finance_reconciliation_officer:anil"
+   }
+  },
+  {
+   "note": "Re-issue to the same verified account (return reason was not account-related)."
+  },
+  {
+   "do": "initiate",
+   "refund_id": "R1",
+   "at": "2026-09-11T10:00",
+   "actor": "finance_officer:ravi"
+  },
+  {
+   "do": "evidence",
+   "id": "E-DR-2",
+   "key": "SBI-K1",
+   "kind": "debit_advice",
+   "at": "2026-09-11T10:05",
+   "payload": {
+    "refund_id": "R1",
+    "utr": "SBINR52026091100012",
+    "amount_lakh": 35
+   }
+  },
+  {
+   "do": "evidence",
+   "id": "E-CC-2",
+   "key": "SBI-K1",
+   "kind": "credit_confirmation",
+   "at": "2026-09-11T10:20",
+   "payload": {
+    "utr": "SBINR52026091100012",
+    "credited_at": "2026-09-11T10:18",
+    "amount_lakh": 35,
+    "beneficiary_account": "A-CUR-5010"
+   }
+  },
+  {
+   "expect": "refund_state",
+   "refund": "R1",
+   "equals": "SETTLED"
+  },
+  {
+   "expect": "liability",
+   "obligation": "O1",
+   "outstanding_liability_lakh": 0,
+   "in_transit_lakh": 0,
+   "settled_refunds_lakh": 35
+  },
+  {
+   "expect": "portal_text",
+   "refund": "R1",
+   "contains": [
+    "Completed",
+    "SBINR52026091100012"
+   ]
+  },
+  {
+   "expect": "value",
+   "of": "refund",
+   "refund": "R1",
+   "path": "attempts",
+   "len": 2
+  },
+  {
+   "expect": "value",
+   "of": "book_balance",
+   "equals_lakh": 0
+  },
+  {
+   "expect": "chain",
+   "valid": true
+  },
+  {
+   "expect": "replay_matches"
+  }
+ ]
+}

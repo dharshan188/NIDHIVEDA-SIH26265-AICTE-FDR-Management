@@ -1,0 +1,31 @@
+{
+  "id": "S08",
+  "title": "Ten-year-old FDR evidence at release; bank renumbered one FDR and discharged another without an NOC",
+  "reviewer_ref": "Round 4: Issue 7 (AICTE question: what proves the NOC names the current instrument?)",
+  "steps": [
+    {"do": "bank", "bank": "SBI", "key": "SBI-K1", "valid_from": "2010-01-01", "at": "2010-01-01T09:00"},
+    {"do": "institution", "inst_id": "INST-H", "name": "Eta Institute of Design", "at": "2016-01-01T09:00"},
+    {"do": "obligation", "obligation_id": "OH1", "inst_id": "INST-H", "programme": "Design", "amount_lakh": 15, "instrument_class": "FDR", "at": "2016-01-02T09:00"},
+    {"do": "obligation", "obligation_id": "OH2", "inst_id": "INST-H", "programme": "Design PG", "amount_lakh": 15, "instrument_class": "FDR", "at": "2016-01-02T09:00"},
+    {"do": "instrument", "instrument_id": "IH1", "obligation_id": "OH1", "number": "SBI-FD-1", "bank": "SBI", "amount_lakh": 15, "issue_date": "2016-02-01", "maturity_date": "2036-02-01", "at": "2016-02-02T09:00", "actor": "institution:INST-H"},
+    {"do": "instrument", "instrument_id": "IH2", "obligation_id": "OH2", "number": "SBI-FD-2", "bank": "SBI", "amount_lakh": 15, "issue_date": "2016-02-01", "maturity_date": "2036-02-01", "at": "2016-02-02T09:01", "actor": "institution:INST-H"},
+    {"do": "evidence", "id": "E1", "key": "SBI-K1", "kind": "instrument_confirmation", "at": "2016-03-01T10:00", "payload": {"instrument_no": "SBI-FD-1", "amount_lakh": 15, "maturity_date": "2036-02-01", "status": "ACTIVE", "lien_holder": "AICTE", "as_of": "2016-03-01"}},
+    {"do": "evidence", "id": "E2", "key": "SBI-K1", "kind": "instrument_confirmation", "at": "2016-03-01T10:01", "payload": {"instrument_no": "SBI-FD-2", "amount_lakh": 15, "maturity_date": "2036-02-01", "status": "ACTIVE", "lien_holder": "AICTE", "as_of": "2016-03-01"}},
+    {"do": "entitlement", "obligation_id": "OH1", "basis": "Closure approved", "at": "2026-09-01T10:00", "actor": "section_officer:kiran"},
+    {"do": "affidavit", "obligation_id": "OH1", "kind": "AFFIDAVIT-6", "format_ok": true, "at": "2026-09-01T10:01", "actor": "section_officer:kiran"},
+    {"expect": "release", "obligation": "OH1", "at": "2026-09-02T10:00", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["M_CURRENT_INSTRUMENT"]},
+    {"do": "evidence", "id": "E3", "key": "SBI-K1", "kind": "instrument_confirmation", "at": "2026-09-03T10:00",
+     "payload": {"instrument_no": "SBI-FD-9", "supersedes": "SBI-FD-1", "change_kind": "renumbered", "changed_on": "2021-04-01", "amount_lakh": 15, "maturity_date": "2036-02-01", "status": "ACTIVE", "lien_holder": "AICTE", "as_of": "2026-09-03",
+                 "remark": "Account migrated to new CBS number after branch merger"}},
+    {"expect": "release", "obligation": "OH1", "at": "2026-09-04T10:00", "approver": "deputy_director:meera", "allowed": true, "instrument_no": "SBI-FD-9", "not_blocked_by": ["M_RENEWAL_RULES"]},
+    {"note": "The bank's reply on the second FDR is worse: discharged, no lien. AICTE issued no NOC for it."},
+    {"do": "evidence", "id": "E4", "key": "SBI-K1", "kind": "instrument_confirmation", "at": "2026-09-03T10:05",
+     "payload": {"instrument_no": "SBI-FD-2", "amount_lakh": 15, "maturity_date": "2036-02-01", "status": "DISCHARGED", "lien_holder": "NONE", "as_of": "2026-09-03"}},
+    {"expect": "notification", "to": "internal_audit", "kind": "lien_anomaly", "contains": "SBI-FD-2"},
+    {"do": "entitlement", "obligation_id": "OH2", "basis": "Closure approved", "at": "2026-09-04T11:00", "actor": "section_officer:kiran"},
+    {"do": "affidavit", "obligation_id": "OH2", "kind": "AFFIDAVIT-6", "format_ok": true, "at": "2026-09-04T11:01", "actor": "section_officer:kiran"},
+    {"expect": "release", "obligation": "OH2", "at": "2026-09-04T12:00", "approver": "deputy_director:meera", "allowed": false, "blocked_by_includes": ["M_CURRENT_INSTRUMENT"]},
+    {"expect": "chain", "valid": true},
+    {"expect": "replay_matches"}
+  ]
+}
